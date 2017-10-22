@@ -11,11 +11,16 @@ If you don't want to save images, DON'T use parameter
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 using namespace std;
 using namespace cv;
 
 #define IMAGE_SIZE 50
+
+struct stat st = {0};
 
 int nb_images = 0;
 
@@ -28,9 +33,11 @@ int main(int argc, char const *argv[]) {
   Mat frame;
 
   //check if parameter for folder name
-  String folder = "";
+  String folder = "./data/";
   if(argc > 1){
-    folder = (String)argv[1];
+    folder += (String)argv[1];
+    cout << folder << endl;
+    mkdir(folder.c_str(), 0777);
   }
 
   //Create and load the face and eyes classifier
@@ -108,12 +115,11 @@ Mat detect_faces(Mat frame_origin, String folder, CascadeClassifier face_cascade
     Point face_center(faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2);
 
     //Save the image of the face in the folder in parameter
-    if(folder != ""){
+    if(folder != "./data/"){
       Mat face_saved, face_saved_resized;
       frame_origin(faces[i]).copyTo(face_saved);
       resize(face_saved, face_saved_resized, cvSize(IMAGE_SIZE, IMAGE_SIZE));
-      String file_name = "./data/";
-      file_name += folder;
+      String file_name = folder;
       file_name += "/";
       stringstream ss;
       ss << nb_images++;
