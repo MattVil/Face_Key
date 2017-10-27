@@ -18,7 +18,7 @@ If you don't want to save images, DON'T use parameter
 using namespace std;
 using namespace cv;
 
-#define IMAGE_SIZE 50
+#define IMAGE_SIZE 100
 
 struct stat st = {0};
 
