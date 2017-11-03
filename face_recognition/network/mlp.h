@@ -1,6 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+
+#define EPS 0.2
+
+#define NB_LAYOR 4
+
+#define DROPOUT 0.2
+
+#define NB_NEURON_INPUT 2500
+#define NB_NEURON_HIDDEN 800
+#define NB_NEURON_OUTPUT 7
+
 
 typedef struct neuron{
 	double potential;
@@ -27,10 +39,11 @@ typedef struct weight_matrix{
 	double** weight;
 }Weight_matrix;
 
-typedef struct network
-{
+typedef struct network{
 	Layor* tab_layor;
 	int nb_layor;
 	Weight_matrix* tab_weight_matrix;
 	int nb_weight_matrix;
 }Network;
+
+void build_dropout_vect(Network* net);
