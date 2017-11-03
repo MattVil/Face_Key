@@ -46,4 +46,5 @@ typedef struct network{
 	int nb_weight_matrix;
 }Network;
 
+Network build_neural_network();
 void build_dropout_vect(Network* net);
