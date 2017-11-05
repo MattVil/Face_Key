@@ -6,8 +6,11 @@ main.o: main.c
 mlp.o: mlp.c mlp.h
 	gcc -c mlp.c -lm
 
-main: mlp.o main.o
-	gcc main.o mlp.o -o main -lm
+load_mnist.o: load_mnist.c load_mnist.h
+	gcc -c load_mnist.c
+
+main: mlp.o main.o load_mnist.o
+	gcc main.o mlp.o load_mnist.o -o main -lm
 
 clear:
 	rm -f *.o main
