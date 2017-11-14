@@ -19,7 +19,7 @@ int main(int argc, char const *argv[]) {
 
   printf("\n########### TRAINING... ############\n");
   int i, j, z, p;
-  for(j=0; j<2; j++){
+  for(j=0; j<5; j++){
     for(i=0; i<60000; i++){
       Image img;
       read_input_number(i, &img);
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]) {
 			}
 			printf("\n");*/
 
-      if(i%1 == 0) printf("%d :\t%lf\n", i, error);
+      if(i%100 == 0) printf("%d - %d :\t%lf\n", j, i, error);
       //if(i%1 == 0) printf("%d : ", i);
 
     }

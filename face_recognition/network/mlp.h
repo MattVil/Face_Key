@@ -12,7 +12,7 @@
 #define DROPOUT 0.2
 
 #define NB_NEURON_INPUT 784
-#define NB_NEURON_HIDDEN 800
+#define NB_NEURON_HIDDEN 200
 #define NB_NEURON_OUTPUT 10
 
 
