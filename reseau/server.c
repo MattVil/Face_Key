@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 
 int main(){
-	int s_ecoute;
+	int s_ecoute, s_dial, cli_len;
 	struct sockaddr_in serv_addr, cli_addr;
 
 	serv_addr.sin_family = AF_INET ;
