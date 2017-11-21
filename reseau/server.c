@@ -22,5 +22,8 @@ int main(){
 
 	memset (buf, 0, 80);
 	read (s_dial, buf, 80);
+
+	close (s_dial) ;
+	close (s_ecoute) ;
 }
 
