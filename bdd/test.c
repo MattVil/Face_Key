@@ -9,7 +9,7 @@ static void exit_nicely(PGconn *conn){
 
 int main(int argc, char const *argv[]) {
 
-  const char *conninfo;
+    const char *conninfo;
     PGconn     *conn;
     PGresult   *res;
     int         nFields;
