@@ -2,7 +2,11 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <arpa/inet.h>
+
+#define DEBUG 1
+#define BUF_SIZE 80
 
 //Codes Client -> Serveur
 #define IDS_REQU 100
@@ -13,26 +17,60 @@
 #define IDS_SD 200
 #define PSSW_SD 201
 
+char** str_split(char* str, char sep);
+
 int main(){
-	int s_ecoute, s_dial, cli_len;
+
+	char** splited_str;
+	char buf [BUF_SIZE];
+	int s_ecoute, s_dial, cli_len, i;
 	struct sockaddr_in serv_addr, cli_addr;
 
 	serv_addr.sin_family = AF_INET ;
 	serv_addr.sin_addr.s_addr = INADDR_ANY ;
 	serv_addr.sin_port = htons(5000) ;
-	memset (&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
+	memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
 
 	s_ecoute = socket(PF_INET, SOCK_STREAM, 0);
-	bind (s_ecoute, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+	bind(s_ecoute, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
 
-	listen (s_ecoute, 5);
-	cli_len = sizeof (cli_addr);
-	s_dial = accept (s_ecoute, (struct sockaddr *)&cli_addr, &cli_len);
+	listen(s_ecoute, 5);
+	cli_len = sizeof(cli_addr);
+	s_dial = accept(s_ecoute, (struct sockaddr *)&cli_addr, &cli_len);
 
-	memset (buf, 0, 80);
-	read (s_dial, buf, 80);
+	memset(buf, 0, BUF_SIZE);
+	read(s_dial, buf, BUF_SIZE);
+	printf("J'ai recu [%s] du client\n", buf) ;
+
+	splited_str = str_split(buf, ';');
+	printf("Code: %s ; Information: %s\n", splited_str[0], splited_str[1]);
 
 	close (s_dial) ;
 	close (s_ecoute) ;
 }
 
+char** str_split(char* str, const char sep){
+	char **result, **result_temp;
+	char *temp = str;
+	char *token;
+	int count = 1;
+	int i;
+
+	while (*temp){
+		if (*temp == sep)
+			count++;
+		temp++;
+	}
+	printf("%d\n", count);
+
+	result = malloc(count*sizeof(char*));
+	result_temp = result;
+
+	token = strtok(str, &sep);
+	while(token != NULL) {
+		*result_temp = strdup(token);
+		token = strtok(NULL, &sep);
+		result_temp++;
+	}
+	return result;
+}
