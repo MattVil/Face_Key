@@ -17,6 +17,9 @@
 #define IDS_SD 200
 #define PSSW_SD 201
 
+//Codes d'erreurs
+#define UKNWREQ 400
+
 char** str_split(char* str, char sep);
 
 int main(){
@@ -43,7 +46,25 @@ int main(){
 	printf("J'ai recu [%s] du client\n", buf) ;
 
 	splited_str = str_split(buf, ';');
-	printf("Code: %s ; Information: %s\n", splited_str[0], splited_str[1]);
+	switch(atoi(splited_str[0])){
+		case IDS_REQU:
+			printf("ID Request on: %s\n",splited_str[1]);
+			break;
+
+		case PSSW_REQU:
+			printf("Password Request on: %s\n",splited_str[1]);
+			break;
+
+		case PICGPS_UPDT:
+			printf("Picture and GPS Update on: %s\n",splited_str[1]);
+			break;
+
+		default:
+			memset(buf, 0, 80);
+        	strcpy(buf, "400;Request Unknown\n");
+        	write(s_dial, buf, strlen(buf));
+			break;
+	}
 
 	close (s_dial) ;
 	close (s_ecoute) ;
@@ -61,7 +82,6 @@ char** str_split(char* str, const char sep){
 			count++;
 		temp++;
 	}
-	printf("%d\n", count);
 
 	result = malloc(count*sizeof(char*));
 	result_temp = result;

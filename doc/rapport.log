@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.16)  25 NOV 2017 17:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.16)  25 NOV 2017 18:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -788,11 +788,11 @@ l.13 \multirow
 ? 
 ! Undefined control sequence.
 l.19 \multirow
-              {}{Erreurs côté serveur (400-499)} & 400 & Utilisateur intro...
+              {}{Erreurs côté serveur (400-499)} & 400 & Requête inconnue \\
 
 ? 
 
-Overfull \hbox (259.94615pt too wide) in paragraph at lines 2--25
+Overfull \hbox (259.94615pt too wide) in paragraph at lines 2--27
 [][] 
  []
 
@@ -828,7 +828,7 @@ c}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
 l/texlive/2016/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive
 /2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texm
 f-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on rapport.pdf (1 page, 48326 bytes).
+Output written on rapport.pdf (1 page, 48382 bytes).
 PDF statistics:
  29 PDF objects out of 1000 (max. 8388607)
  20 compressed objects within 1 object stream
