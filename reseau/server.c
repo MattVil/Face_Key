@@ -4,6 +4,15 @@
 #include <stdio.h>
 #include <arpa/inet.h>
 
+//Codes Client -> Serveur
+#define IDS_REQU 100
+#define PSSW_REQU 101
+#define PICGPS_UPDT 102
+
+//Codes Serveur -> Client
+#define IDS_SD 200
+#define PSSW_SD 201
+
 int main(){
 	int s_ecoute, s_dial, cli_len;
 	struct sockaddr_in serv_addr, cli_addr;

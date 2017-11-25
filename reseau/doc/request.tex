@@ -1,0 +1,24 @@
+\subsection{Les Requêtes}
+\begin{tabular}{|c|c|c|}
+\hline
+
+\multirow{}{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site à l'instant t \\
+\cline{2-3}
+& 101 & Demande le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
+\cline{2-3}
+& 102 & Envoie d'une photo de l'utilisateur ainsi que ses coordonnées GPS \\
+
+\hline
+
+\multirow{}{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site à l'instant t \\
+\cline{2-3}
+& 201 & Envoie le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
+
+\hline
+
+\multirow{}{Erreurs côté serveur (400-499)} & 400 & Utilisateur introuvable \\
+\cline{2-3}
+& 401 & Aucun ID disponible pour l'utilisateur u sur le site web s \\
+
+\hline
+\end{tabular}
