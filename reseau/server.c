@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <arpa/inet.h>
 
 #define DEBUG 1
@@ -26,7 +27,8 @@ int main(){
 
 	char** splited_str;
 	char buf [BUF_SIZE];
-	int s_ecoute, s_dial, cli_len, i;
+	int s_ecoute, s_dial, i;
+	unsigned int cli_len;
 	struct sockaddr_in serv_addr, cli_addr;
 
 	serv_addr.sin_family = AF_INET ;
