@@ -21,13 +21,15 @@
 //Codes d'erreurs
 #define UKNWREQ 400
 
-char** str_split(char* str, char sep);
+char** str_split(char* str, char sep, int *size);
+//int str_split(char* str, const char sep, char** splited_str);
+void print_splt_str(char** splited_str, int size);
 
 int main(){
 
 	char** splited_str;
 	char buf [BUF_SIZE];
-	int s_ecoute, s_dial, i;
+	int s_ecoute, s_dial, i, splited_str_size;
 	unsigned int cli_len;
 	struct sockaddr_in serv_addr, cli_addr;
 
@@ -45,9 +47,15 @@ int main(){
 
 	memset(buf, 0, BUF_SIZE);
 	read(s_dial, buf, BUF_SIZE);
-	printf("J'ai recu [%s] du client\n", buf) ;
+	if (DEBUG)
+		printf("MESSAGE RECEIVED: %s\n", buf) ;
 
-	splited_str = str_split(buf, ';');
+	splited_str = str_split(buf, ';', &splited_str_size);
+	//splited_str_size = str_split(buf, ';', splited_str);
+	if (DEBUG)
+		print_splt_str(splited_str, splited_str_size);
+
+
 	switch(atoi(splited_str[0])){
 		case IDS_REQU:
 			printf("ID Request on: %s\n",splited_str[1]);
@@ -72,7 +80,7 @@ int main(){
 	close (s_ecoute) ;
 }
 
-char** str_split(char* str, const char sep){
+char** str_split(char* str, const char sep, int *size){
 	char **result, **result_temp;
 	char *temp = str;
 	char *token;
@@ -94,5 +102,65 @@ char** str_split(char* str, const char sep){
 		token = strtok(NULL, &sep);
 		result_temp++;
 	}
+
+	if (DEBUG)
+		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
+	*size = count;
+
 	return result;
+}
+
+// int str_split(char *str, const char sep, char **splited_str){
+// 	char **result, **result_temp;
+// 	char *temp = str;
+// 	char *token;
+// 	int count = 1, i;
+// 	size_t ind = 0;
+
+// 	while (*temp){
+// 		if (*temp == sep)
+// 			count++;
+// 		temp++;
+// 	}
+
+// 	splited_str = NULL;
+// 	splited_str = malloc(count*sizeof(char*));
+
+// 	/*if (splited_str == NULL)
+// 		splited_str = malloc(count*sizeof(char*));
+// 	else
+// 		splited_str = realloc(splited_str, count*sizeof(char*));*/
+
+// 	if (DEBUG)
+// 		printf("%s\n", str);
+
+// 	token = strtok(str, &sep);
+// 	for (i=0; i<count; i++){
+// 		splited_str[i] = strdup(token);
+// 		token = strtok(NULL, &sep);
+// 	}
+// 	print_splt_str(splited_str, count);
+
+// 	/*result = malloc(count*sizeof(char*));
+// 	result_temp = result;
+// 	token = strtok(str, &sep);
+// 	while(token != NULL) {
+// 		*result_temp = strdup(token);
+// 		token = strtok(NULL, &sep);
+// 		result_temp++;
+// 	}
+// 	print_splt_str(result, count);
+// 	splited_str = result;*/
+
+// 	if (DEBUG)
+// 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
+
+// 	return count;
+// }
+
+void print_splt_str(char **tab, int size){
+	int i;
+	for(i=0; i<size; i++){
+		printf("PART %d: %s\n", i+1, tab[i]);
+	}
 }
