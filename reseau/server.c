@@ -45,9 +45,10 @@ int main(){
 			break;
 
 		default:
-			memset(buf, 0, 80);
+			/*memset(buf, 0, 80);
         	strcpy(buf, "400;Request Unknown\n");
-        	write(s_dial, buf, strlen(buf));
+        	write(s_dial, buf, strlen(buf));*/
+			send_requ(s_dial, 400, "Unknown Request", buf, sizeof(buf));
 			break;
 	}
 

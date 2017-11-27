@@ -2,11 +2,26 @@
 
 void send_requ(int socket, int code, char* info, char* buf, int bufsize){
 	char* str_code;
+	str_code = (char*) malloc(3*sizeof(char));
+	if (DEBUG)
+		printf("SENDING REQUEST %d (%s):\n", code, info);
+
 	//itoa(code, str_code, 10);
 	sprintf(str_code, "%d", code);
+	if (DEBUG)
+		printf("\tCODE CONVERTED IN STRING\n");
 	memset(buf, 0, bufsize);
+	if (DEBUG)
+		printf("\tBUFFER CLEARED\n");
+	strcat(str_code, ";");
 	strcpy(buf, strcat(str_code, info));
+	if (DEBUG)
+		printf("\tREQUEST BUILD\n");
 	write(socket, buf, strlen(buf));
+	if (DEBUG)
+		printf("\tREQUEST SENT\n");
+
+	free(str_code);
 }
 
 char** str_split(char* str, const char sep, int *size){
