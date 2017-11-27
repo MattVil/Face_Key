@@ -33,6 +33,10 @@ int main(int argc, char const *argv[]) {
       exit_nicely(conn);
   }
 
+
+  /*
+    ajout utilisateur
+  */
   res = PQexec(conn, "INSERT INTO Users (id_user, pseudo, mail_adr, password) VALUES ('000000001','freez','mattvilain@gmail.com', 'A123456*');");
 
   return 0;
