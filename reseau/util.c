@@ -1,15 +1,95 @@
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <arpa/inet.h>
+#include "util.h"
 
-void send(int socket, int code, char* info, char* buf, int bufsize){
+void send_requ(int socket, int code, char* info, char* buf, int bufsize){
 	char* str_code;
-	itoa(code, str_code, 10)
+	//itoa(code, str_code, 10);
+	sprintf(str_code, "%d", code);
 	memset(buf, 0, bufsize);
 	strcpy(buf, strcat(str_code, info));
-	write(s_dial, buf, strlen(buf));
+	write(socket, buf, strlen(buf));
+}
+
+char** str_split(char* str, const char sep, int *size){
+	char **result, **result_temp;
+	char *temp = str;
+	char *token;
+	int count = 1;
+	int i;
+
+	while (*temp){
+		if (*temp == sep)
+			count++;
+		temp++;
+	}
+
+	result = malloc(count*sizeof(char*));
+	result_temp = result;
+
+	token = strtok(str, &sep);
+	while(token != NULL) {
+		*result_temp = strdup(token);
+		token = strtok(NULL, &sep);
+		result_temp++;
+	}
+
+	if (DEBUG)
+		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
+	*size = count;
+
+	return result;
+}
+
+// int str_split(char *str, const char sep, char **splited_str){
+// 	char **result, **result_temp;
+// 	char *temp = str;
+// 	char *token;
+// 	int count = 1, i;
+// 	size_t ind = 0;
+
+// 	while (*temp){
+// 		if (*temp == sep)
+// 			count++;
+// 		temp++;
+// 	}
+
+// 	splited_str = NULL;
+// 	splited_str = malloc(count*sizeof(char*));
+
+// 	/*if (splited_str == NULL)
+// 		splited_str = malloc(count*sizeof(char*));
+// 	else
+// 		splited_str = realloc(splited_str, count*sizeof(char*));*/
+
+// 	if (DEBUG)
+// 		printf("%s\n", str);
+
+// 	token = strtok(str, &sep);
+// 	for (i=0; i<count; i++){
+// 		splited_str[i] = strdup(token);
+// 		token = strtok(NULL, &sep);
+// 	}
+// 	print_splt_str(splited_str, count);
+
+// 	/*result = malloc(count*sizeof(char*));
+// 	result_temp = result;
+// 	token = strtok(str, &sep);
+// 	while(token != NULL) {
+// 		*result_temp = strdup(token);
+// 		token = strtok(NULL, &sep);
+// 		result_temp++;
+// 	}
+// 	print_splt_str(result, count);
+// 	splited_str = result;*/
+
+// 	if (DEBUG)
+// 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
+
+// 	return count;
+// }
+
+void print_splt_str(char **tab, int size){
+	int i;
+	for(i=0; i<size; i++){
+		printf("PART %d: %s\n", i+1, tab[i]);
+	}
 }
