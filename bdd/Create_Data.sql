@@ -31,4 +31,17 @@ INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, c
 INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date)
 	VALUES ('Matthieu', 'VILAIN', TRUE, 'MattVil', 'matthieu.vilain@etu.u-cergy.fr', '7hU?2@lO', 'French', '1970/01/01');
 INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date)
-	VALUES ('Louis', "L'HARIDON", FALSE, 'feudecamp', 'louis.lharidon@etu.u-cergy.fr', 'azerty', 'French', '1970/01/01');
+	VALUES ('Louis', 'LHARIDON', FALSE, 'feudecamp', 'louis.lharidon@etu.u-cergy.fr', 'azerty', 'French', '1970/01/01');
+INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date)
+	VALUES ('Jérôme', 'VABOIS', TRUE, 'JeromeVab', 'jerome.vabois@etu.u-cergy.fr', 'password', 'French', '1970/01/01');
+INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date)
+	VALUES ('Guillaume', 'RIGUIDEL', TRUE, 'DJGuiGui', 'guillaume.riguidel@etu.u-cergy.fr', '123456', 'French', '1970/01/01');
+
+/*Account Insertion*/
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (1, 'quentin.gerard@etu.u-cergy.fr', 'psswrdFBQG', 1, 3);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (8, 'quentin.gerard@etu.u-cergy.fr', 'psswrdSPTFQG', 1, 8);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (4, 'quentin.gerard@etu.u-cergy.fr', 'psswrdTRLLQG', 1, 4);
+
