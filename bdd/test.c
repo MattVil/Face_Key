@@ -62,7 +62,7 @@ int main(int argc, char const *argv[]) {
     /*
      * Fetch rows from pg_database, the system catalog of databases
      */
-    res = PQexec(conn, "DECLARE myportal CURSOR FOR select * from UCS");
+    res = PQexec(conn, "DECLARE myportal CURSOR FOR select * from Users");
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
         fprintf(stderr, "DECLARE CURSOR failed: %s", PQerrorMessage(conn));
