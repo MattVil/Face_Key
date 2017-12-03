@@ -69,3 +69,19 @@ INSERT INTO Account (id_site, login, password, id_user, id_tag)
 	VALUES (7, 'guillaume.riguidel@etu.u-cergy.fr', 'psswrdAMZGR', 5, 7);
 INSERT INTO Account (id_site, login, password, id_user, id_tag) 
 	VALUES (2, 'guillaume.riguidel@etu.u-cergy.fr', 'psswrdTWTGR', 5, 2);
+
+/*SharedAccount Insertion*/
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 9, 1);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 11, 2);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 4, 1);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 9, 2);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 9, 4);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 9, 5);
+INSERT INTO SharedAccount (expiration_date, id_account, id_receiver)
+	VALUES ('2018/12/31', 14, 3);
