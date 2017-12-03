@@ -30,7 +30,7 @@ CREATE TABLE Users(
 
 CREATE TABLE Sites(
 	id_site SERIAL,
-	domaine VARCHAR(30),
+	domain VARCHAR(30),
 	login_input VARCHAR(30),
 	password_input VARCHAR(30),
 	nb_user_today INT,
