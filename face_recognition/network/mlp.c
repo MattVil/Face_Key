@@ -370,3 +370,10 @@ int convert_result(Network network){
 
 	return max;
 }
+
+/*
+This function load image from file
+*/
+Image read_custom_image(){
+	
+}
