@@ -24,6 +24,7 @@ INSERT INTO Sites (domain) VALUES ('evernote.com');
 INSERT INTO Sites (domain) VALUES ('nytimes.com');
 INSERT INTO Sites (domain) VALUES ('amazon.com');
 INSERT INTO Sites (domain) VALUES ('spotify.com');
+INSERT INTO Sites (domain) VALUES ('apple.com');
 
 /*Users Insertion*/
 INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date)
@@ -44,4 +45,27 @@ INSERT INTO Account (id_site, login, password, id_user, id_tag)
 	VALUES (8, 'quentin.gerard@etu.u-cergy.fr', 'psswrdSPTFQG', 1, 8);
 INSERT INTO Account (id_site, login, password, id_user, id_tag) 
 	VALUES (4, 'quentin.gerard@etu.u-cergy.fr', 'psswrdTRLLQG', 1, 4);
-
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (5, 'matthieu.vilain@etu.u-cergy.fr', 'psswrdEVRNTMV', 2, 4);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (6, 'matthieu.vilain@etu.u-cergy.fr', 'psswrdNYTMV', 2, 6);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (3, 'matthieu.vilain@etu.u-cergy.fr', 'psswrdGGLMV', 2, 1);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (9, 'louis.lharidon@etu.u-cergy.fr', 'psswrdAPPLLL', 3, 7);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (6, 'louis.lharidon@etu.u-cergy.fr', 'psswrdNYTLL', 3, 6);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (3, 'louis.lharidon@etu.u-cergy.fr', 'psswrdGGLLL', 3, 2);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (2, 'jerome.vabois@etu.u-cergy.fr', 'psswrdTWTJV', 4, 3);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (8, 'jerome.vabois@etu.u-cergy.fr', 'psswrdSPTFJV', 4, 8);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (1, 'jerome.vabois@etu.u-cergy.fr', 'psswrdFBJV', 4, 3);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (1, 'guillaume.riguidel@etu.u-cergy.fr', 'psswrdFBGR', 5, 3);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (7, 'guillaume.riguidel@etu.u-cergy.fr', 'psswrdAMZGR', 5, 7);
+INSERT INTO Account (id_site, login, password, id_user, id_tag) 
+	VALUES (2, 'guillaume.riguidel@etu.u-cergy.fr', 'psswrdTWTGR', 5, 2);
