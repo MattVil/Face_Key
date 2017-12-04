@@ -71,7 +71,7 @@ CREATE TABLE DataAccount(
 	average_conn_time TIME,
 	last_loc VARCHAR(100),
 	average_freq_conn INT,
-	last_con TIMESTAMP,
+	last_conn TIMESTAMP,
 	link_to_freq VARCHAR(30),
 	link_to_time VARCHAR(30),
 	CONSTRAINT dataAccount_pk PRIMARY KEY (id_data)
@@ -79,7 +79,7 @@ CREATE TABLE DataAccount(
 
 CREATE TABLE PaymentAccount(
 	bank VARCHAR(50),
-	RIB VARCHAR(30),
+	RIB VARCHAR(50),
 	card_num VARCHAR(16),
 	cryptogram VARCHAR(3)
-);
+) INHERITS (Account);
