@@ -32,6 +32,10 @@ $id = $_GET['id'];
 		<li> language : <?php echo get_info("users", $id, "language") ?></li>
 
 	</ul> 
+
+	<ul>
+
+	</ul>
     
     </body>
 </html>

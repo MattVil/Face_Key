@@ -1,81 +1,87 @@
 <?php
-// including the database connection file
-  include 'local.postgre.conf.php';
-  //include 'postgresql.conf.inc.php'; 
-  include 'fonction.php';
- 
-if(isset($_POST['update']))
-{    
-    $id = $_POST['id'];
+    include 'local.postgre.conf.php';
+    //include 'postgresql.conf.inc.php'; 
+    include 'fonction.php';
+
+    $id = $_GET['id']; 
     
-    $name=$_POST['name'];
-    $age=$_POST['age'];
-    $email=$_POST['email'];    
-    
-    // checking empty fields
-    if(empty($name) || empty($age) || empty($email)) {            
-        if(empty($name)) {
-            echo "<font color='red'>Name field is empty.</font><br/>";
+    $view = "Location: userview.php";
+    $thisedit = "/edit.php?id=$id";
+
+    $_POST = array_filter($_POST);
+    foreach($_POST as $k => $v){
+        if(isset($_POST[$k])){
+            $exist = true;
+            edit_table("users",$id,$k,$_POST[$k]);
         }
-        
-        if(empty($age)) {
-            echo "<font color='red'>Age field is empty.</font><br/>";
-        }
-        
-        if(empty($email)) {
-            echo "<font color='red'>Email field is empty.</font><br/>";
-        }        
-    } else {    
-        //updating the table
-        $result = pg_query("UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id");
-        echo "UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id";
-        //redirectig to the display page. In our case, it is index.php
-        //header("Location: userview.php");
     }
-}
+    if($exist){
+        header($view);
+    }
 ?>
-<?php
-//getting id from url
-$id = $_GET['id'];
- 
-//selecting data associated with this particular id
-$result = mysqli_query($mysqli, "SELECT * FROM users WHERE id=$id");
- 
-while($res = mysqli_fetch_array($result))
-{
-    $name = $res['name'];
-    $age = $res['age'];
-    $email = $res['email'];
-}
+<?
+/*   if(isset($_POST['update']))
+    {    
+        $id = $_POST['id'];
+        
+        $name=$_POST['name'];
+        $age=$_POST['age'];
+        $email=$_POST['email'];    
+        
+        // checking empty fields
+        if(empty($name) || empty($age) || empty($email)) {            
+            if(empty($name)) {
+                echo "<font color='red'>Name field is empty.</font><br/>";
+            }
+            
+            if(empty($age)) {
+                echo "<font color='red'>Age field is empty.</font><br/>";
+            }
+            
+            if(empty($email)) {
+                echo "<font color='red'>Email field is empty.</font><br/>";
+            }        
+        } else {    
+            //updating the table
+            $result = pg_query("UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id");
+            echo "UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id"
+            //redirectig to the display page. In our case, it is index.php
+            header("Location: userview.php");
+        }
+    }
+*/
+
 ?>
-<html>
-<head>    
-    <title>Edit Data</title>
-</head>
- 
-<body>
-    <a href="userview.php">Home</a>
-    <br/><br/>
-    
-    <form name="form1" method="post" action="edit.php">
-        <table border="0">
-            <tr> 
-                <td>Name</td>
-                <td><input type="text" name="name" value="<?php echo $name;?>"></td>
-            </tr>
-            <tr> 
-                <td>Age</td>
-                <td><input type="text" name="age" value="<?php echo $age;?>"></td>
-            </tr>
-            <tr> 
-                <td>Email</td>
-                <td><input type="text" name="email" value="<?php echo $email;?>"></td>
-            </tr>
-            <tr>
-                <td><input type="hidden" name="id" value=<?php echo $_GET['id'];?>></td>
-                <td><input type="submit" name="update" value="Update"></td>
-            </tr>
-        </table>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+        
+        <title>Facekey &mdash; Admin Panel</title>
+    </head>
+    <body>
+    <a href="userview.php">Back</a><br/><br/>
+    <?php
+    ?>
+    <form action="<?php $thisedit ?>" method="post">
+
+        <ul>
+            <li> name : <input type="text" name="name" placeholder="<?php echo get_info("users", $id, "name") ?>"/></li>
+            <li> first Name : <input type="text" name="first_name" placeholder="<?php echo get_info("users", $id, "first_name") ?>"/></li>
+            <li> pseudo : <input type="text" name="pseudo" placeholder="<?php echo get_info("users", $id, "pseudo") ?>"/></li>
+            <li> gender : <input type="text" name="gender" placeholder="<?php echo get_info("users", $id, "gender") ?>"/></li>
+            <li> mail : <input type="text" name="mail" placeholder="<?php echo get_info("users", $id, "mail") ?>"/></li>
+            <li> password : <input type="text" name="password" placeholder="<?php echo get_info("users", $id, "password") ?>"/></li>
+            <li> creation date : <input type="text" name="creation_date" placeholder="<?php echo get_info("users", $id, "creation_date") ?>"/></li>
+            <li> language : <input type="text" name="language" placeholder="<?php echo get_info("users", $id, "language") ?>"/> </li>
+        </ul> 
+        <input type="submit" value="Submit">
     </form>
-</body>
+    
+    </body>
 </html>
