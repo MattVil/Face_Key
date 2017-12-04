@@ -7,6 +7,7 @@
     
     $view = "Location: userview.php";
     $thisedit = "/edit.php?id=$id";
+    $profile = "/profile.php?id=$id";
 
     $_POST = array_filter($_POST);
     foreach($_POST as $k => $v){
@@ -32,7 +33,11 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/><br/>
+    <a href="userview.php">Back</a><br/>
+    <a href="<?php echo $profile ?>">Edit</a>
+    <br/>
+    <br/>
+
     <form action="<?php $thisedit ?>" method="post">
 
         <ul>
@@ -41,7 +46,7 @@
             <li> pseudo : <input type="text" name="pseudo" placeholder="<?php echo get_info("users", $id, "pseudo") ?>"/></li>
             <li> gender : <input type="text" name="gender" placeholder="<?php echo get_info("users", $id, "gender") ?>"/></li>
             <li> mail : <input type="text" name="mail" placeholder="<?php echo get_info("users", $id, "mail") ?>"/></li>
-            <li> password : <input type="text" name="password" placeholder="<?php echo get_info("users", $id, "password") ?>"/></li>
+            <li> Face Key password : <input type="text" name="password" placeholder="<?php echo get_info("users", $id, "password") ?>"/></li>
             <li> creation date : <input type="text" name="creation_date" placeholder="<?php echo get_info("users", $id, "creation_date") ?>"/></li>
             <li> language : <input type="text" name="language" placeholder="<?php echo get_info("users", $id, "language") ?>"/> </li>
         </ul> 

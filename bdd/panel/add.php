@@ -4,7 +4,7 @@
     include 'fonction.php';
 
     
-    $view = "Location: add.php";
+    $view = "Location: userview.php";
 
     $champ = "";
     $value = "";
