@@ -1,0 +1,5 @@
+SELECT id_user, name, first_name, pseudo, mail FROM Users
+SELECT id_user, name, first_name, pseudo, mail FROM Users WHERE '$choise' = '$search'
+
+SELECT * FROM Users WHERE id_user = '$id_user'
+SELECT id_account, domaine, login FROM Account INNER JOIN Sites ON account.site = sites.id_site
