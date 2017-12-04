@@ -10,10 +10,12 @@
              $char .= '<td>' . $fieldName . '</td>';
             $i = $i + 1;
         }
+        $char .=  "<td>Update</td>";
         $char .= '</tr></thead><tbody>';
         $i = 0;
         while ($row = pg_fetch_row($result))
         {
+            $id = current($row);
             $char .= '<tr>';
             $count = count($row);
             $j = 0;
@@ -24,12 +26,36 @@
                 next($row);
                 $j = $j + 1;
             }
+            $char.= "<td><a href=\"profile.php?id=$id\">Check</a> | <a href=\"edit.php?id=$id\">Edit</a> | <a href=\"delete.php?id=" . $id . "\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";        
             $char .= '</tr>';
             $i = $i + 1;
         }
+
         pg_free_result($result);
         $char .= '</tbody></table>';
         return $char;
+    }
+
+    function add_to_table($table, $champ, $value){
+        $query = "INSERT INTO $table($champ) VALUES('$value')";
+        $result = pg_query($query);
+    }
+
+    function edit_table($table, $id ,$champ, $value){
+        $query = "UPDATE  $table  SET $champ = '$value' WHERE id_user =$id";
+        $result = pg_query($query);
+    }
+
+    function delete_line($table, $id){
+        $query = "DELETE FROM $table WHERE id_user=$id";
+        $result = pg_query($query);
+    }
+
+    function get_info($table, $id, $champ){
+        $query = "SELECT $champ FROM $table WHERE id_user=$id";
+        $result = pg_query($query);
+        $value = current(pg_fetch_row($result));
+        return $value;
     }
 
     function disp_column_option($name_table, $column){
