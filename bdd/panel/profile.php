@@ -3,9 +3,13 @@
   	//include 'postgresql.conf.inc.php'; 
   	include 'fonction.php';
 
+	include ('lib/jpgraph/src/jpgraph.php');
+	include ('lib/jpgraph/src/jpgraph_bar.php');
+
 
 	$id = $_GET['id']; 
 	$edit = "/edit.php?id=$id";
+	$imgpath = "./users/$id/graphFreq.png";
 ?>
 
 <!DOCTYPE html>
@@ -37,8 +41,10 @@
 
 		<h2>CO 1</h2>
 		<? 
-		function display_profil_table(){
-        $query = "SELECT Users.id_user, name, pseudo, Account.id_site, id_account,login, Account.password FROM  Users INNER JOIN Account ON Users.id_user=Account.id_user";       
+		function display_profil_table($id){
+
+        $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
+        echo $query; 
 		$result = pg_query($query);
         $i = 0;
         $char = '<table><thead><tr>';
@@ -73,9 +79,10 @@
     }
 
 
-		echo display_profil_table(); ?>
-	
+		echo display_profil_table($id); ?>
 
+		<?php createGraph($id);?>
+		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>
     
     </body>
