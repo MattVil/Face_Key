@@ -30,7 +30,7 @@ CREATE TABLE Users(
 
 CREATE TABLE Sites(
 	id_site SERIAL,
-	domaine VARCHAR(30),
+	domain VARCHAR(30),
 	login_input VARCHAR(30),
 	password_input VARCHAR(30),
 	nb_user_today INT,
@@ -47,11 +47,11 @@ CREATE TABLE Tags(
 
 CREATE TABLE Account(
 	id_account SERIAL,
-	site SERIAL REFERENCES Sites (id_site),
+	id_site SERIAL REFERENCES Sites (id_site),
 	login VARCHAR(75),
 	password VARCHAR(100),
 	id_user SERIAL REFERENCES Users (id_user),
-	tag SERIAL REFERENCES Tags (id_tag),
+	id_tag SERIAL REFERENCES Tags (id_tag),
 	CONSTRAINT account_pk PRIMARY KEY (id_account)
 );
 
