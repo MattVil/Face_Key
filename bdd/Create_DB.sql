@@ -1,3 +1,4 @@
+DELETE FROM PaymentAccount;
 DELETE FROM DataAccount;
 DELETE FROM SharedAccount;
 DELETE FROM Account;
@@ -5,6 +6,7 @@ DELETE FROM Tags;
 DELETE FROM Sites;
 DELETE FROM Users;
 
+DROP TABLE PaymentAccount;
 DROP TABLE DataAccount;
 DROP TABLE SharedAccount;
 DROP TABLE Account;
@@ -30,7 +32,7 @@ CREATE TABLE Users(
 
 CREATE TABLE Sites(
 	id_site SERIAL,
-	domain VARCHAR(30) NOT NULL,
+	domain VARCHAR(50) NOT NULL,
 	login_input VARCHAR(30),
 	password_input VARCHAR(30),
 	nb_user_today INT,
@@ -73,4 +75,11 @@ CREATE TABLE DataAccount(
 	link_to_freq VARCHAR(30),
 	link_to_time VARCHAR(30),
 	CONSTRAINT dataAccount_pk PRIMARY KEY (id_data)
+);
+
+CREATE TABLE PaymentAccount(
+	bank VARCHAR(50),
+	RIB VARCHAR(30),
+	card_num VARCHAR(16),
+	cryptogram VARCHAR(3)
 );
