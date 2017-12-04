@@ -19,39 +19,6 @@
         header($view);
     }
 ?>
-<?
-/*   if(isset($_POST['update']))
-    {    
-        $id = $_POST['id'];
-        
-        $name=$_POST['name'];
-        $age=$_POST['age'];
-        $email=$_POST['email'];    
-        
-        // checking empty fields
-        if(empty($name) || empty($age) || empty($email)) {            
-            if(empty($name)) {
-                echo "<font color='red'>Name field is empty.</font><br/>";
-            }
-            
-            if(empty($age)) {
-                echo "<font color='red'>Age field is empty.</font><br/>";
-            }
-            
-            if(empty($email)) {
-                echo "<font color='red'>Email field is empty.</font><br/>";
-            }        
-        } else {    
-            //updating the table
-            $result = pg_query("UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id");
-            echo "UPDATE users SET name='$name',first_name='$age',pseudo='$email' WHERE id_user=$id"
-            //redirectig to the display page. In our case, it is index.php
-            header("Location: userview.php");
-        }
-    }
-*/
-
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,8 +33,6 @@
     </head>
     <body>
     <a href="userview.php">Back</a><br/><br/>
-    <?php
-    ?>
     <form action="<?php $thisedit ?>" method="post">
 
         <ul>

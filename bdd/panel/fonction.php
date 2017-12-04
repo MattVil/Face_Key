@@ -36,11 +36,31 @@
         return $char;
     }
 
-    function add_to_table($table, $champ, $value){
-        $query = "INSERT INTO $table($champ) VALUES('$value')";
-        $result = pg_query($query);
+    
+
+    function insert_request_champ($champ, $prev_champ){
+        if($prev_champ){
+            $result = "$prev_champ,$champ";
+        }
+        else{
+            $result = "$champ";
+        }
+        return $result;
+    }
+    function insert_request_value($value, $prev_value){
+        if($prev_value){
+            $result = "$prev_value,'$value'";
+        }
+        else{
+            $result = "'$value'";
+        }
+        return $result;
     }
 
+    function add_to_table($table, $champ, $value){
+        $query = "INSERT INTO $table($champ) VALUES($value)";
+        $result = pg_query($query);
+    }
     function edit_table($table, $id ,$champ, $value){
         $query = "UPDATE  $table  SET $champ = '$value' WHERE id_user =$id";
         $result = pg_query($query);

@@ -26,7 +26,7 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="add.html">Add New Data</a><br/><br/>
+    <a href="add.php">Add New Data</a><br/><br/>
     <a href="test.php">Test</a><br/><br/>
  
     <?php echo display_table("users"); ?>
