@@ -1,9 +1,9 @@
 <?php
     //include 'local.postgre.conf.php';
-    include 'postgresql.conf.inc.php'; 
+    include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
-    
+
     $view = "Location: userview.php";
 
     $champ = "";
@@ -21,7 +21,7 @@
         }
     }
     if($exist){
-        //echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>"; 
+        //echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>";
         add_to_table("users",$champ,$value);
         header($view);
     }
@@ -32,10 +32,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <link rel="stylesheet" href="css/main.css">
         <link rel="shortcut icon" type="image/png" href="img/favicon.png">
-        
+
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
@@ -43,7 +43,7 @@
     <form action="/add.php" method="post">
 
         <ul>
-            <li> name : <input type="text" name="name" placeholder="<?php echo get_info("users", $id, "name") ?>"/></li>
+            <li> name : <input type="text" name="name"/></li>
             <li> first Name : <input type="text" name="first_name"/></li>
             <li> pseudo : <input type="text" name="pseudo" /></li>
             <li> gender : <input type="text" name="gender"/></li>
@@ -51,9 +51,9 @@
             <li> password : <input type="text" name="password" /></li>
             <li> creation date : <input type="text" name="creation_date"/></li>
             <li> language : <input type="text" name="language" /> </li>
-        </ul> 
+        </ul>
         <input type="submit" value="Submit">
     </form>
-    
+
     </body>
 </html>

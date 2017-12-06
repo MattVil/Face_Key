@@ -12,5 +12,4 @@
     if (!$link)
         {
         die('Error: Could not connect: ' . pg_last_error());
-    }
-?>trftgy
+      } 
