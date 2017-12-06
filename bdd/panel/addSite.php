@@ -39,18 +39,13 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/><br/>
-    <form action="./add.php" method="post">
+    <a href="siteview.php">Back</a><br/><br/>
+    <form action="./addSite.php" method="post">
 
         <ul>
-            <li> name : <input type="text" name="name"/></li>
-            <li> first Name : <input type="text" name="first_name"/></li>
-            <li> pseudo : <input type="text" name="pseudo" /></li>
-            <li> gender : <input type="text" name="gender"/></li>
-            <li> mail : <input type="text" name="mail" /></li>
-            <li> password : <input type="text" name="password" /></li>
-            <li> creation date : <input type="text" name="creation_date"/></li>
-            <li> language : <input type="text" name="language" /> </li>
+            <li> Domain : <input type="text" name="name"/></li>
+            <li> login_input : <input type="text" name="first_name"/></li>
+            <li> password_input : <input type="text" name="pseudo" /></li>
         </ul>
         <input type="submit" value="Submit">
     </form>

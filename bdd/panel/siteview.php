@@ -18,6 +18,8 @@
 
     <body>
 
+      <a href="./index.php">Back<a>
+
       <h3>RECHERCHE</h3>
 
       <form method="post" action="siteview.php">
@@ -43,7 +45,7 @@
 
       <h3>AJOUTER DONNEES</h3>
 
-      <a href="add.php">Add New Data</a><br/><br/>
+      <a href="addSite.php">Add New Data</a><br/><br/>
 
       <h3>LISTE TOUT LES SITES</h3>
 
