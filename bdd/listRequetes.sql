@@ -135,10 +135,12 @@ FROM Account
 ;
 
 --liste account + PaymentAccount
-SELECT account.id_account, account.login, account.password, account.id_user, account.id_tag, bank, rib, card_num, cryptogram
+SELECT account.id_account, account.login, domain, account.password, account.id_user, account.id_tag, bank, rib, card_num, cryptogram
 FROM Account
   LEFT JOIN PaymentAccount
     ON account.id_account = paymentaccount.id_account
+  INNER JOIN Sites
+    ON account.id_site = sites.id_site
 WHERE account.id_user = 2
 ;
 
