@@ -1,6 +1,6 @@
 <?php
-  	include 'local.postgre.conf.php';
-  	//include 'postgresql.conf.inc.php'; 
+  	//include 'local.postgre.conf.php';
+  	include 'postgresql.conf.inc.php'; 
   	include 'fonction.php';
 
 	include ('lib/jpgraph/src/jpgraph.php');
@@ -39,12 +39,56 @@
 		<li> creation date : <?php echo get_info("users", $id, "creation_date") ?></li>
 		<li> language : <?php echo get_info("users", $id, "language") ?></li>
 
-		<h2>CO 1</h2>
+		<h2>CO Proprietaire</h2>
 		<? 
 		function display_profil_table($id){
 
-        $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
-        echo $query; 
+	        $query = "SELECT domain, login, password FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
+	        // echo $query; 
+			$result = pg_query($query);
+	        $i = 0;
+	        $char = " ";
+	        $char .= "<table><thead><tr>";
+	        while ($i < pg_num_fields($result))
+	        {
+	            $fieldName = pg_field_name($result, $i);
+	            $char .= "<td>$fieldName</td>";
+	           	$i = $i + 1;
+	        }
+	        $char .= "</tr></thead><tbody>";
+	        $i = 0;
+	        while ($row = pg_fetch_row($result))
+	        {
+	            $id = current($row);
+	            $char .= "<tr>";
+	            $count = count($row);
+	            $j = 0;
+	            while ($j < $count)
+	            {
+	                $c_row = current($row);
+	                $char .= "<td>$c_row</td>";
+	                next($row);
+	                $j = $j + 1;
+	            }
+	            $char .= "</tr>";
+	            $i = $i + 1;
+	        }
+
+	        pg_free_result($result);
+	        $char .= "</tbody></table>";
+	        return $char;
+    	}
+
+
+		echo display_profil_table($id); ?>
+
+
+		<h2>CO paragée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
+		<? 
+		function display_profil_table2($id){
+
+        $query = "SELECT login FROM  SharedAccount INNER JOIN Account ON SharedAccount.id_account = Account.id_account WHERE id_receiver='$id'";      
+        // echo $query; 
 		$result = pg_query($query);
         $i = 0;
         $char = '<table><thead><tr>';
@@ -79,7 +123,8 @@
     }
 
 
-		echo display_profil_table($id); ?>
+		echo display_profil_table2($id); ?>
+
 
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>

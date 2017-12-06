@@ -1,7 +1,7 @@
 <?php
     function display_table($name_table){
-        $query = "SELECT * FROM  $name_table";
-        // $query = "select * from  $name_table ORDER BY id_user";
+        // $query = "SELECT * FROM  $name_table";
+        $query = "select * from  $name_table ORDER BY id_user";
         $result = pg_query($query);
         $i = 0;
         $char = '<table><thead><tr>';
