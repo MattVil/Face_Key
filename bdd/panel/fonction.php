@@ -199,7 +199,7 @@
     }
 
     function display_table_query($query, $flag=0){
-            echo $query;
+            //echo $query;
             $result = pg_query($query);
             $i = 0;
             $char = '<table><thead><tr>';

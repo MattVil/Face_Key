@@ -48,7 +48,7 @@
     WHERE account.id_user = $id
     ;", 1); ?>
 
-		<h2>CO paragée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
+		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
 		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account
       ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user
       WHERE sharedAccount.id_receiver = $id", 1); ?>
