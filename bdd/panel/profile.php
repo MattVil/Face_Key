@@ -10,6 +10,15 @@
     $id = $_GET['id'];
     $edit = "./edit.php?id=$id";
     $imgpath = "./users/$id/graphFreq.png";
+
+    $name = get_info("users", $id, "name", "id_user");
+    $first_name = get_info("users", $id, "first_name", "id_user");
+    $pseudo = get_info("users", $id, "pseudo", "id_user");
+    $gender = get_info("users", $id, "gender", "id_user");
+    $mail =  get_info("users", $id, "mail", "id_user");
+    $FKpass = get_info("users", $id, "password", "id_user");
+    $creation_date = get_info("users", $id, "creation_date", "id_user");
+    $language = get_info("users", $id, "language", "id_user");
 ?>
 
 <!DOCTYPE html>
@@ -30,14 +39,14 @@
 	<br/><br/>
 
 	<ul>
-		<li> name : <?php echo get_info("users", $id, "name") ?></li>
-		<li> first Name : <?php echo get_info("users", $id, "first_name") ?></li>
-		<li> pseudo : <?php echo get_info("users", $id, "pseudo") ?></li>
-		<li> gender : <?php echo get_info("users", $id, "gender") ?></li>
-		<li> mail : <?php echo get_info("users", $id, "mail") ?></li>
-		<li> Face Key password : <?php echo get_info("users", $id, "password") ?></li>
-		<li> creation date : <?php echo get_info("users", $id, "creation_date") ?></li>
-		<li> language : <?php echo get_info("users", $id, "language") ?></li>
+		<li> name : <?php echo $name ?></li>
+		<li> first Name : <?php echo $first_name ?></li>
+		<li> pseudo : <?php echo $pseudo ?></li>
+		<li> gender : <?php echo $gender ?></li>
+		<li> mail : <?php echo $mail ?></li>
+		<li> Face Key password : <?php echo $FKpass ?></li>
+		<li> creation date : <?php echo $creation_date ?></li>
+		<li> language : <?php echo $language ?></li>
   </ul>
 
 
@@ -56,7 +65,7 @@
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 
-  
+    
 
 
 

@@ -62,8 +62,8 @@
         $query = "INSERT INTO $table($champ) VALUES($value)";
         $result = pg_query($query);
     }
-    function edit_table($table, $id ,$champ, $value){
-        $query = "UPDATE  $table  SET $champ = '$value' WHERE id_user =$id";
+    function edit_table($table, $id ,$champ, $value,$column){
+        $query = "UPDATE  $table  SET $champ = '$value' WHERE $column =$id";
         $result = pg_query($query);
     }
 
@@ -72,14 +72,7 @@
         $result = pg_query($query);
     }
 
-    function get_info($table, $id, $champ){
-        $query = "SELECT $champ FROM $table WHERE id_user=$id";
-        $result = pg_query($query);
-        $value = current(pg_fetch_row($result));
-        return $value;
-    }
-
-    function real_get_info($table, $id, $champ, $column){
+    function get_info($table, $id, $champ, $column){
         $query = "SELECT $champ FROM $table WHERE $column = $id";
         $result = pg_query($query);
         $value = current(pg_fetch_row($result));
