@@ -9,7 +9,6 @@
 
 
     $link = pg_connect($connectString);
-    if (!$link)
-        {
+    if (!$link){
         die('Error: Could not connect: ' . pg_last_error());
-      } 
+    } 

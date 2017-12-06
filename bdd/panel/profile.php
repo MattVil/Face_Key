@@ -8,7 +8,7 @@
 
 
     $id = $_GET['id'];
-    $edit = "/edit.php?id=$id";
+    $edit = "./edit.php?id=$id";
     $imgpath = "./users/$id/graphFreq.png";
 ?>
 
