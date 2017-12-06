@@ -22,10 +22,10 @@
 
         $name = pg_query("SELECT domain FROM Sites WHERE id_site = '$id'");
         $value = current(pg_fetch_row($name));
-        echo "<h3>Details du site $value</h3>";
+        echo "<h2>Details du site $value</h2>";
       ?>
 
-      <h4>Infos generales</h4>
+      <h3>Infos generales</h3>
 
       <?php
 
@@ -54,7 +54,21 @@
         }
       ?>
 
+      <h3>Fréquence d'utilisation</h3>
 
+      <?php
+        $query = "SELECT nb_user_today, nb_user_week, nb_user_month FROM Sites WHERE id_site = '$id';";
+        //echo $query;
+        echo display_table_query($query);
+       ?>
+
+       <h3>Geolocalisation utilisateur</h3>
+
+       <?php
+         $query = "SELECT last_loc FROM DataAccount INNER JOIN Account ON DataAccount.id_account = Account.id_account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE sites.id_site = '$id';";
+         //echo $query;
+         echo display_table_query($query);
+        ?>
 
     </body>
 </html>
