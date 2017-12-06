@@ -102,16 +102,47 @@ WHERE id_site = '3'       --changer exemple par variable
 ;
 
 --nb utilisateur par site
-SELECT COUNT(id_site)
-FROM account
+SELECT COUNT(id_account)
+FROM Account
+  INNER JOIN Sites
+    ON Account.id_site = Sites.id_site
+WHERE domain = 'google.com'       --changer exemple par variable
+;
+
+--somme du temps d'utilisation + nb utilisateur d'un site pour calcul moyenne
+SELECT SUM(average_conn_time) AS summe, COUNT(average_conn_time) AS count
+FROM Account
+  INNER JOIN Sites
+    ON Account.id_site = Sites.id_site
+  INNER JOIN DataAccount
+    ON Account.id_account = DataAccount.id_account
+WHERE domain = 'facebook.com'
+;
+
+--liste des positions GPS des utilisateur d'un site
+SELECT last_loc
+FROM DataAccount
+  INNER JOIN Account
+    ON DataAccount.id_account = Account.id_account
+  INNER JOIN Sites
+    ON Account.id_site = Sites.id_site
+WHERE domain = 'twitter.com'
+;
+
+--valeur max de la clé id_account dans le tableau account
+SELECT MAX(id_account) AS maximum
+FROM Account
+;
+
+--liste account + PaymentAccount
+SELECT account.id_account, account.login, account.password, account.id_user, account.id_tag, bank, rib, card_num, cryptogram
+FROM Account
+  LEFT JOIN PaymentAccount
+    ON account.id_account = paymentaccount.id_account
+WHERE account.id_user = 2
 ;
 
 
-
---calcul la key_account max pour paymentaccount
-
---(idee ajout stat site)
---tmp conn moyen
 
 --(idee panel)
 --ajouter des stats sur l'apply Face sur page principale genre graph de l'evolution du nombre d'utilisateur
