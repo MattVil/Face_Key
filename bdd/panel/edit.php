@@ -1,6 +1,6 @@
 <?php
-    include 'local.postgre.conf.php';
-    //include 'postgresql.conf.inc.php'; 
+    //include 'local.postgre.conf.php';
+    include 'postgresql.conf.inc.php'; 
     include 'fonction.php';
 
     $id = $_GET['id']; 
@@ -8,7 +8,8 @@
     $view = "Location: userview.php";
     $thisedit = "/edit.php?id=$id";
     $profile = "/profile.php?id=$id";
-
+    $exist = false;
+    
     $_POST = array_filter($_POST);
     foreach($_POST as $k => $v){
         if(isset($_POST[$k])){
