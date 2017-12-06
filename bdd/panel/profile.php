@@ -1,19 +1,19 @@
 <?php
     //include 'local.postgre.conf.php';
-    include 'postgresql.conf.inc.php'; 
+    include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     include ('lib/jpgraph/src/jpgraph.php');
     include ('lib/jpgraph/src/jpgraph_bar.php');
 
 
-    $id = $_GET['id']; 
+    $id = $_GET['id'];
     $edit = "/edit.php?id=$id";
     $imgpath = "./users/$id/graphFreq.png";
 
     function display_profil_table($id){
-            $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
-            echo $query; 
+            $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";
+            echo $query;
             $result = pg_query($query);
             $i = 0;
             $char = '<table><thead><tr>';
@@ -49,9 +49,17 @@
 
         function display_profil_table2($id){
 
-		        $query = "SELECT login FROM  SharedAccount INNER JOIN Account ON SharedAccount.id_account = Account.id_account WHERE id_receiver='$id'";      
-		        // echo $query; 
-				$result = pg_query($query);
+		        $query = "SELECT id_sharedAccount, domain, name, first_name
+            FROM SharedAccount
+              INNER JOIN Account
+                ON sharedAccount.id_account = account.id_account
+              INNER JOIN Sites
+                ON account.id_site = sites.id_site
+              INNER JOIN Users
+                ON account.id_user = users.id_user
+            WHERE sharedAccount.id_receiver = $id";
+		        // echo $query;
+            $result = pg_query($query);
 		        $i = 0;
 		        $char = '<table><thead><tr>';
 		        while ($i < pg_num_fields($result))
@@ -90,10 +98,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <link rel="stylesheet" href="css/main.css">
         <link rel="shortcut icon" type="image/png" href="img/favicon.png">
-        
+
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
@@ -114,14 +122,14 @@
 
 
 		<h2>CO Proprietaire</h2>
-		<?php echo display_profil_table($id); ?> 
-		<h2>CO paragée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
+		<?php echo display_profil_table($id); ?>
 
-		<? echo display_profil_table($id); ?>
+		<h2>CO paragée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
+		<?php echo display_profil_table2($id); ?>
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>
 
-    
+
     </body>
 </html>
