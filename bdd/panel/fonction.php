@@ -79,6 +79,13 @@
         return $value;
     }
 
+    function real_get_info($table, $id, $champ, $column){
+        $query = "SELECT $champ FROM $table WHERE $column = $id";
+        $result = pg_query($query);
+        $value = current(pg_fetch_row($result));
+        return $value;
+    }
+
     function disp_column_option($name_table, $column){
         $char = '<select name="exo2">';
         $query = 'select '  . $column . ' from ' . $name_table;
@@ -135,9 +142,6 @@
         pg_free_result($result);
         return $char;
     }
-
-
-
 
     function createGraph($user){
 
@@ -200,6 +204,7 @@
 
     function display_table_query($query, $flag=0){
             //echo $query;
+            $id = 0;
             $result = pg_query($query);
             $i = 0;
             $char = '<table><thead><tr>';
@@ -213,21 +218,27 @@
             $i = 0;
             while ($row = pg_fetch_row($result))
             {
-                $id = current($row);
-                $char .= '<tr>';
-                $count = count($row);
-                $j = 0;
-                while ($j < $count)
-                {
-                    $c_row = current($row);
-                    $char .= '<td>' . $c_row . '</td>';
-                    next($row);
-                    $j = $j + 1;
-                }
-                if ($flag == 1) //Account
-                  $char.= '<td><a href="">Edit</a></td>';
-                $char .= '</tr>';
-                $i = $i + 1;
+              $id = current($row);
+              $char .= '<tr>';
+              $count = count($row);
+              $j = 0;
+              while ($j < $count)
+              {
+                  $c_row = current($row);
+                  if ($flag == 1 || $flag == 2){
+                    if ($j == 0)
+                      $id = $c_row;
+                  }
+                  $char .= '<td>' . $c_row . '</td>';
+                  next($row);
+                  $j = $j + 1;
+              }
+              if ($flag == 1) //Account
+                $char.= '<td><a href="account.php?id='.$id.'">Edit</a></td>';
+              if ($flag == 2) //PaymentAccount
+                $char.= '<td><a href="paccount.php?id='.$id.'">Edit</a></td>';
+              $char .= '</tr>';
+              $i = $i + 1;
             }
 
             pg_free_result($result);
