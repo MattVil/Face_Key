@@ -10,6 +10,42 @@
 	$id = $_GET['id']; 
 	$edit = "/edit.php?id=$id";
 	$imgpath = "./users/$id/graphFreq.png";
+
+    function display_profil_table($id){
+            $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
+            echo $query; 
+            $result = pg_query($query);
+            $i = 0;
+            $char = '<table><thead><tr>';
+            while ($i < pg_num_fields($result))
+            {
+                $fieldName = pg_field_name($result, $i);
+                 $char .= '<td>' . $fieldName . '</td>';
+                $i = $i + 1;
+            }
+            $char .= '</tr></thead><tbody>';
+            $i = 0;
+            while ($row = pg_fetch_row($result))
+            {
+                $id = current($row);
+                $char .= '<tr>';
+                $count = count($row);
+                $j = 0;
+                while ($j < $count)
+                {
+                    $c_row = current($row);
+                    $char .= '<td>' . $c_row . '</td>';
+                    next($row);
+                    $j = $j + 1;
+                }
+                $char .= '</tr>';
+                $i = $i + 1;
+            }
+
+            pg_free_result($result);
+            $char .= '</tbody></table>';
+            return $char;
+        }
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +75,7 @@
 		<li> creation date : <?php echo get_info("users", $id, "creation_date") ?></li>
 		<li> language : <?php echo get_info("users", $id, "language") ?></li>
 
+<<<<<<< HEAD
 		<h2>CO Proprietaire</h2>
 		<? 
 		function display_profil_table($id){
@@ -125,6 +162,10 @@
 
 		echo display_profil_table2($id); ?>
 
+=======
+		<h2>CO 1</h2>
+		<? echo display_profil_table($id); ?>
+>>>>>>> c601faa11757287cbd271747c9825757af5aa955
 
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>

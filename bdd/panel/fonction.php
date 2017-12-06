@@ -154,7 +154,7 @@
             }
             fclose($handle);
         }
-        fclose($handle);
+        //fclose($handle);
 
         $width = 600;
         $height = 300;

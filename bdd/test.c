@@ -62,7 +62,7 @@ int main(int argc, char const *argv[]) {
     /*
      * Fetch rows from pg_database, the system catalog of databases
      */
-    res = PQexec(conn, "DECLARE myportal CURSOR FOR select * from Users");
+    res = PQexec(conn, "DECLARE myportal CURSOR FOR SELECT * FROM Account INNER JOIN Tags ON account.id_tag = tags.id_tag INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN DataAccount ON account.id_account = DataAccount.id_account");
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
         fprintf(stderr, "DECLARE CURSOR failed: %s", PQerrorMessage(conn));
