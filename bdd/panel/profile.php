@@ -1,15 +1,15 @@
 <?php
-  	//include 'local.postgre.conf.php';
-  	include 'postgresql.conf.inc.php'; 
-  	include 'fonction.php';
+    //include 'local.postgre.conf.php';
+    include 'postgresql.conf.inc.php'; 
+    include 'fonction.php';
 
-	include ('lib/jpgraph/src/jpgraph.php');
-	include ('lib/jpgraph/src/jpgraph_bar.php');
+    include ('lib/jpgraph/src/jpgraph.php');
+    include ('lib/jpgraph/src/jpgraph_bar.php');
 
 
-	$id = $_GET['id']; 
-	$edit = "/edit.php?id=$id";
-	$imgpath = "./users/$id/graphFreq.png";
+    $id = $_GET['id']; 
+    $edit = "/edit.php?id=$id";
+    $imgpath = "./users/$id/graphFreq.png";
 
     function display_profil_table($id){
             $query = "SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'";      
@@ -83,7 +83,6 @@
 		        $char .= '</tbody></table>';
 		        return $char;
 		    }
-
 ?>
 
 <!DOCTYPE html>
@@ -122,6 +121,7 @@
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>
+
     
     </body>
 </html>
