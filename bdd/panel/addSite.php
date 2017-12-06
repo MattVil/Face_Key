@@ -40,15 +40,22 @@
     </head>
     <body>
     <a href="siteview.php">Back</a><br/><br/>
-    <form action="./addSite.php" method="post">
+    <form action="./siteview.php" method="post">
 
         <ul>
-            <li> Domain : <input type="text" name="name"/></li>
-            <li> login_input : <input type="text" name="first_name"/></li>
-            <li> password_input : <input type="text" name="pseudo" /></li>
+            <li> Domain : <input type="text" name="domain"/></li>
+            <li> login_input : <input type="text" name="login"/></li>
+            <li> password_input : <input type="text" name="password" /></li>
         </ul>
         <input type="submit" value="Submit">
     </form>
+
+    <?php
+      if (isset($_POST['domain']) || isset($_POST['login']) || isset($_POST['password'])){
+        $query = "INSERT INTO Sites (domain, login_input, password_input) VALUES ('".$_POST['domain']."', '".$_POST['login']."', '".$_POST['password']."');";
+        pg_query($query);
+      }
+     ?>
 
     </body>
 </html>
