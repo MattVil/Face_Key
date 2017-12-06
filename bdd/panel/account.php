@@ -1,6 +1,6 @@
 <?php
-    //include 'local.postgre.conf.php';
-    include 'postgresql.conf.inc.php';
+    include 'local.postgre.conf.php';
+    // include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     $id = $_GET['id'];
@@ -42,10 +42,10 @@
     <form action="<?php $thisedit ?>" method="post">
 
         <ul>
-            <li> site : <input type="text" name="site" placeholder="<?php echo real_get_info("account", $id, "id_site", "id_account") ;?>"/></li>
-            <li> login : <input type="text" name="login" placeholder="<?php echo real_get_info("account", $id, "login", "id_account") ;?>"/></li>
-            <li> password : <input type="text" name="password" placeholder="<?php echo real_get_info("account", $id, "password", "id_account") ;?>"/></li>
-            <li> tag : <input type="text" name="tag" placeholder="<?php echo real_get_info("account", $id, "id_tag", "id_account") ;?>"/></li>
+            <li> site : <input type="text" name="site" placeholder="<?php echo get_info("account", $id, "id_site", "id_account") ;?>"/></li>
+            <li> login : <input type="text" name="login" placeholder="<?php echo get_info("account", $id, "login", "id_account") ;?>"/></li>
+            <li> password : <input type="text" name="password" placeholder="<?php echo get_info("account", $id, "password", "id_account") ;?>"/></li>
+            <li> tag : <input type="text" name="tag" placeholder="<?php echo get_info("account", $id, "id_tag", "id_account") ;?>"/></li>
         </ul>
         <input type="submit" value="Submit">
     </form>
