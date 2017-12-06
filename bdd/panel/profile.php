@@ -76,9 +76,8 @@
 		<li> language : <?php echo get_info("users", $id, "language") ?></li>
 
 		<h2>CO 1</h2>
-		<? echo display_profil_table($id); ?>
-
-		<?php createGraph($id);?>
+		<?  echo display_profil_table($id);
+            createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>
     
