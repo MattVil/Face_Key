@@ -41,17 +41,17 @@
 
 
 		<h2>CO Proprietaire</h2>
-		<?php echo display_table_query("SELECT account.id_account, account.login, account.password, account.id_user, account.id_tag, bank, rib, card_num, cryptogram
-    FROM Account
-      LEFT JOIN PaymentAccount
-        ON account.id_account = paymentaccount.id_account
-    WHERE account.id_user = $id
-    ;", 1); ?>
+		<?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
+      LEFT JOIN PaymentAccount ON account.id_account = paymentaccount.id_account
+    WHERE account.id_user = $id AND paymentaccount.id_account IS NULL;", 1); ?>
+    <?php echo display_table_query("SELECT id_account, domain, login, password, bank, rib, card_num, cryptogram FROM PaymentAccount INNER JOIN Sites ON paymentaccount.id_site = sites.id_site
+    WHERE paymentaccount.id_user = $id;", 2); ?>
 
 		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
 		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account
       ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user
-      WHERE sharedAccount.id_receiver = $id", 1); ?>
+      WHERE sharedAccount.id_receiver = $id"); ?>
+    <h2>Graph</h2>
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>
