@@ -1,6 +1,6 @@
 <?php
-    //include 'local.postgre.conf.php';
-    include 'postgresql.conf.inc.php';
+    include 'local.postgre.conf.php';
+    // include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     include ('lib/jpgraph/src/jpgraph.php');
@@ -38,6 +38,7 @@
 		<li> Face Key password : <?php echo get_info("users", $id, "password") ?></li>
 		<li> creation date : <?php echo get_info("users", $id, "creation_date") ?></li>
 		<li> language : <?php echo get_info("users", $id, "language") ?></li>
+  </ul>
 
 
 		<h2>CO Proprietaire</h2>
@@ -54,7 +55,9 @@
     <h2>Graph</h2>
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
-	</ul>
+
+  
+
 
 
     </body>

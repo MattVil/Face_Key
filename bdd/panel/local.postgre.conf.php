@@ -1,9 +1,9 @@
 <?php
-    $host = '10.40.128.23';
+    $host = 'localhost';
     $port = '5432';
-    $database = 'db2017l3i_mvilain';
-    $user = 'y2017l3i_mvilain';
-    $password = 'A123456#';
+    $database = 'lharidonlouis';
+    $user = 'lharidonlouis';
+    $password = '';
     $connectString = 'host=' . $host . ' port=' . $port . ' dbname=' . $database .
         ' user=' . $user . ' password=' . $password;
 

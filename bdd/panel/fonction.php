@@ -246,4 +246,33 @@
             return $char;
         }
 
+        function loc_gmap_format($domain){
+          $query = "SELECT last_loc
+          FROM DataAccount
+          INNER JOIN Account
+            ON DataAccount.id_account = Account.id_account
+          INNER JOIN Sites
+            ON Account.id_site = Sites.id_site
+          WHERE domain = '$domain'";
+
+          $result = pg_query($query);
+          $char = " ";
+
+          while ($row = pg_fetch_row($result))
+          {
+              $char .="&markers=size:mid%7Ccolor:red%7c";
+              $loc = current($row);
+              $count = count($row);
+              $j = 0;
+              $char .= "$loc";
+              next($row);
+              $char .= "";
+          }
+          pg_free_result($result);
+          $arr = array("°" => ".", " " => "");
+          $char = strtr($char,$arr);
+          return $char;
+
+        }
+
 ?>

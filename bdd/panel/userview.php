@@ -1,15 +1,7 @@
-<?php/*
-    if (isset($_GET["dbname"])){
-    }else{
-    echo "<script>javascript:history.go(-1)</script>";
-    }
-    include 'local.postgre.conf.php';
-    //include 'postgresql.conf.inc.php';
-    include 'fonction.php';*/
-?>
+
 <?php
-  //include 'local.postgre.conf.php';
-  include 'postgresql.conf.inc.php';
+  include 'local.postgre.conf.php';
+  // include 'postgresql.conf.inc.php';
   include 'fonction.php';
 ?>
 
