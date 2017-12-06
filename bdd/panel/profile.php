@@ -41,12 +41,17 @@
 
 
 		<h2>CO Proprietaire</h2>
-		<?php echo display_table_query("SELECT domain, login FROM  Account INNER JOIN Sites ON Account.id_site = Sites.id_site WHERE id_user='$id'"); ?>
+		<?php echo display_table_query("SELECT account.id_account, account.login, account.password, account.id_user, account.id_tag, bank, rib, card_num, cryptogram
+    FROM Account
+      LEFT JOIN PaymentAccount
+        ON account.id_account = paymentaccount.id_account
+    WHERE account.id_user = $id
+    ;", 1); ?>
 
 		<h2>CO paragée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
 		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account
       ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user
-      WHERE sharedAccount.id_receiver = $id"); ?>
+      WHERE sharedAccount.id_receiver = $id", 1); ?>
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
 	</ul>

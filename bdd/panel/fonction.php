@@ -146,50 +146,59 @@
         $nb_conn = array();
 
         //lecture CSV
-        if (($handle = fopen($path, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
-                array_push($nb_conn, $data[1]);
-                array_push($day, $data[0]);
-                // echo "nb con : " . $data[0] . " | day : " . $data[1] . "<br/>";
-            }
-            fclose($handle);
+        if (file_exists($path)){
+          if (($handle = fopen($path, "r")) !== FALSE) {
+              while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
+                  array_push($nb_conn, $data[1]);
+                  array_push($day, $data[0]);
+                  // echo "nb con : " . $data[0] . " | day : " . $data[1] . "<br/>";
+              }
+              fclose($handle);
+
+              $width = 600;
+              $height = 300;
+
+              $graph = new Graph($width,$height,'auto');
+              $graph->SetScale("intlin");
+
+              $graph->SetShadow();
+              $graph->SetMargin(40,30,20,40);
+
+              $b1plot = new BarPlot($nb_conn);
+              $b1plot->SetFillColor('orange');
+
+              $graph->Add($b1plot);
+
+
+
+              $b1plot->SetColor("white");
+
+              $graph->title->Set('Number of connection per day until the creations');
+              $graph->xaxis->title->Set('Day number');
+              $graph->yaxis->title->Set('Number of connections');
+
+              $graph->title->SetFont(FF_FONT1,FS_BOLD);
+              $graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
+              $graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);
+
+
+              $gdImgHandler = $graph->Stroke(_IMG_HANDLER);
+              $fileName = "./users/$user/graphFreq.png";
+
+              $graph->img->Stream($fileName);
+
+          }
+          else{
+            echo "<p><strong>There is obviously a problem here</strong></p>";
+          }
+        }
+        else{
+          echo "<p><strong>There is no value for this user</strong></p>";
         }
         //fclose($handle);
-
-        $width = 600;
-        $height = 300;
-
-        $graph = new Graph($width,$height,'auto');
-        $graph->SetScale("intlin");
-
-        $graph->SetShadow();
-        $graph->SetMargin(40,30,20,40);
-
-        $b1plot = new BarPlot($nb_conn);
-        $b1plot->SetFillColor('orange');
-
-        $graph->Add($b1plot);
-
-
-
-        $b1plot->SetColor("white");
-
-        $graph->title->Set('Number of connection per day until the creations');
-        $graph->xaxis->title->Set('Day number');
-        $graph->yaxis->title->Set('Number of connections');
-
-        $graph->title->SetFont(FF_FONT1,FS_BOLD);
-        $graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
-        $graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);
-
-
-        $gdImgHandler = $graph->Stroke(_IMG_HANDLER);
-        $fileName = "./users/$user/graphFreq.png";
-
-        $graph->img->Stream($fileName);
     }
 
-    function display_table_query($query){
+    function display_table_query($query, $flag=0){
             echo $query;
             $result = pg_query($query);
             $i = 0;
@@ -197,10 +206,10 @@
             while ($i < pg_num_fields($result))
             {
                 $fieldName = pg_field_name($result, $i);
-                 $char .= '<td>' . $fieldName . '</td>';
+                 $char .= '<th>' . $fieldName . '</th>';
                 $i = $i + 1;
             }
-            $char .= '</tr></thead><tbody>';
+            $char .= '<th>Option</th></tr></thead><tbody>';
             $i = 0;
             while ($row = pg_fetch_row($result))
             {
@@ -215,6 +224,8 @@
                     next($row);
                     $j = $j + 1;
                 }
+                if ($flag == 1) //Account
+                  $char.= '<td><a href="">Edit</a></td>';
                 $char .= '</tr>';
                 $i = $i + 1;
             }
