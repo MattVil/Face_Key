@@ -27,7 +27,7 @@
                 next($row);
                 $j = $j + 1;
             }
-            $char.= "<td><a href=\"profile.php?id=$id\">Check</a> | <a href=\"edit.php?id=$id\">Edit</a> | <a href=\"delete.php?id=" . $id . "\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";        
+            $char.= "<td><a href=\"profile.php?id=$id\">Check</a> | <a href=\"edit.php?id=$id\">Edit</a> | <a href=\"delete.php?id=" . $id . "\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";
             $char .= '</tr>';
             $i = $i + 1;
         }
@@ -37,7 +37,7 @@
         return $char;
     }
 
-    
+
 
     function insert_request_champ($champ, $prev_champ){
         if($prev_champ){
@@ -127,7 +127,7 @@
         $i = 0;
         $fieldName = pg_field_name($result, $i);
         while ($row = pg_fetch_row($result))
-        {   
+        {
             $char.= "<h2>" . current($row) . "</h2>";
             $char.= display_table(current($row));
             $i = $i + 1;
@@ -164,7 +164,7 @@
 
         $graph->SetShadow();
         $graph->SetMargin(40,30,20,40);
-        
+
         $b1plot = new BarPlot($nb_conn);
         $b1plot->SetFillColor('orange');
 
@@ -181,12 +181,47 @@
         $graph->title->SetFont(FF_FONT1,FS_BOLD);
         $graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
         $graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);
-        
+
 
         $gdImgHandler = $graph->Stroke(_IMG_HANDLER);
         $fileName = "./users/$user/graphFreq.png";
 
         $graph->img->Stream($fileName);
     }
+
+    function display_table_query($query){
+            echo $query;
+            $result = pg_query($query);
+            $i = 0;
+            $char = '<table><thead><tr>';
+            while ($i < pg_num_fields($result))
+            {
+                $fieldName = pg_field_name($result, $i);
+                 $char .= '<td>' . $fieldName . '</td>';
+                $i = $i + 1;
+            }
+            $char .= '</tr></thead><tbody>';
+            $i = 0;
+            while ($row = pg_fetch_row($result))
+            {
+                $id = current($row);
+                $char .= '<tr>';
+                $count = count($row);
+                $j = 0;
+                while ($j < $count)
+                {
+                    $c_row = current($row);
+                    $char .= '<td>' . $c_row . '</td>';
+                    next($row);
+                    $j = $j + 1;
+                }
+                $char .= '</tr>';
+                $i = $i + 1;
+            }
+
+            pg_free_result($result);
+            $char .= '</tbody></table>';
+            return $char;
+        }
 
 ?>
