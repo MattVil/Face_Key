@@ -194,7 +194,9 @@
                 $char.= '<td><a href="deleteaccount.php?id='.$id.'">Delete</a></td>';
               }
               if ($flag == 2){ //PaymentAccount
-                $char.= '<td><a href="paccount.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a href="paccount.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a href="editpaccount.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a href="dpaccount.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==3){ //profile
                 $char.= '<td><a href="profile.php?id='.$id.'">Check</a></td>';

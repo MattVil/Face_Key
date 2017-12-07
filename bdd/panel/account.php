@@ -1,13 +1,14 @@
 <?php
-    include 'local.postgre.conf.php';
-    // include 'postgresql.conf.inc.php';
+    // include 'local.postgre.conf.php';
+    include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     $id = $_GET['id'];
 
 
     $view = "Location: userview.php";
-    $thisedit = "/accountedit.php?id=$id";
+    $thisedit = "./accountedit.php?id=$id";
+    $thisdelete = "./deleteacount.php?id=$id";
     $exist = false;
 
     $_POST = array_filter($_POST);
@@ -29,7 +30,7 @@
     $tag = get_info("Tags", $id_tag, "name_tag", "id_tag");
     $id_user = get_info("account", $id, "id_user", "id_account");
     
-    $profile = "/profile.php?id=$id_user";
+    $profile = "./profile.php?id=$id_user";
 
 
 ?>

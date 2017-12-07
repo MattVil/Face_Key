@@ -1,6 +1,6 @@
 <?php
-    include 'local.postgre.conf.php';
-    // include 'postgresql.conf.inc.php';
+    // include 'local.postgre.conf.php';
+    include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     $id = $_GET['id'];
@@ -8,6 +8,8 @@
     $thisaccount = "account.php?id=$id";
     $view = "Location: $thisaccount";
     $thisedit = "./accountedit.php?id=$id";
+    $thisdelete = "./deleteacount.php?id=$id";
+    $check = "./account.php?id=$id";
     $exist = false;
 
     $_POST = array_filter($_POST);
@@ -63,7 +65,7 @@
     <body>
     <a href="userview.php">Back</a><br />
     <a href="<?php echo $profile?> ">Back to User Profile</a><br />
-    <a href="<?php echo $thisedit; ?>">Edit</a><br/>
+    <a href="<?php echo $check; ?>">Check</a><br/>
     <a href="<?php echo $thisdelete; ?>">Delete</a>
     <br/>
     <br/>

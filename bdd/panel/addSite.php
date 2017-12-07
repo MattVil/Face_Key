@@ -4,7 +4,7 @@
     include 'fonction.php';
 
 
-    $view = "Location: userview.php";
+    $view = "Location: siteview.php";
 
     $champ = "";
     $value = "";
@@ -15,14 +15,12 @@
             $exist = true;
             $champ = insert_request_champ($k,$champ);
             $value = insert_request_value($_POST[$k], $value);
-            /*echo "ch : " . $champ . "<br>";
-            echo "val : " . $value . "<br>";
-            echo "<br>";*/
+
         }
     }
     if($exist){
-        //echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>";
-        add_to_table("users",$champ,$value);
+        // echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>";
+        add_to_table("Sites",$champ,$value);
         header($view);
     }
 ?>
@@ -40,22 +38,15 @@
     </head>
     <body>
     <a href="siteview.php">Back</a><br/><br/>
-    <form action="./siteview.php" method="post">
+    <form action="./addSite.php" method="post">
 
         <ul>
             <li> Domain : <input type="text" name="domain"/></li>
-            <li> login_input : <input type="text" name="login"/></li>
-            <li> password_input : <input type="text" name="password" /></li>
+            <li> login_input : <input type="text" name="login_input"/></li>
+            <li> password_input : <input type="text" name="password_input" /></li>
         </ul>
         <input type="submit" value="Submit">
     </form>
-
-    <?php
-      if (isset($_POST['domain']) || isset($_POST['login']) || isset($_POST['password'])){
-        $query = "INSERT INTO Sites (domain, login_input, password_input) VALUES ('".$_POST['domain']."', '".$_POST['login']."', '".$_POST['password']."');";
-        pg_query($query);
-      }
-     ?>
 
     </body>
 </html>

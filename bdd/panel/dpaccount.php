@@ -5,8 +5,7 @@
 
 
 $id = $_GET['id'];
-$result = pg_query( "DELETE FROM dataaccount WHERE id_account=$id");
-$result = pg_query( "DELETE FROM account WHERE id_account=$id");
+$result = pg_query( "DELETE FROM PaymentAccount WHERE id_account=$id");
 header("Location:userview.php");
 
 ?>
