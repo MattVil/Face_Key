@@ -40,7 +40,7 @@
         </ul>
 
 
-   
+
 
       <h2>Fréquence d'utilisation</h2>
 
@@ -49,6 +49,13 @@
         //echo $query;
         echo display_table_query($query);
        ?>
+
+       <h2>Type d'utilisation</h2>
+
+       <?php
+        $query = "SELECT DISTINCT name_tag FROM Account INNER JOIN Tags ON account.id_tag = tags.id_tag INNER JOIN sites ON account.id_site = Sites.id_site WHERE account.id_site = '$id';";
+        echo display_table_query($query);
+        ?>
 
        <h2>Geolocalisation utilisateur</h2>
 

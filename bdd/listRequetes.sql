@@ -48,7 +48,7 @@ FROM SharedAccount
     ON account.id_site = sites.id_site
   INNER JOIN Users
     ON account.id_user = users.id_user
-WHERE sharedAccount.id_receiver = 3     --changer exemple par variable
+WHERE sharedAccount.id_receiver = 2     --changer exemple par variable
 ;
 
 --infos generales d'un sharedAccount selectionné
@@ -109,7 +109,7 @@ FROM Account
 WHERE domain = 'google.com'       --changer exemple par variable
 ;
 
---somme du temps d'utilisation + nb utilisateur d'un site pour calcul moyenne
+--somme du temps d'utilisation + nb utilisateurs d'un site pour calcul moyenne
 SELECT SUM(average_conn_time) AS summe, COUNT(average_conn_time) AS count
 FROM Account
   INNER JOIN Sites
@@ -119,7 +119,7 @@ FROM Account
 WHERE domain = 'facebook.com'
 ;
 
---liste des positions GPS des utilisateur d'un site
+--liste des positions GPS des utilisateurs d'un site
 SELECT last_loc
 FROM DataAccount
   INNER JOIN Account
@@ -141,7 +141,7 @@ FROM Account
     ON account.id_account = paymentaccount.id_account
   INNER JOIN Sites
     ON account.id_site = sites.id_site
-WHERE account.id_user = 2
+WHERE account.id_user = 3
 ;
 
 --liste des tags d'un site
@@ -162,10 +162,22 @@ FROM SharedAccount
 WHERE SharedAccount.id_account = 9
 ;
 
+--dernier compte utilisé par un user
+SELECT MAX(last_conn)
+FROM(
+  SELECT Account.id_account, domain, last_conn
+  FROM Account
+    INNER JOIN sites
+      ON account.id_site = sites.id_site
+    INNER JOIN DataAccount
+      ON account.id_account = DataAccount.id_account
+  WHERE account.id_user = 2
+)AS account_user;
+
 
 
 --(idee panel)
---ajouter des stats sur l'apply Face sur page principale genre graph de l'evolution du nombre d'utilisateur
+--ajouter des stats sur l'apply FaceKey sur page principale genre graph de l'evolution du nombre d'utilisateurs
 
 
 
