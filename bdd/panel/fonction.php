@@ -1,44 +1,4 @@
 <?php
-    function display_table($name_table){
-        // $query = "SELECT * FROM  $name_table";
-        $query = "select * from  $name_table ORDER BY id_user";
-        $result = pg_query($query);
-        $i = 0;
-        $char = '<table><thead><tr>';
-        while ($i < pg_num_fields($result))
-        {
-            $fieldName = pg_field_name($result, $i);
-             $char .= '<td>' . $fieldName . '</td>';
-            $i = $i + 1;
-        }
-        $char .=  "<td>Update</td>";
-        $char .= '</tr></thead><tbody>';
-        $i = 0;
-        while ($row = pg_fetch_row($result))
-        {
-            $id = current($row);
-            $char .= '<tr>';
-            $count = count($row);
-            $j = 0;
-            while ($j < $count)
-            {
-                $c_row = current($row);
-                $char .= '<td>' . $c_row . '</td>';
-                next($row);
-                $j = $j + 1;
-            }
-            $char.= "<td><a href=\"profile.php?id=$id\">Check</a> | <a href=\"edit.php?id=$id\">Edit</a> | <a href=\"delete.php?id=" . $id . "\" onClick=\"return confirm('Are you sure you want to delete?')\">Delete</a></td>";
-            $char .= '</tr>';
-            $i = $i + 1;
-        }
-
-        pg_free_result($result);
-        $char .= '</tbody></table>';
-        return $char;
-    }
-
-
-
     function insert_request_champ($champ, $prev_champ){
         if($prev_champ){
             $result = "$prev_champ,$champ";
