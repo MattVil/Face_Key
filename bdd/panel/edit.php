@@ -6,8 +6,8 @@
     $id = $_GET['id'];
 
     $view = "Location: userview.php";
-    $thisedit = "/edit.php?id=$id";
-    $profile = "/profile.php?id=$id";
+    $thisedit = "./edit.php?id=$id";
+    $profile = "./profile.php?id=$id";
     $exist = false;
 
     $_POST = array_filter($_POST);

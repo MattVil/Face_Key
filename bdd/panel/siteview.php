@@ -50,7 +50,7 @@
 
       <h2>LISTE TOUT LES SITES</h2>
 
-      <?php echo display_table_query("SELECT id_site, domain, nb_user_today FROM Sites;",4); ?>
+      <?php echo display_table_query("SELECT id_site, domain, nb_user_today FROM Sites ORDER BY id_site;",4); ?>
 
     </body>
 </html>
