@@ -19,8 +19,8 @@
     <body>
 
       <div class="center"><a href="./index.php">Back</a></div>
-      
-      <h1>SITE</h1> 
+
+      <h1>SITE</h1>
 
       <h2>RECHERCHE</h2>
 
@@ -39,7 +39,7 @@
           $search = $_POST['entre'];
           $query = "SELECT id_site, domain, nb_user_today FROM Sites WHERE $choise = '$search';";
           //echo $query;
-          echo display_table_query($query);
+          echo display_table_query($query, 4);
         }
         else{
           echo "<p class=\"center\">Veuillez renseigner tous les champs de recherche</p>\n";
