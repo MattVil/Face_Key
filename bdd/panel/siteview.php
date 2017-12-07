@@ -18,12 +18,13 @@
 
     <body>
 
-      <a href="./index.php">Back<a>
-                  <h1>SITE</h1> 
+      <div class="center"><a href="./index.php">Back</a></div>
+      
+      <h1>SITE</h1> 
 
       <h2>RECHERCHE</h2>
 
-      <form method="post" action="siteview.php">
+      <form method="post" action="siteview.php" class="center">
   			<input type="text" name="entre">
   			<select name="option" id="option">
   				<option value="id_site">ID_site</option>
@@ -41,12 +42,12 @@
           echo display_table_query($query);
         }
         else{
-          echo "<p>Veuillez renseigner tous les champs de recherche</p>\n";
+          echo "<p class=\"center\">Veuillez renseigner tous les champs de recherche</p>\n";
       }?>
 
       <h2>AJOUTER DONNEES</h2>
 
-      <a href="addSite.php">Add New Data</a><br/><br/>
+      <div class="center"><a href="addSite.php">Add New Data</a></div>
 
       <h2>LISTE TOUT LES SITES</h2>
 

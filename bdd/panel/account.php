@@ -29,6 +29,7 @@
     $id_tag = get_info("account", $id, "id_tag", "id_account");
     $tag = get_info("Tags", $id_tag, "name_tag", "id_tag");
     $id_user = get_info("account", $id, "id_user", "id_account");
+    $name_user = get_info("Users", $id_user, "pseudo", "id_user");
     
     $profile = "./profile.php?id=$id_user";
 
@@ -47,19 +48,27 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br />
-    <a href="<?php echo $profile?> ">Back to User Profile</a><br />
-    <a href="<?php echo $thisedit; ?>">Edit</a><br/>
-    <a href="<?php echo $thisdelete; ?>">Delete</a>
-    <br/>
-    <br/>
+    <div class="center">
+        <a href="userview.php">Back</a>
+        <a href="<?php echo $profile?> ">Back to User Profile</a>
+        <a href="<?php echo $thisedit; ?>">Edit</a>
+        <a href="<?php echo $thisdelete; ?>">Delete</a>
+    </div>
 
+    <h1><?php echo $domain ?> account of <?php echo $name_user ?></h1>
+    <h2>Info</h2>
         <ul>
             <li> site : <?php echo $domain?></li>
             <li> login : <?php echo $login?></li>
             <li> password : <?php echo $password ?></li>
             <li> tag : <?php echo $tag?></li>
         </ul>
-
+    <h2>Shard with</h2>
+    <?php 
+        $query = "SELECT id_sharedAccount, Users.id_user, Users.name, Users.first_name, Users.pseudo, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Users ON Users.id_user = SharedAccount.id_receiver WHERE SharedAccount.id_account = $id;";
+        echo display_table_query($query,5);
+    ?>
+    <h2>Share</h2>
+    <div class="center"><a href="./newshare.php?id=<?php echo $id?>">Share connexion to user</a></div>
     </body>
 </html>

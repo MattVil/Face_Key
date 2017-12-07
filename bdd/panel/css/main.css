@@ -1,0 +1,46 @@
+html{
+	font-family: sans-serif;
+}
+
+h1,h2,h3{
+	text-align: center;
+}
+
+.center{
+	text-align: center;
+	margin: 0 auto;
+}
+
+a{
+	text-align: center;
+	color: blue;
+	font-size: bold;
+}
+
+.icon{
+	fill: blue;
+}
+
+table{
+	margin-left: auto;
+   	margin-right: auto;
+   	text-align: center;
+   	align-content: center;
+}
+
+ul {
+text-align: center;
+}
+
+li {
+	list-style: none;
+}
+
+img{
+	margin: 0 auto;
+}
+
+input{
+	text-align: center;
+	width: fill;
+}

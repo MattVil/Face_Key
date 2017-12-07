@@ -33,10 +33,10 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a>
-    <br/>
-    <a href="<?php echo $edit ?>">Edit</a>
-	<br/><br/>
+    <div class="center">
+        <a href="userview.php">Back</a>
+        <a href="<?php echo $edit ?>">Edit</a>
+    </div>
     <h1>Profile of <?php echo $pseudo?></h1>
 
 	<ul>
@@ -51,6 +51,7 @@
   </ul>
 
 		<h2>CO Proprietaire</h2>
+        <div class="center"><a href="addaccount.php?id=<?php echo $id?>">Add new Account</a></div>
 		<?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
       LEFT JOIN PaymentAccount ON account.id_account = paymentaccount.id_account
     WHERE account.id_user = $id AND paymentaccount.id_account IS NULL;", 1); ?>
@@ -58,14 +59,14 @@
     WHERE paymentaccount.id_user = $id;", 2); ?>
 
 		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo","id_user") ?></h2>
-		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id",1); ?>
-    <h2>Graph</h2>
-		<?php createGraph($id);?>
-		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
-
+		<?php
+            $query = "SELECT sharedAccount.id_account, domain, name, first_name, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id";
+            echo display_table_query($query,6); 
+            ?>
+   <!-- <h2>Graph</h2>
+		<?php //createGraph($id);?>
+		<img src="<?php //echo $imgpath ?>" alt="graphFreq"/>
+    -->
     
-
-
-
     </body>
 </html>

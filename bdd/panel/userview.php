@@ -19,18 +19,19 @@
     </head>
     <body>
 
-      <a href="./index.php">Back<a>
+      <div class="center"><a href="./index.php">Back</a></div>
       <h1>User</h1>
       <h2>RECHERCHE</h2>
 
-      <form method="post" action="userview.php">
-  			<input type="text" name="entre">
-  			<select name="option" id="option">
-  				<option value="id_user">ID_User</option>
-  				<option value="name">Name</option>
-          <option value="pseudo">Pseudo</option>
-          <option value="mail">Mail</option>
-  			</select>
+      <form class="center" method="post" action="userview.php">
+  			 <input type="text" name="entre">
+    			 <select name="option" id="option">
+    			 	 <option value="id_user">ID_User</option>
+    			   	<option value="name">Name</option>
+              <option value="pseudo">Pseudo</option>
+              <option value="mail">Mail</option>
+    			 </select>
+          
   			<input type="submit" name="valid" value="Recherche">
   		</form>
 
@@ -43,12 +44,12 @@
           echo display_table_query($query,3);
         }
         else{
-          echo "<p>Veuillez renseigner tous les champs de recherche</p>\n";
+          echo "<p class=\"center\">Veuillez renseigner tous les champs de recherche</p>\n";
       }?>
 
       <h2>AJOUTER DONNEES</h2>
 
-      <a href="add.php">Add New Data</a><br/><br/>
+      <div class="center"><a href="add.php">Add New Data</a></div>
 
 
 

@@ -4,10 +4,11 @@
     include 'fonction.php';
 
     $id = $_GET['id'];
-
-    $view = "Location: siteview.php";
-    $thisedit = "./siteedit.php?id=$id";
     $profile = "./sitedetail.php?id=$id";
+    $thisprofile = "sitedetail.php?id=$id";
+
+    $view = "Location: $profile";
+    $thisedit = "./siteedit.php?id=$id";
     $exist = false;
 
     $_POST = array_filter($_POST);
@@ -39,21 +40,22 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/>
-    <a href="<?php echo $profile ?>">Site</a>
-    <br/>
-    <br/>
+    <div class="center">
+        <a href="siteview.php">Back</a> 
+        <a href="<?php echo $profile ?>">Site</a>
+    </div>
+    
     <h1>Edit of <?php echo $domain ?></h1>
 
     <form action="<?php $thisedit ?>" method="post">
 
          <ul>
-            <li> Id : <input type="text" name="id" placeholder="<?php echo  $id?>"/></li>
+            <li> Id : <input type="text" name="id_site" placeholder="<?php echo  $id?>"/></li>
             <li> Domain : <input type="text" name="domain" placeholder="<?php echo $domain?>"/></li>
             <li> Input for login : <input type="text" name="login_input" placeholder="<?php echo $login_input ?>"/></li>
             <li> Input for Passwor : <input type="text" name="password_input" placeholder="<?php echo $password_input?>"/></li>
         </ul>
-        <input type="submit" value="Submit">
+        <div class="center"><input type="submit" value="Submit"></div>
     </form>
 
     </body>

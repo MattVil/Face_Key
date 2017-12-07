@@ -25,8 +25,10 @@
         $password_input = get_info("Sites", $id, "password_input", "id_site");
 
       ?>
-      <a href="./siteview.php">Back</a><br>
-      <a href="<?php echo $thisedit?>">Edit</a>
+      <div class="center">
+        <a href="./siteview.php">Back</a>
+        <a href="<?php echo $thisedit?>">Edit</a>
+      </div>
 
       <h1>Details du site <?php echo $domain?></h1>
 
@@ -65,10 +67,10 @@
          echo display_table_query($query);
         ?>
 
-        <img
+        <p class="center"><img
           src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\<?php echo loc_gmap_format($domain)?>&key=AIzaSyBKZ4bNWmhcz2LNuXuAS1OADJ0FKpMaKUE"
           alt="map"
-        />
+        /></p>
 
     </body>
 </html>

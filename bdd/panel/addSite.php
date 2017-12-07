@@ -37,7 +37,7 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="siteview.php">Back</a><br/><br/>
+    <div class="center"><a href="siteview.php">Back</a></div>
     <form action="./addSite.php" method="post">
 
         <ul>
@@ -45,7 +45,7 @@
             <li> login_input : <input type="text" name="login_input"/></li>
             <li> password_input : <input type="text" name="password_input" /></li>
         </ul>
-        <input type="submit" value="Submit">
+        <div class="center"><input type="submit" value="Submit"></div>
     </form>
 
     </body>
