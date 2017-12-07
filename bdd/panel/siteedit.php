@@ -39,10 +39,11 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/>
-    <a href="<?php echo $profile ?>">Site</a>
-    <br/>
-    <br/>
+    <div class="center">
+        <a href="siteview.php">Back</a> 
+        <a href="<?php echo $profile ?>">Site</a>
+    </div>
+    
     <h1>Edit of <?php echo $domain ?></h1>
 
     <form action="<?php $thisedit ?>" method="post">
@@ -53,7 +54,7 @@
             <li> Input for login : <input type="text" name="login_input" placeholder="<?php echo $login_input ?>"/></li>
             <li> Input for Passwor : <input type="text" name="password_input" placeholder="<?php echo $password_input?>"/></li>
         </ul>
-        <input type="submit" value="Submit">
+        <div class="center"><input type="submit" value="Submit"></div>
     </form>
 
     </body>

@@ -43,10 +43,10 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/>
-    <a href="<?php echo $profile ?>">Profile</a>
-    <br/>
-    <br/>
+    <div class="center">
+        <a href="userview.php">Back</a>
+        <a href="<?php echo $profile ?>">Profile</a>
+    </div>
     <h1>Edit of <?php echo $pseudo?></h1>
     <form action="<?php $thisedit ?>" method="post">
 
@@ -60,7 +60,7 @@
             <li> creation date : <input type="text" name="creation_date" placeholder="<?php echo $creation_date ?>"/></li>
             <li> language : <input type="text" name="language" placeholder="<?php echo $language ?>"/> </li>
         </ul>
-        <input type="submit" value="Submit">
+        <div class="center"><input type="submit" value="Submit"></div>
     </form>
 
     </body>

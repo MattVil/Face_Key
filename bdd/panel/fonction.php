@@ -208,6 +208,13 @@
                 $char.= '<td><a href="siteedit.php?id='.$id.'">Edit</a></td>';
                 $char.= '<td><a href="sitedelete.php?id='.$id.'">Delete</a></td>';
               }
+              if($flag==5){ //shareco on co
+                $char.= '<td><a href="eshac.php?id='.$id.'">Edit shared connexion</a></td>';
+                $char.= '<td><a href="dshac.php?id='.$id.'">Delete shared connexion</a></td>';
+              }
+              if($flag==6){ //shaed co on profile
+                $char.= '<td><a href="account.php?id='.$id.'">Check Account</a></td>';
+              }
               $char .= '</tr>';
               $i = $i + 1;
             }

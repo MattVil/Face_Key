@@ -39,7 +39,9 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br/><br/>
+    <div class="center">
+        <a href="userview.php">Back</a><br/><br/>
+    </div>
     <form action="./add.php" method="post">
 
         <ul>
@@ -52,7 +54,9 @@
             <li> creation date : <input type="text" name="creation_date"/></li>
             <li> language : <input type="text" name="language" /> </li>
         </ul>
+        <div class="center">
         <input type="submit" value="Submit">
+        </div>
     </form>
 
     </body>
