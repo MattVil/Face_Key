@@ -97,7 +97,7 @@ WHERE domain = 'trello.com'     --changer exemple par variable
 
 --infos sur un site
 SELECT *
-FROM Sites
+FROM SSites
 WHERE id_site = '3'       --changer exemple par variable
 ;
 
@@ -142,6 +142,24 @@ FROM Account
   INNER JOIN Sites
     ON account.id_site = sites.id_site
 WHERE account.id_user = 2
+;
+
+--liste des tags d'un site
+SELECT DISTINCT name_tag
+FROM Account
+  INNER JOIN Tags
+    ON account.id_tag = tags.id_tag
+  INNER JOIN sites
+    ON account.id_site = Sites.id_site
+WHERE account.id_site = 3
+;
+
+--liste des personnes avec qui est partagé un compte
+SELECT Users.id_user, Users.name, Users.first_name, Users.pseudo
+FROM SharedAccount
+  INNER JOIN Users
+    ON Users.id_user = SharedAccount.id_receiver
+WHERE SharedAccount.id_account = 9
 ;
 
 
