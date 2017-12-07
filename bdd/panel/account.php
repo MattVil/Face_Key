@@ -68,5 +68,7 @@
         $query = "SELECT id_sharedAccount, Users.id_user, Users.name, Users.first_name, Users.pseudo, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Users ON Users.id_user = SharedAccount.id_receiver WHERE SharedAccount.id_account = $id;";
         echo display_table_query($query,5);
     ?>
+    <h2>Share</h2>
+    <div class="center"><a href="./newshare.php?id=<?php echo $id?>">Share connexion to user</a></div>
     </body>
 </html>

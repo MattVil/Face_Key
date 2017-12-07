@@ -51,6 +51,7 @@
   </ul>
 
 		<h2>CO Proprietaire</h2>
+        <div class="center"><a href="addaccount.php?id=<?php echo $id?>">Add new Account</a></div>
 		<?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
       LEFT JOIN PaymentAccount ON account.id_account = paymentaccount.id_account
     WHERE account.id_user = $id AND paymentaccount.id_account IS NULL;", 1); ?>
@@ -62,10 +63,10 @@
             $query = "SELECT sharedAccount.id_account, domain, name, first_name, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id";
             echo display_table_query($query,6); 
             ?>
-    <h2>Graph</h2>
-		<?php createGraph($id);?>
-		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
-
+   <!-- <h2>Graph</h2>
+		<?php //createGraph($id);?>
+		<img src="<?php //echo $imgpath ?>" alt="graphFreq"/>
+    -->
     
     </body>
 </html>

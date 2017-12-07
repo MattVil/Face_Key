@@ -1,6 +1,6 @@
 <?php
     function insert_request_champ($champ, $prev_champ){
-        if($prev_champ){
+        if($prev_champ && ($prev_champ!=" ")){
             $result = "$prev_champ,$champ";
         }
         else{
@@ -9,7 +9,7 @@
         return $result;
     }
     function insert_request_value($value, $prev_value){
-        if($prev_value){
+        if($prev_value && ($prev_value!=" ")){
             $result = "$prev_value,'$value'";
         }
         else{
@@ -191,7 +191,7 @@
               if ($flag == 1){ //Account
                 $char.= '<td><a href="account.php?id='.$id.'">Check</a></td>';
                 $char.= '<td><a href="accountedit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a href="deleteaccount.php?id='.$id.'">Delete</a></td>';
+                $char.= '<td><a href="deleteacount.php?id='.$id.'">Delete</a></td>';
               }
               if ($flag == 2){ //PaymentAccount
                 $char.= '<td><a href="paccount.php?id='.$id.'">Check</a></td>';
