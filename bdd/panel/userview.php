@@ -20,8 +20,8 @@
     <body>
 
       <a href="./index.php">Back<a>
-
-      <h3>RECHERCHE</h3>
+      <h1>User</h1>
+      <h2>RECHERCHE</h2>
 
       <form method="post" action="userview.php">
   			<input type="text" name="entre">
@@ -40,13 +40,13 @@
           $search = $_POST['entre'];
           $query = "SELECT * FROM Users WHERE $choise = '$search' ORDER BY id_user;";
           //echo $query;
-          echo display_table_query($query);
+          echo display_table_query($query,3);
         }
         else{
           echo "<p>Veuillez renseigner tous les champs de recherche</p>\n";
       }?>
 
-      <h3>AJOUTER DONNEES</h3>
+      <h2>AJOUTER DONNEES</h2>
 
       <a href="add.php">Add New Data</a><br/><br/>
 
@@ -54,8 +54,11 @@
 
       <!--<a href="test.php">Test</a><br/><br/> -->
 
-      <h3>LISTE TOUT LES USERS</h3>
+      <h2>LISTE TOUT LES USERS</h2>
 
-      <?php echo display_table("users"); ?>
+      <?php 
+          $query = "SELECT * FROM Users ORDER BY id_user;";
+          echo display_table_query($query,3);
+      ?>
     </body>
 </html>

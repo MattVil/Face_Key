@@ -73,7 +73,8 @@
     }
 
     function get_info($table, $id, $champ, $column){
-        $query = "SELECT $champ FROM $table WHERE $column = $id";
+        $query = "SELECT $champ FROM $table WHERE $column = '$id'";
+        // echo $query;
         $result = pg_query($query);
         $value = current(pg_fetch_row($result));
         return $value;
@@ -207,7 +208,8 @@
                  $char .= '<th>' . $fieldName . '</th>';
                 $i = $i + 1;
             }
-            $char .= '<th>Option</th></tr></thead><tbody>';
+            if($flag>0)
+              $char .= '<th>Option</th></tr></thead><tbody>';
             $i = 0;
             while ($row = pg_fetch_row($result))
             {
@@ -226,10 +228,24 @@
                   next($row);
                   $j = $j + 1;
               }
-              if ($flag == 1) //Account
-                $char.= '<td><a href="account.php?id='.$id.'">Edit</a></td>';
-              if ($flag == 2) //PaymentAccount
+              if ($flag == 1){ //Account
+                $char.= '<td><a href="account.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a href="accountedit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a href="deleteaccount.php?id='.$id.'">Delete</a></td>';
+              }
+              if ($flag == 2){ //PaymentAccount
                 $char.= '<td><a href="paccount.php?id='.$id.'">Edit</a></td>';
+              }
+              if($flag==3){ //profile
+                $char.= '<td><a href="profile.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a href="edit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a href="delete.php?id='.$id.'">Delete</a></td>';
+              }
+              if($flag==4){ //sites
+                $char.= '<td><a href="sitedetail.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a href="siteedit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a href="sitedelete.php?id='.$id.'">Delete</a></td>';
+              }
               $char .= '</tr>';
               $i = $i + 1;
             }
@@ -267,5 +283,29 @@
           return $char;
 
         }
+
+        function get_list($table, $column, $actual){
+          $query = "SELECT $column FROM $table";
+          $result = pg_query($query);
+          $char = " ";
+          while ($row = pg_fetch_row($result))
+          {
+            $val = current($row);
+            if(isset($actual)){
+              if($val == $actual){
+                $char .= "<option value=\"$val\" selected>$val</option>";
+              }
+              else{
+                $char .= "<option value=\"$val\">$val</option>";
+              }
+            }
+            else{
+              $char .= "<option value=\"$val\">$val</option>";
+            }
+          }
+          pg_free_result($result);
+          return $char;
+        }
+
 
 ?>

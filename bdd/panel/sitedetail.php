@@ -59,7 +59,7 @@
         ?>
 
         <img
-          src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\<?php echo loc_gmap_format("facebook.com")?>&key=AIzaSyBKZ4bNWmhcz2LNuXuAS1OADJ0FKpMaKUE"
+          src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\<?php echo loc_gmap_format($domain)?>&key=AIzaSyBKZ4bNWmhcz2LNuXuAS1OADJ0FKpMaKUE"
           alt="map"
         />
 

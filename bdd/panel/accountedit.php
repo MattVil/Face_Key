@@ -5,18 +5,34 @@
 
     $id = $_GET['id'];
 
-
-    $view = "Location: userview.php";
-    $thisedit = "/accountedit.php?id=$id";
+    $thisaccount = "account.php?id=$id";
+    $view = "Location: $thisaccount";
+    $thisedit = "./accountedit.php?id=$id";
     $exist = false;
 
     $_POST = array_filter($_POST);
     foreach($_POST as $k => $v){
         if(isset($_POST[$k])){
             $exist = true;
-            edit_table("account",$id,$k,$_POST[$k]);
+
+            if($k=="domain"){
+                $pr = $_POST[$k];
+                $new_id_site = get_info("Sites", $_POST[$k], "id_site", "domain");
+                edit_table("account",$id,"id_site", $new_id_site, "id_account");  
+ 
+            }
+            else if($k=="tag"){
+                $new_id_tag = get_info("Tags", $_POST[$k], "id_tag", "name_tag");
+                edit_table("account",$id,"id_tag",$new_id_tag,"id_account");   
+
+            }
+
+            else{
+                edit_table("account",$id,$k,$_POST[$k],"id_account");   
+            }
         }
     }
+
     if($exist){
         header($view);
     }
@@ -29,8 +45,7 @@
     $tag = get_info("Tags", $id_tag, "name_tag", "id_tag");
     $id_user = get_info("account", $id, "id_user", "id_account");
     
-    $profile = "/profile.php?id=$id_user";
-
+    $profile = "./profile.php?id=$id_user";
 
 ?>
 
@@ -52,13 +67,14 @@
     <a href="<?php echo $thisdelete; ?>">Delete</a>
     <br/>
     <br/>
-
+    <form action="<?php $thisedit?>" method="post">
         <ul>
-            <li> site : <?php echo $domain?></li>
-            <li> login : <?php echo $login?></li>
-            <li> password : <?php echo $password ?></li>
-            <li> tag : <?php echo $tag?></li>
+            <li> site : <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>
+            <li> login : <input name="login" placeholder="<?php echo $login?>"/></li>
+            <li> password : <input name="password" placeholder="<?php echo $password ?>"/></li>
+            <li> tag : <select name="tag"><?php echo get_list("Tags","name_tag",$tag)?></select></li>
         </ul>
-
+        <input type="submit" value="Submit">
+    </form>
     </body>
 </html>

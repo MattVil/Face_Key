@@ -47,7 +47,7 @@
     <a href="<?php echo $profile ?>">Profile</a>
     <br/>
     <br/>
-    <h1>Edit of <?php $pseudo?></h1>
+    <h1>Edit of <?php echo $pseudo?></h1>
     <form action="<?php $thisedit ?>" method="post">
 
         <ul>

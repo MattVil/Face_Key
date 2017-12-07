@@ -19,8 +19,9 @@
     <body>
 
       <a href="./index.php">Back<a>
+                  <h1>SITE</h1> 
 
-      <h3>RECHERCHE</h3>
+      <h2>RECHERCHE</h2>
 
       <form method="post" action="siteview.php">
   			<input type="text" name="entre">
@@ -43,16 +44,13 @@
           echo "<p>Veuillez renseigner tous les champs de recherche</p>\n";
       }?>
 
-      <h3>AJOUTER DONNEES</h3>
+      <h2>AJOUTER DONNEES</h2>
 
       <a href="addSite.php">Add New Data</a><br/><br/>
 
-      <h3>LISTE TOUT LES SITES</h3>
+      <h2>LISTE TOUT LES SITES</h2>
 
-      <?php echo display_table_query("SELECT id_site, domain, nb_user_today FROM Sites;"); ?>
-
-      <h3>PARTIE TEST</h3>
-      <a href="./sitedetail.php?id=3">detail site id=3</a>
+      <?php echo display_table_query("SELECT id_site, domain, nb_user_today FROM Sites;",4); ?>
 
     </body>
 </html>

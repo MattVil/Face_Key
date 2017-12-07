@@ -37,6 +37,7 @@
     <br/>
     <a href="<?php echo $edit ?>">Edit</a>
 	<br/><br/>
+    <h1>Profile of <?php echo $pseudo?></h1>
 
 	<ul>
 		<li> name : <?php echo $name ?></li>
@@ -48,7 +49,6 @@
 		<li> creation date : <?php echo $creation_date ?></li>
 		<li> language : <?php echo $language ?></li>
   </ul>
-
 
 		<h2>CO Proprietaire</h2>
 		<?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
