@@ -1,6 +1,6 @@
 <?php
-    include 'local.postgre.conf.php';
-    // include 'postgresql.conf.inc.php';
+    // include 'local.postgre.conf.php';
+    include 'postgresql.conf.inc.php';
     include 'fonction.php';
 
     include ('lib/jpgraph/src/jpgraph.php');
@@ -57,10 +57,8 @@
     <?php echo display_table_query("SELECT id_account, domain, login, password, bank, rib, card_num, cryptogram FROM PaymentAccount INNER JOIN Sites ON paymentaccount.id_site = sites.id_site
     WHERE paymentaccount.id_user = $id;", 2); ?>
 
-		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo") ?></h2>
-		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account
-      ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user
-      WHERE sharedAccount.id_receiver = $id"); ?>
+		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo","id_user") ?></h2>
+		<?php echo display_table_query("SELECT id_sharedAccount, domain, name, first_name FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id",1); ?>
     <h2>Graph</h2>
 		<?php createGraph($id);?>
 		<img src="<?php echo $imgpath ?>" alt="graphFreq"/>
