@@ -205,7 +205,7 @@
               }
               if($flag==4){ //sites
                 $char.= '<td><a class="gradient-2" href="sitedetail.php?id='.$id.'">Check</a></td>';
-                $char.= '<td><a class="gradient-2" ref="siteedit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a class="gradient-2" href="siteedit.php?id='.$id.'">Edit</a></td>';
                 $char.= '<td><a class="gradient-2" href="sitedelete.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==5){ //shareco on co

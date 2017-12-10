@@ -43,7 +43,7 @@
             </div>
 
             <h2 class="gradient-1"><?php echo $pseudo?>'s profile</h2>
-            <div class="row vcenter">
+            <div class="row">
                 <div class="col-6 col-sm-12">
                     <h3>Informations.</h3>
                 	<ul class="left">

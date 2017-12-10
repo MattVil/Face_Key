@@ -17,7 +17,7 @@ include "include.php";
           <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
         </div>
         <div class="col-6 right">
-          <a href="./index.php" class="gradient-2">back </a>
+          <a href="./index.php" class="gradient-2">Back</a>
         </div>
       </div>
       <h2 class="gradient-1">User</h2>
