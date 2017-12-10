@@ -31,40 +31,61 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="userview.php">Back</a>
-        <a href="<?php echo $edit ?>">Edit</a>
-    </div>
-    <h1>Profile of <?php echo $pseudo?></h1>
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $edit ?>" class="gradient-2">Edit</a>
+                </div>
+            </div>
 
-	<ul>
-		<li> name : <?php echo $name ?></li>
-		<li> first Name : <?php echo $first_name ?></li>
-		<li> pseudo : <?php echo $pseudo ?></li>
-		<li> gender : <?php echo $gender ?></li>
-		<li> mail : <?php echo $mail ?></li>
-		<li> Face Key password : <?php echo $FKpass ?></li>
-		<li> creation date : <?php echo $creation_date ?></li>
-		<li> language : <?php echo $language ?></li>
-  </ul>
-
-		<h2>CO Proprietaire</h2>
-        <div class="center"><a href="addaccount.php?id=<?php echo $id?>">Add new Account</a></div>
-		<?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
-      LEFT JOIN PaymentAccount ON account.id_account = paymentaccount.id_account
-    WHERE account.id_user = $id AND paymentaccount.id_account IS NULL;", 1); ?>
-    <?php echo display_table_query("SELECT id_account, domain, login, password, bank, rib, card_num, cryptogram FROM PaymentAccount INNER JOIN Sites ON paymentaccount.id_site = sites.id_site
-    WHERE paymentaccount.id_user = $id;", 2); ?>
-
-		<h2>CO partagée avec <?php echo get_info("users", $id, "pseudo","id_user") ?></h2>
-		<?php
-            $query = "SELECT sharedAccount.id_account, domain, name, first_name, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id";
-            echo display_table_query($query,6); 
-            ?>
-   <!-- <h2>Graph</h2>
-		<?php //createGraph($id);?>
-		<img src="<?php //echo $imgpath ?>" alt="graphFreq"/>
-    -->
-    
+            <h2 class="gradient-1"><?php echo $pseudo?>'s profile</h2>
+            <div class="row vcenter">
+                <div class="col-6 col-sm-12">
+                    <h3>Informations.</h3>
+                	<ul class="left">
+                		<li> <strong>name :</strong> <?php echo $name ?></li>
+                		<li>  <strong>first Name :</strong> <?php echo $first_name ?></li>
+                		<li>  <strong>pseudo :</strong> <?php echo $pseudo ?></li>
+                		<li>  <strong>gender :</strong> <?php echo $gender ?></li>
+                		<li>  <strong>mail :</strong> <?php echo $mail ?></li>
+                		<li>  <strong>Face Key password :</strong> <?php echo $FKpass ?></li>
+                		<li>  <strong>creation date :</strong> <?php echo $creation_date ?></li>
+                		<li>  <strong>language :</strong> <?php echo $language ?></li>
+                  </ul>
+                </div>
+                <div class="col-6 col-sm-12">
+                    <h3>Graph.</h3>
+                        <?php createGraph($id);?>
+                        <img src="<?php echo $imgpath ?>" alt="graphFreq"/>
+            	</div>
+            </div>
+            <div class="row">
+                <h3>Connexions.</h3>
+                    <div class="center"><a class="gradient-2" href="addaccount.php?id=<?php echo $id?>">Add new Account ></a></div>
+                    <br/>
+                    <div class="tablediv">
+                        <?php echo display_table_query("SELECT account.id_account, domain, account.login, account.password FROM Account INNER JOIN Sites ON account.id_site = sites.id_site
+                      LEFT JOIN PaymentAccount ON account.id_account = paymentaccount.id_account
+                    WHERE account.id_user = $id AND paymentaccount.id_account IS NULL;", 1); ?>
+                    </div>
+                    <div class="tablediv">
+                    <?php echo display_table_query("SELECT id_account, domain, login, password, bank, rib, card_num, cryptogram FROM PaymentAccount INNER JOIN Sites ON paymentaccount.id_site = sites.id_site
+                    WHERE paymentaccount.id_user = $id;", 2); ?>
+                </div>
+            </div>
+            <div class="row">
+        		<h3>Connexions shared with <?php echo get_info("users", $id, "pseudo","id_user") ?>.</h3>
+        		<div class="tablediv">
+                    <?php
+                        $query = "SELECT sharedAccount.id_account, domain, name, first_name, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id";
+                        echo display_table_query($query,6); 
+                    ?>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

@@ -53,20 +53,27 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="userview.php">Back</a>
-        <a href="<?php echo $acc?> ">Back to con</a>
-        <a href="<?php echo $thisdelete; ?>">Delete</a>
-    </div>
-    <h1>Edit of <?php echo get_info("Sites",$id_account,"domain","id_site")?> shared with <?php echo $pseudo?></h1>
-    <form action="<?php $thisedit?>" method="post">
-        <ul>
-            <li> Shared with : <select name="pseudo"><?php echo get_list("Users","pseudo",$pseudo)?></select></li>
-            <li> Until : <input name="expiration_date" placeholder="<?php echo $expiration_date ?>"/></li>
-        </ul>
-        <div class="center">
-            <input type="submit" value="Submit">
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $acc?> " class="gradient-2">Back to con</a>
+                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+                </div>
+            </div>
+            <h2 class="gradient-1">Edit of <?php echo get_info("Sites",$id_account,"domain","id_site")?> shared with <?php echo $pseudo?></h2>
+            <form action="<?php $thisedit?>" method="post">
+                <ul>
+                    <li> <strong>Shared with :</strong> <select name="pseudo"><?php echo get_list("Users","pseudo",$pseudo)?></select></li>
+                    <li> <strong>Until :</strong> <input name="expiration_date" placeholder="<?php echo $expiration_date ?>"/></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
         </div>
-    </form>
     </body>
 </html>

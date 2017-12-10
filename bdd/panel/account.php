@@ -46,27 +46,45 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="userview.php">Back</a>
-        <a href="<?php echo $profile?> ">Back to User Profile</a>
-        <a href="<?php echo $thisedit; ?>">Edit</a>
-        <a href="<?php echo $thisdelete; ?>">Delete</a>
-    </div>
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
+                    <a href="<?php echo $thisedit; ?>" class="gradient-2">Edit</a>
+                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
 
-    <h1><?php echo $domain ?> account of <?php echo $name_user ?></h1>
-    <h2>Info</h2>
-        <ul>
-            <li> site : <?php echo $domain?></li>
-            <li> login : <?php echo $login?></li>
-            <li> password : <?php echo $password ?></li>
-            <li> tag : <?php echo $tag?></li>
-        </ul>
-    <h2>Shard with</h2>
-    <?php 
-        $query = "SELECT id_sharedAccount, Users.id_user, Users.name, Users.first_name, Users.pseudo, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Users ON Users.id_user = SharedAccount.id_receiver WHERE SharedAccount.id_account = $id;";
-        echo display_table_query($query,5);
-    ?>
-    <h2>Share</h2>
-    <div class="center"><a href="./newshare.php?id=<?php echo $id?>">Share connexion to user</a></div>
+                </div>
+            </div>
+            <div class="center">
+            </div>
+
+            <h2 class="gradient-1"><?php echo $domain ?> account of <?php echo $name_user ?></h2>
+            <div class="row">
+                <div class="col-6 col-sm-12">
+                    <h3>Informations.</h3>
+                    <ul>
+                        <li> <strong>site :</strong> <?php echo $domain?></li>
+                        <li> <strong>login :</strong> <?php echo $login?></li>
+                        <li> <strong>password :</strong> <?php echo $password ?></li>
+                        <li> <strong>tag :</strong> <?php echo $tag?></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-sm-12">
+                    <h3>Share.</h3>
+                    <div class="center"><a href="./newshare.php?id=<?php echo $id?>" class="gradient-2">Share connexion to user ></a></div>
+                </div>
+            </div>
+            <h3>Shared with.</h3>
+            <div class="tablediv">
+                <?php 
+                    $query = "SELECT id_sharedAccount, Users.id_user, Users.name, Users.first_name, Users.pseudo, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Users ON Users.id_user = SharedAccount.id_receiver WHERE SharedAccount.id_account = $id;";
+                    echo display_table_query($query,5);
+                ?>
+            </div>
+        </div>
     </body>
 </html>

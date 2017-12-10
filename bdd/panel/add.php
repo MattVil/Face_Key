@@ -37,25 +37,31 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="userview.php">Back</a><br/><br/>
-    </div>
-    <form action="./add.php" method="post">
-
-        <ul>
-            <li> name : <input type="text" name="name"/></li>
-            <li> first Name : <input type="text" name="first_name"/></li>
-            <li> pseudo : <input type="text" name="pseudo" /></li>
-            <li> gender : <input type="text" name="gender"/></li>
-            <li> mail : <input type="text" name="mail" /></li>
-            <li> password : <input type="text" name="password" /></li>
-            <li> creation date : <input type="text" name="creation_date"/></li>
-            <li> language : <input type="text" name="language" /> </li>
-        </ul>
-        <div class="center">
-        <input type="submit" value="Submit">
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                </div>
+            </div>
+            <h2 class="gradient-1">Add account</h2>
+            <form action="./add.php" method="post">
+                <ul>
+                    <li> <strong>name :</strong> <input type="text" name="name"/></li>
+                    <li> <strong>first Name :</strong> <input type="text" name="first_name"/></li>
+                    <li> <strong>pseudo :</strong> <input type="text" name="pseudo" /></li>
+                    <li> <strong>gender :</strong> <input type="text" name="gender"/></li>
+                    <li> <strong>mail :</strong> <input type="text" name="mail" /></li>
+                    <li> <strong>password :</strong> <input type="text" name="password" /></li>
+                    <li> <strong>creation date :</strong> <input type="text" name="creation_date"/></li>
+                    <li> <strong>language :</strong> <input type="text" name="language" /> </li>
+                </ul>
+                <div class="center">
+                <input type="submit" value="Submit">
+                </div>
+            </form>
         </div>
-    </form>
-
     </body>
 </html>

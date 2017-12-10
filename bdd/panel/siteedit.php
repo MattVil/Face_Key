@@ -38,23 +38,29 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="siteview.php">Back</a> 
-        <a href="<?php echo $profile ?>">Site</a>
-    </div>
-    
-    <h1>Edit of <?php echo $domain ?></h1>
+        <div class="container">
+            <div class="row vcenter">
+              <div class="col-6 ">
+                <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+              </div>
+              <div class="col-6 right">
+                <a href="./siteview.php" class="gradient-2">Back</a>
+                <a href="<?php echo $profile?>" class="gradient-2">Site</a>
+              </div>
+            </div>            
+            <h2 class="gradient-1">Edit of <?php echo $domain ?></h2>
 
-    <form action="<?php $thisedit ?>" method="post">
-
-         <ul>
-            <li> Id : <input type="text" name="id_site" placeholder="<?php echo  $id?>"/></li>
-            <li> Domain : <input type="text" name="domain" placeholder="<?php echo $domain?>"/></li>
-            <li> Input for login : <input type="text" name="login_input" placeholder="<?php echo $login_input ?>"/></li>
-            <li> Input for Passwor : <input type="text" name="password_input" placeholder="<?php echo $password_input?>"/></li>
-        </ul>
-        <div class="center"><input type="submit" value="Submit"></div>
-    </form>
-
+            <form action="<?php $thisedit ?>" method="post">
+                 <ul>
+                    <li> <strong>Id :</strong> <input type="text" name="id_site" placeholder="<?php echo  $id?>"/></li>
+                    <li> <strong>Domain :</strong> <input type="text" name="domain" placeholder="<?php echo $domain?>"/></li>
+                    <li> <strong>Input field :</strong> <input type="text" name="login_input" placeholder="<?php echo $login_input ?>"/></li>
+                    <li> <strong>Password field :</strong> <input type="text" name="password_input" placeholder="<?php echo $password_input?>"/></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
     </body>
 </html>

@@ -48,7 +48,8 @@
     $id_tag = get_info("paymentaccount", $id, "id_tag", "id_account");
     $tag = get_info("Tags", $id_tag, "name_tag", "id_tag");
     $id_user = get_info("paymentaccount", $id, "id_user", "id_account");
-    
+    $pseudo = get_info("users", $id_user, "pseudo", "id_user");
+
     $profile = "./profile.php?id=$id_user";
 
 ?>
@@ -65,24 +66,35 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br />
-    <a href="<?php echo $profile?> ">Back to User Profile</a><br />
-    <a href="<?php echo $check; ?>">Check</a><br/>
-    <a href="<?php echo $thisdelete; ?>">Delete</a>
-    <br/>
-    <br/>
-    <form action="<?php $thisedit?>" method="post">
-        <ul>
-            <li> Site : <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>
-            <li> Login : <input name="login" placeholder="<?php echo $login?>"/></li>
-            <li> Password : <input name="password" placeholder="<?php echo $password ?>"/></li>
-            <li> Bank : <input name="bank" placeholder="<?php echo $bank ?>"/></li>
-            <li> Tib : <input name="rib" placeholder="<?php echo $rib ?>"/></li>
-            <li> Card Number : <input name="card_num" placeholder="<?php echo $card_num ?>"/></li>
-            <li> Cryptogram : <input name="cryptogram" placeholder="<?php echo $cryptogram ?>"/></li>
-            <li> Tag : <select name="tag"><?php echo get_list("Tags","name_tag",$tag)?></select></li>
-        </ul>
-        <input type="submit" value="Submit">
-    </form>
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
+                    <a href="<?php echo $check; ?>" class="gradient-2">Check</a>
+                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+
+                </div>
+            </div>
+            <h2 class="gradient-1">Edit paying account of <?php echo $pseudo;?></h2>
+            <form action="<?php $thisedit?>" method="post">
+                <ul>
+                    <li> <strong>Site :</strong> <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>
+                    <li> <strong>Login :</strong> <input name="login" placeholder="<?php echo $login?>"/></li>
+                    <li> <strong>Password :</strong> <input name="password" placeholder="<?php echo $password ?>"/></li>
+                    <li> <strong>Bank : <input name="bank" placeholder="<?php echo $bank ?>"/></li>
+                    <li> <strong>RIB :</strong> <input name="rib" placeholder="<?php echo $rib ?>"/></li>
+                    <li> <strong>Card Number :</strong> <input name="card_num" placeholder="<?php echo $card_num ?>"/></li>
+                    <li> <strong>Cryptogram :</strong> <input name="cryptogram" placeholder="<?php echo $cryptogram ?>"/></li>
+                    <li> <strong>Tag :</strong> <select name="tag"><?php echo get_list("Tags","name_tag",$tag)?></select></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </strong>
     </body>
 </html>

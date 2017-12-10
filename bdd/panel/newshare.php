@@ -58,19 +58,26 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center">
-        <a href="userview.php">Back</a>
-        <a href="<?php echo $acc?> ">Back to con</a>
-    </div>
-    <h1>Share <?php echo $domain?> of <?php echo $pseudo?></h1>
-    <form action="<?php $thisedit?>" method="post">
-        <ul>
-            <li> Shared with : <select name="pseudo"><?php echo get_list("Users","pseudo",0)?></select></li>
-            <li> Until : <input name="expiration_date" placeholder="yyyy-mm-dd"/></li>
-        </ul>
-        <div class="center">
-            <input type="submit" value="Submit">
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $thisaccount; ?>" class="gradient-2">Connexion</a>
+                </div>
+            </div>
+            <h2 class="gradient-1">Share <?php echo $domain?> of <?php echo $pseudo?></h2>
+            <form action="<?php $thisedit?>" method="post">
+                <ul>
+                    <li> <strong>Share with :</strong> <select name="pseudo"><?php echo get_list("Users","pseudo",0)?></select></li>
+                    <li> <strong>Until :</strong> <input name="expiration_date" placeholder="yyyy-mm-dd"/></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
         </div>
-    </form>
     </body>
 </html>

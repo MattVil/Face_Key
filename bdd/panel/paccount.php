@@ -21,6 +21,7 @@
     $id_tag = get_info("paymentaccount", $id, "id_tag", "id_account");
     $tag = get_info("Tags", $id_tag, "name_tag", "id_tag");
     $id_user = get_info("paymentaccount", $id, "id_user", "id_account");
+    $pseudo = get_info("users", $id_user, "pseudo", "id_user");
     
     $profile = "./profile.php?id=$id_user";
 
@@ -38,24 +39,34 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <a href="userview.php">Back</a><br />
-    <a href="<?php echo $profile?> ">Back to User Profile</a><br />
-    <a href="<?php echo $thisedit; ?>">Check</a><br/>
-    <a href="<?php echo $thisdelete; ?>">Delete</a>
-    <br/>
-    <br/>
-    <form action="<?php $thisedit?>" method="post">
-        <ul>
-            <li> Site : <?php echo $domain?></li>
-            <li> Login : <?php echo $login?></li>
-            <li> Password : <?php echo $password ?></li>
-            <li> Bank : <?php echo $bank ?></li>
-            <li> Tib : <?php echo $rib ?></li>
-            <li> Card Number : <?php echo $card_num ?></li>
-            <li> Cryptogram : <?php echo $cryptogram ?></li>
-            <li> Tag : <?php echo $tag?></li>
-        </ul>
-        <input type="submit" value="Submit">
-    </form>
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
+                    <a href="<?php echo $thisedit; ?>" class="gradient-2">Edit</a>
+                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+                </div>
+            </div>
+            <h2 class="gradient-1">Paying account of <?php echo $pseudo;?></h2>
+            <form action="<?php $thisedit?>" method="post">
+                <ul>
+                    <li> <strong>Site :</strong> <?php echo $domain?></li>
+                    <li> <strong>Login :</strong> <?php echo $login?></li>
+                    <li> <strong>Password :</strong> <?php echo $password ?></li>
+                    <li> <strong>Bank :</strong> <?php echo $bank ?></li>
+                    <li> <strong>RIB :</strong> <?php echo $rib ?></li>
+                    <li> <strong>Card Number :</strong> <?php echo $card_num ?></li>
+                    <li> <strong>Cryptogram :</strong> <?php echo $cryptogram ?></li>
+                    <li> <strong>Tag :</strong> <?php echo $tag?></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
     </body>
 </html>

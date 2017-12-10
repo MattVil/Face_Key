@@ -35,16 +35,24 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <div class="center"><a href="siteview.php">Back</a></div>
-    <form action="./addSite.php" method="post">
-
-        <ul>
-            <li> Domain : <input type="text" name="domain"/></li>
-            <li> login_input : <input type="text" name="login_input"/></li>
-            <li> password_input : <input type="text" name="password_input" /></li>
-        </ul>
-        <div class="center"><input type="submit" value="Submit"></div>
-    </form>
-
+        <div class="container">
+            <div class="row vcenter">
+              <div class="col-6 ">
+                <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+              </div>
+              <div class="col-6 right">
+                    <a href="siteview.php" class="gradient-2">Back</a>
+              </div>
+            </div>
+            <h2 class="gradient-1">Add site</h2>
+            <form action="./addSite.php" method="post">
+                <ul>
+                    <li> <strong>Domain :</strong> <input type="text" name="domain"/></li>
+                    <li> <strong>login_input :</strong> <input type="text" name="login_input"/></li>
+                    <li> <strong>password_input :</strong> <input type="text" name="password_input" /></li>
+                </ul>
+                <div class="center"><input type="submit" value="Submit"></div>
+            </form>
+        </div>
     </body>
 </html>

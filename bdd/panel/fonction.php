@@ -189,31 +189,31 @@
                   $j = $j + 1;
               }
               if ($flag == 1){ //Account
-                $char.= '<td><a href="account.php?id='.$id.'">Check</a></td>';
-                $char.= '<td><a href="accountedit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a href="deleteacount.php?id='.$id.'">Delete</a></td>';
+                $char.= '<td><a class="gradient-2" href="account.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a class="gradient-2" href="accountedit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a class="gradient-2" href="deleteacount.php?id='.$id.'">Delete</a></td>';
               }
               if ($flag == 2){ //PaymentAccount
-                $char.= '<td><a href="paccount.php?id='.$id.'">Check</a></td>';
-                $char.= '<td><a href="editpaccount.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a href="dpaccount.php?id='.$id.'">Delete</a></td>';
+                $char.= '<td><a class="gradient-2" href="paccount.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a class="gradient-2" href="editpaccount.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a class="gradient-2" href="dpaccount.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==3){ //profile
-                $char.= '<td><a href="profile.php?id='.$id.'">Check</a></td>';
-                $char.= '<td><a href="edit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a href="delete.php?id='.$id.'">Delete</a></td>';
+                $char.= '<td><a class="gradient-2" href="profile.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a class="gradient-2" href="edit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a class="gradient-2" href="delete.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==4){ //sites
-                $char.= '<td><a href="sitedetail.php?id='.$id.'">Check</a></td>';
-                $char.= '<td><a href="siteedit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a href="sitedelete.php?id='.$id.'">Delete</a></td>';
+                $char.= '<td><a class="gradient-2" href="sitedetail.php?id='.$id.'">Check</a></td>';
+                $char.= '<td><a class="gradient-2" ref="siteedit.php?id='.$id.'">Edit</a></td>';
+                $char.= '<td><a class="gradient-2" href="sitedelete.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==5){ //shareco on co
-                $char.= '<td><a href="eshac.php?id='.$id.'">Edit shared connexion</a></td>';
-                $char.= '<td><a href="dshac.php?id='.$id.'">Delete shared connexion</a></td>';
+                $char.= '<td><a class="gradient-2" href="eshac.php?id='.$id.'">Edit shared connexion</a></td>';
+                $char.= '<td><a class="gradient-2" href="dshac.php?id='.$id.'">Delete shared connexion</a></td>';
               }
               if($flag==6){ //shaed co on profile
-                $char.= '<td><a href="account.php?id='.$id.'">Check Account</a></td>';
+                $char.= '<td><a class="gradient-2" href="account.php?id='.$id.'">Check Account</a></td>';
               }
               $char .= '</tr>';
               $i = $i + 1;

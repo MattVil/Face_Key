@@ -62,24 +62,31 @@
         <title>Facekey &mdash; Admin Panel</title>
     </head>
     <body>
-    <h1>Edit <?php echo $domain ?> account of <?php echo $name_user ?></h1>
-    <div class="center">
-        <a href="userview.php">Back</a>
-        <a href="<?php echo $profile?> ">Back to User Profile</a>
-        <a href="<?php echo $check; ?>">Check</a>
-        <a href="<?php echo $thisdelete; ?>">Delete</a>
-    </div>
-    
-    <form action="<?php $thisedit?>" method="post">
-        <ul>
-            <li> site : <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>
-            <li> login : <input name="login" placeholder="<?php echo $login?>"/></li>
-            <li> password : <input name="password" placeholder="<?php echo $password ?>"/></li>
-            <li> tag : <select name="tag"><?php echo get_list("Tags","name_tag",$tag)?></select></li>
-        </ul>
-        <div class="center">
-            <input type="submit" value="Submit">
+        <div class="container">
+            <div class="row vcenter">
+                <div class="col-6 ">
+                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
+                </div>
+                <div class="col-6 right">
+                    <a href="userview.php" class="gradient-2">Back</a>
+                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
+                    <a href="<?php echo $check; ?>" class="gradient-2">Check</a>
+                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+                </div>
+            </div>
+
+            <h2 class="gradient-1">Edit <?php echo $domain ?> account of <?php echo $name_user ?></h2>            
+            <form action="<?php $thisedit?>" method="post">
+                <ul>
+                    <li> <strong>site :</strong> <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>
+                    <li> <strong>login :</strong> <input name="login" placeholder="<?php echo $login?>"/></li>
+                    <li> <strong>password :</strong> <input name="password" placeholder="<?php echo $password ?>"/></li>
+                    <li> <strong>tag :</strong> <select name="tag"><?php echo get_list("Tags","name_tag",$tag)?></select></li>
+                </ul>
+                <div class="center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
         </div>
-    </form>
     </body>
 </html>
