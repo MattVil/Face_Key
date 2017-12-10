@@ -1,7 +1,5 @@
 <?php
-    // include 'local.postgre.conf.php';
-    include 'postgresql.conf.inc.php';
-    include 'fonction.php';
+    include "include.php"
 
     include ('lib/jpgraph/src/jpgraph.php');
     include ('lib/jpgraph/src/jpgraph_bar.php');
