@@ -1,5 +1,5 @@
 <?php
-    include "include.php"
+    include "include.php";
 
     include ('lib/jpgraph/src/jpgraph.php');
     include ('lib/jpgraph/src/jpgraph_bar.php');

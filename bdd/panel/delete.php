@@ -1,5 +1,5 @@
 <?php
-    include "include.php"
+    include "include.php";
 
 
 $id = $_GET['id'];
