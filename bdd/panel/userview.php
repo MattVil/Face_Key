@@ -78,7 +78,7 @@ include "include.php";
         <h3>Users list.</h3>
         <div class="tablediv">
           <?php
-            $query = "SELECT id_user,  name,  first_name,  pseudo,  mail,  password,  language, creation_date FROM Users ORDER BY id_user;";
+            $query = "SELECT id_user,  name,  first_name, gender, pseudo,  mail,  language, creation_date FROM Users ORDER BY id_user;";
             echo display_table_query($query,3);
           ?>
         </div>
