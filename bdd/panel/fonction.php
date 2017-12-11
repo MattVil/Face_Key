@@ -156,6 +156,32 @@
         //fclose($handle);
     }
 
+    function display_tag($ref){
+            $query= "SELECT DISTINCT name_tag FROM Account INNER JOIN Tags ON account.id_tag = tags.id_tag INNER JOIN sites ON account.id_site = Sites.id_site WHERE account.id_site = '$ref';";
+            $id = 0;
+            $result = pg_query($query);
+            $i = 0;
+            $char = ' ';
+            while ($row = pg_fetch_row($result))
+            {
+              $id = current($row);
+              $count = count($row);
+              $j = 0;
+              while ($j < $count)
+              {
+                  $c_row = current($row);
+                  if ($flag == 1 || $flag == 2){
+                    if ($j == 0)
+                      $id = $c_row;
+                  }
+                  $char .= '<span class="gradient23">#' . $c_row . '</span>';
+                  next($row);
+                  $j = $j + 1;
+              }
+            }
+            pg_free_result($result);
+            return $char;
+    }
     function display_table_query($query, $flag=0){
             //echo $query;
             $id = 0;
@@ -232,19 +258,20 @@
           INNER JOIN Sites
             ON Account.id_site = Sites.id_site
           WHERE domain = '$domain'";
-
+          $background_colors = array('blue', 'green', 'red', 'purple');
           $result = pg_query($query);
           $char = " ";
-
           while ($row = pg_fetch_row($result))
           {
-              $char .="&markers=size:mid%7Ccolor:red%7c";
+              $i = rand(0, 4);
+              $rand_background = $background_colors[$i];
+              $char .= "&markers=color:$rand_background%7c";
               $loc = current($row);
               $count = count($row);
               $j = 0;
               $char .= "$loc";
               next($row);
-              $char .= "";
+              $char .= "%20";
           }
           pg_free_result($result);
           $arr = array("°" => ".", " " => "");

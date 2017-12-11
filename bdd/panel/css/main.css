@@ -46,16 +46,18 @@ html{
 }
 
 .gradient23{
-   background: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+/*   background: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+*/  
+  background: linear-gradient(160deg, #02CCBA 0%, #AA7ECD 100%);
   line-height: 2;
   padding: 0.5em;
   text-decoration: none;
   border-radius: 1em;
   text-align: center;
+  color: white !important;
   /*/////////MAGIC//HERE////////*/
   /* -webkit-background-clip: text; */
   /* -webkit-text-fill-color: transparent; */
-  color: #white;
   /*////////////////////////////*/
 }
 

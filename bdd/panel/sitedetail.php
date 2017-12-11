@@ -69,10 +69,9 @@
           </div>
           <div class="col-6 col-sm-12">
             <h3>Use type.</h3>
-            <div class="tablediv">
+            <div class="row">
                <?php
-                $query = "SELECT DISTINCT name_tag FROM Account INNER JOIN Tags ON account.id_tag = tags.id_tag INNER JOIN sites ON account.id_site = Sites.id_site WHERE account.id_site = '$id';";
-                echo display_table_query($query);
+                echo display_tag($id);
                 ?>
             </div>
           </div>
@@ -102,7 +101,7 @@
           <div class="row">
             <div class="center">
               <img
-                src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\<?php echo loc_gmap_format($domain)?>&key=AIzaSyBKZ4bNWmhcz2LNuXuAS1OADJ0FKpMaKUE"
+                src="https://maps.googleapis.com/maps/api/staticmap?size=2048x512&maptype=roadmap\<?php echo loc_gmap_format($domain)?>&key=AIzaSyBKZ4bNWmhcz2LNuXuAS1OADJ0FKpMaKUE"
                 alt="map"
               />
             </div>
