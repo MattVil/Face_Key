@@ -63,19 +63,39 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
-                    <a href="<?php echo $check; ?>" class="gradient-2">Check</a>
-                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="./profile.php?id=1 " class="gradient-22 nava">Profile</a>
+                                    <a href="./account.php?id=1" class="gradient-22 nava">Check</a>
+                                    <a href="./deleteacount.php?id=1" class="gradient-22 nava">Delete</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="nav-post">
+            </div>
 
-            <h2 class="gradient-1">Edit <?php echo $domain ?> account of <?php echo $name_user ?></h2>            
+            <h2 class="gradient-8">Edit <?php echo $domain ?> account of <?php echo $name_user ?></h2>            
             <form action="<?php $thisedit?>" method="post">
                 <ul>
                     <li> <strong>site :</strong> <select name="domain"><?php echo get_list("Sites","domain",$domain)?></select></li>

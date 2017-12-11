@@ -47,22 +47,38 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $profile?> " class="gradient-2">Profile</a>
-                    <a href="<?php echo $thisedit; ?>" class="gradient-2">Edit</a>
-                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="<?php echo $profile ?>" class="gradient-22 nava">Profile</a>
+                                    <a href="<?php echo $thisedit ?>" class="gradient-22 nava">Edit</a>
+                                    <a href="<?php echo $thisdelete ?>" class="gradient-22 nava">Delete</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="center">
+            <div class="nav-post">
             </div>
-
-            <h2 class="gradient-1"><?php echo $domain ?> account of <?php echo $name_user ?></h2>
+            <h2 class="gradient-8"><?php echo $domain ?> account of <?php echo $name_user ?></h2>
             <div class="row">
                 <div class="col-6 col-sm-12">
                     <h3>Informations.</h3>

@@ -7,6 +7,7 @@
 
     $id = $_GET['id'];
     $edit = "./edit.php?id=$id";
+    $delete = "./delete.php?id=$id";
     $imgpath = "./users/$id/graphFreq.png";
 
     $name = get_info("users", $id, "name", "id_user");
@@ -32,17 +33,38 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $edit ?>" class="gradient-2">Edit</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="<?php echo $edit ?>" class="gradient-22 nava">Edit</a>
+                                    <a href="<?php echo $delete ?>" class="gradient-22 nava">Delete</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="nav-post">
+            </div>
 
-            <h2 class="gradient-1"><?php echo $pseudo?>'s profile</h2>
+            <h2 class="gradient-8"><?php echo $pseudo?>'s profile</h2>
             <div class="row">
                 <div class="col-6 col-sm-12">
                     <h3>Informations.</h3>
@@ -59,8 +81,9 @@
                 </div>
                 <div class="col-6 col-sm-12">
                     <h3>Graph.</h3>
-                        <?php createGraph($id);?>
-                        <img src="<?php echo $imgpath ?>" alt="graphFreq"/>
+                        <p>Unavailable on this version of php</p>
+                        <!-- <?php // createGraph($id);?>
+                        <img src="<?php // echo $imgpath ?>" alt="graphFreq"/> -->
             	</div>
             </div>
             <div class="row">

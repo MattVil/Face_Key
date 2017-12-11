@@ -7,6 +7,7 @@
     $thisedit = "./edit.php?id=$id";
     $profile = "./profile.php?id=$id";
     $exist = false;
+    $delete = "./delete.php?id=$id";
 
     $_POST = array_filter($_POST);
     foreach($_POST as $k => $v){
@@ -42,16 +43,37 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $profile ?>" class="gradient-2">Profile</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="<?php echo $profile ?>" class="gradient-22 nava">Profile</a>
+                                    <a href="<?php echo $delete ?>" class="gradient-22 nava">Delete</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2 class="gradient-1">Edit of <?php echo $pseudo?></h2>
+            <div class="nav-post">
+            </div>
+            <h2 class="gradient-8">Edit of <?php echo $pseudo?></h2>
             <form action="<?php $thisedit ?>" method="post">
                 <ul>
                     <li> <strong>name :</strong> <input type="text" name="name" placeholder="<?php echo $name ?>"/></li>

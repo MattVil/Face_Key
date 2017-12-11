@@ -54,17 +54,37 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $acc?> " class="gradient-2">Back to con</a>
-                    <a href="<?php echo $thisdelete; ?>" class="gradient-2">Delete</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="<?php echo $acc ?>" class="gradient-22 nava">Connexion</a>
+                                    <a href="<?php echo $thisdelete ?>" class="gradient-22 nava">Delete</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2 class="gradient-1">Edit of <?php echo get_info("Sites",$id_account,"domain","id_site")?> shared with <?php echo $pseudo?></h2>
+            <div class="nav-post">
+            </div>
+            <h2 class="gradient-8">Edit of <?php echo get_info("Sites",$id_account,"domain","id_site")?> shared with <?php echo $pseudo?></h2>
             <form action="<?php $thisedit?>" method="post">
                 <ul>
                     <li> <strong>Shared with :</strong> <select name="pseudo"><?php echo get_list("Users","pseudo",$pseudo)?></select></li>

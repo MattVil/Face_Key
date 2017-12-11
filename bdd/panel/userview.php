@@ -11,16 +11,36 @@ include "include.php";
     <title>Facekey &mdash; Admin Panel</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row vcenter">
-        <div class="col-6 ">
-          <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-        </div>
-        <div class="col-6 right">
-          <a href="./index.php" class="gradient-2">Back</a>
-        </div>
-      </div>
-      <h2 class="gradient-1">User</h2>
+        <div class="container">
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-post">
+            </div>
+      <h2 class="gradient-8">User</h2>
       <div class="row">
         <div class="col-6 col-sm-12">
           <h3>Search.</h3>
@@ -58,7 +78,7 @@ include "include.php";
         <h3>Users list.</h3>
         <div class="tablediv">
           <?php
-            $query = "SELECT * FROM Users ORDER BY id_user;";
+            $query = "SELECT id_user,  name,  first_name,  pseudo,  mail,  password,  language, creation_date FROM Users ORDER BY id_user;";
             echo display_table_query($query,3);
           ?>
         </div>

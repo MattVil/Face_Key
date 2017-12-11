@@ -17,12 +17,32 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                    <h1 class="gradient-4">Facekey Admin Panel</h1>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                </div>
+                                <div class="col-4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2 class="gradient-1">Home</h2>
+            <div class="nav-post">
+            </div>
+            <h2 class="gradient-8">Home</h2>
                 <div class="row">
                 <div class="col-6 col-12-sm">
                     <h3>Access to user data.</h3>

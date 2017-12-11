@@ -8,8 +8,8 @@
     $view = "Location: $thisaccount";
     $exist = false;
 
-    $champ = " ";
-    $value = " ";
+    $champ = "id_account";
+    $value = "$id";
     $_POST = array_filter($_POST);
     foreach($_POST as $k => $v){
         if(isset($_POST[$k])){
@@ -25,14 +25,14 @@
                 $champ = insert_request_champ($k,$champ);
                 $value = insert_request_value($_POST[$k], $value);
             }
-            /*echo "ch : " . $champ . "<br>";
-            echo "val : " . $value . "<br>";
-            echo "<br>";*/
+            // echo "ch : " . $champ . "<br>";
+            // echo "val : " . $value . "<br>";
+            // echo "<br>";
             // echo "champ : $champ || value $value <br/>";
         }
     }
     if($exist){
-        //echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>";
+        // echo "<br><br><br><br>final : <br>champs = " . $champ ."<br>value = " . $value . "<br>";
         add_to_table("SharedAccount",$champ,$value);
         header($view);
     }
@@ -59,16 +59,36 @@
     </head>
     <body>
         <div class="container">
-            <div class="row vcenter">
-                <div class="col-6 ">
-                  <h1 class="gradient-4"><a href="./index.php" style="font-weight: 900;">Facekey Admin Panel</a></h1>
-                </div>
-                <div class="col-6 right">
-                    <a href="userview.php" class="gradient-2">Back</a>
-                    <a href="<?php echo $thisaccount; ?>" class="gradient-2">Connexion</a>
+            <div class="row vcenter nav-back">
+            </div>
+            <div class="row nav">
+                <div class="container">
+                    <div class="row vcenter">
+                        <div class="col-6 ">
+                            <div class="row">
+                                <h1 class="left"><a class="logo" href="./index.php">Facekey Admin Panel</a></h1>
+                            </div>
+                        </div>
+                        <div class="col-6 right">
+                            <div class="row vcenter">
+                                <div class="">
+                                </div>
+                                <div class="col-8">
+                                    <a href="<?php echo $thisaccount ?>" class="gradient-22 nava">Connexion</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="./userview.php" class="nava white">Users </a>
+                                    <a href="./siteview.php" class="nava white">Sites </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2 class="gradient-1">Share <?php echo $domain?> of <?php echo $pseudo?></h2>
+            <div class="nav-post">
+            </div>
+            <h2 class="gradient-8">Share <?php echo $domain?> of <?php echo $pseudo?></h2>
             <form action="<?php $thisedit?>" method="post">
                 <ul>
                     <li> <strong>Share with :</strong> <select name="pseudo"><?php echo get_list("Users","pseudo",0)?></select></li>
