@@ -1,6 +1,6 @@
 #include "util.h"
 
-void send_requ(int socket, int code, char* info, char* buf, int bufsize){
+void send_data(int socket, int code, char* info, char* buf, int bufsize){
 	char* str_code;
 	str_code = (char*) malloc(3*sizeof(char));
 	if (DEBUG)
@@ -47,14 +47,14 @@ char** str_split(char* str, const char sep, int *size){
 		result_temp++;
 	}
 
+	*size = count;
 	if (DEBUG)
 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
-	*size = count;
 
 	return result;
 }
 
-// int str_split(char *str, const char sep, char **splited_str){
+// int str_split(char *str, const char sep, char **splited_req){
 // 	char **result, **result_temp;
 // 	char *temp = str;
 // 	char *token;
@@ -67,23 +67,23 @@ char** str_split(char* str, const char sep, int *size){
 // 		temp++;
 // 	}
 
-// 	splited_str = NULL;
-// 	splited_str = malloc(count*sizeof(char*));
+// 	splited_req = NULL;
+// 	splited_req = malloc(count*sizeof(char*));
 
-// 	/*if (splited_str == NULL)
-// 		splited_str = malloc(count*sizeof(char*));
+// 	/*if (splited_req == NULL)
+// 		splited_req = malloc(count*sizeof(char*));
 // 	else
-// 		splited_str = realloc(splited_str, count*sizeof(char*));*/
+// 		splited_req = realloc(splited_req, count*sizeof(char*));*/
 
 // 	if (DEBUG)
 // 		printf("%s\n", str);
 
 // 	token = strtok(str, &sep);
 // 	for (i=0; i<count; i++){
-// 		splited_str[i] = strdup(token);
+// 		splited_req[i] = strdup(token);
 // 		token = strtok(NULL, &sep);
 // 	}
-// 	print_splt_str(splited_str, count);
+// 	print_splt_str(splited_req, count);
 
 // 	/*result = malloc(count*sizeof(char*));
 // 	result_temp = result;
@@ -94,7 +94,7 @@ char** str_split(char* str, const char sep, int *size){
 // 		result_temp++;
 // 	}
 // 	print_splt_str(result, count);
-// 	splited_str = result;*/
+// 	splited_req = result;*/
 
 // 	if (DEBUG)
 // 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
