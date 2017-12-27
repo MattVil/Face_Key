@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifdef __APPLE__
 #include <libpq-fe.h>
@@ -14,3 +15,4 @@
 
 void db_exit_nicely(PGconn *conn);
 void db_display_result(PGresult *result);
+char* build_id_data(PGresult *result);

@@ -7,7 +7,7 @@
 #include <arpa/inet.h>
 
 #define DEBUG 1
-#define BUF_SIZE 80
+#define BUF_SIZE 1000
 
 //Codes Client -> Serveur
 #define IDS_REQU 100
@@ -20,6 +20,11 @@
 
 //Codes d'erreurs
 #define UKNWREQ 400
+#define MISSING 401
+
+//Commande Serveur
+#define SHUTDOWN 999
+#define SHUTD_PW ((char *)"ketchup\n")
 
 void send_data(int socket, int code, char* info, char* buf, int bufsize);
 char** str_split(char* str, char sep, int *size);

@@ -29,9 +29,9 @@ int main(){
     	printf("Connection to database successed !\n");
 
 	/*Socket configuration*/
-	serv_addr.sin_family = AF_INET ;
-	serv_addr.sin_addr.s_addr = INADDR_ANY ;
-	serv_addr.sin_port = htons(5000) ;
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_addr.s_addr = INADDR_ANY;
+	serv_addr.sin_port = htons(5000);
 	memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
 
 	s_ecoute = socket(PF_INET, SOCK_STREAM, 0);
@@ -55,9 +55,58 @@ int main(){
 
 
 	switch(atoi(splited_req[0])){
+
 		case IDS_REQU:
 			if (DEBUG)
 				printf("ID Request on: %s\n",splited_req[1]);
+			splited_data = str_split(splited_req[1], ',', &splited_data_size);
+			if ((splited_data_size) != 2){
+				send_data(s_dial, 401, "Missing Data", buf, sizeof(buf));
+				break;
+			}
+			if (DEBUG)
+				print_splt_str(splited_data, splited_data_size);
+			char *domain = splited_data[0];
+			char *userid = splited_data[1];
+			sprintf(query, "SELECT id_account, login FROM Account INNER JOIN Sites ON account.id_site = sites.id_site WHERE account.id_user = '%s' AND domain = '%s';", userid, domain);
+			if(DEBUG)
+				printf("Query: %s\n", query);
+			result = PQexec(conn, query);
+			if (DEBUG)
+				db_display_result(result);
+			char *accessibleAccountPartOne = build_id_data(result);
+			PQclear(result);
+			sprintf(query, "SELECT Account.id_account, Account.login FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = '%s' AND domain = '%s';", userid, domain);
+			if(DEBUG)
+				printf("Query: %s\n", query);
+			result = PQexec(conn, query);
+			if (DEBUG)
+				db_display_result(result);
+			char *accessibleAccountPartTwo = build_id_data(result);
+			PQclear(result);
+
+			char *data;
+			int data_size = strlen(accessibleAccountPartOne) + strlen(accessibleAccountPartTwo);
+			data = malloc((data_size + 1)*sizeof(char));
+			printf("%s\n", accessibleAccountPartOne);
+			printf("%s\n", accessibleAccountPartTwo);
+			if ((strlen(accessibleAccountPartOne) != 0) && (strlen(accessibleAccountPartTwo) != 0)){
+				sprintf(data, "%s,%s", accessibleAccountPartOne, accessibleAccountPartTwo);
+				send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
+			}
+			else if (strlen(accessibleAccountPartTwo) == 0){
+				data = accessibleAccountPartOne;
+				send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
+			}
+			else if (strlen(accessibleAccountPartOne) == 0){
+				data = accessibleAccountPartTwo;
+				send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
+			}
+			else{
+				data = "0";
+				send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
+			}
+			free(data);
 			break;
 
 		case PSSW_REQU:
@@ -66,7 +115,7 @@ int main(){
 			splited_data = str_split(splited_req[1], ',', &splited_data_size);
 			if (DEBUG)
 				print_splt_str(splited_data, splited_data_size);
-			sprintf(query, "SELECT password FROM Account WHERE id_account='%s'", splited_data[0]);
+			sprintf(query, "SELECT password FROM Account WHERE id_account='%s';", splited_data[0]);
 			if(DEBUG)
 				printf("Query: %s\n", query);
 			result = PQexec(conn, query);
@@ -80,7 +129,7 @@ int main(){
 			break;
 
 		default:
-			send_data(s_dial, 400, "Unknown Request", buf, sizeof(buf));
+			send_data(s_dial, UKNWREQ, "Unknown Request", buf, sizeof(buf));
 			break;
 	}
 
