@@ -60,3 +60,8 @@ void print_splt_str(char **tab, int size){
 		printf("PART %d: %s\n", i+1, tab[i]);
 	}
 }
+
+void recv_data(int socket, char *buf){
+	memset(buf, 0, BUF_SIZE);
+	read(socket, buf, BUF_SIZE);
+}
