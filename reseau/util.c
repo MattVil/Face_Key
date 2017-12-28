@@ -28,6 +28,8 @@ char** str_split(char* str, const char sep, int *size){
 	char **result, **result_temp;
 	char *temp = str;
 	char *token;
+	char *toksep = malloc(sizeof(char));
+	*toksep = sep;
 	int count = 1;
 	int i;
 
@@ -37,19 +39,24 @@ char** str_split(char* str, const char sep, int *size){
 		temp++;
 	}
 
+	if (DEBUG)
+		printf("Separator found %d times\n", count - 1);
+
 	result = malloc(count*sizeof(char*));
 	result_temp = result;
 
-	token = strtok(str, &sep);
+	token = strtok(str, toksep);
 	while(token != NULL) {
 		*result_temp = strdup(token);
-		token = strtok(NULL, &sep);
+		token = strtok(NULL, toksep);
 		result_temp++;
 	}
 
 	*size = count;
 	if (DEBUG)
 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
+
+	free(toksep);
 
 	return result;
 }

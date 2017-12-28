@@ -13,6 +13,7 @@
 #define IDS_REQU 100
 #define PSSW_REQU 101
 #define PICGPS_UPDT 102
+#define AUTH 103
 
 //Codes Serveur -> Client
 #define IDS_SD 200

@@ -55,8 +55,20 @@ int main(){
 	if (DEBUG)
 		print_splt_str(splited_req, splited_req_size);
 
+	char *login, *pssw;
+
 
 	switch(atoi(splited_req[0])){
+		case AUTH:
+			if (DEBUG)
+				printf("Auth request on: %s\n", splited_req[1]);
+			splited_data = str_split(splited_req[1], 44/* = ','*/, &splited_data_size);
+			if (DEBUG)
+				print_splt_str(splited_data, splited_data_size);
+			login = splited_data[0]; pssw = splited_data[1];
+			if (DEBUG)
+				printf("%s/%s\n", login, pssw);
+			break;
 
 		case IDS_REQU:
 			if (DEBUG)
