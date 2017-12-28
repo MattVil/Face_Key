@@ -54,54 +54,6 @@ char** str_split(char* str, const char sep, int *size){
 	return result;
 }
 
-// int str_split(char *str, const char sep, char **splited_req){
-// 	char **result, **result_temp;
-// 	char *temp = str;
-// 	char *token;
-// 	int count = 1, i;
-// 	size_t ind = 0;
-
-// 	while (*temp){
-// 		if (*temp == sep)
-// 			count++;
-// 		temp++;
-// 	}
-
-// 	splited_req = NULL;
-// 	splited_req = malloc(count*sizeof(char*));
-
-// 	/*if (splited_req == NULL)
-// 		splited_req = malloc(count*sizeof(char*));
-// 	else
-// 		splited_req = realloc(splited_req, count*sizeof(char*));*/
-
-// 	if (DEBUG)
-// 		printf("%s\n", str);
-
-// 	token = strtok(str, &sep);
-// 	for (i=0; i<count; i++){
-// 		splited_req[i] = strdup(token);
-// 		token = strtok(NULL, &sep);
-// 	}
-// 	print_splt_str(splited_req, count);
-
-// 	/*result = malloc(count*sizeof(char*));
-// 	result_temp = result;
-// 	token = strtok(str, &sep);
-// 	while(token != NULL) {
-// 		*result_temp = strdup(token);
-// 		token = strtok(NULL, &sep);
-// 		result_temp++;
-// 	}
-// 	print_splt_str(result, count);
-// 	splited_req = result;*/
-
-// 	if (DEBUG)
-// 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
-
-// 	return count;
-// }
-
 void print_splt_str(char **tab, int size){
 	int i;
 	for(i=0; i<size; i++){

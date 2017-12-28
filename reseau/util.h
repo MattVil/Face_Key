@@ -28,5 +28,4 @@
 
 void send_data(int socket, int code, char* info, char* buf, int bufsize);
 char** str_split(char* str, char sep, int *size);
-//int str_split(char* str, const char sep, char** splited_req);
 void print_splt_str(char** splited_req, int size);
