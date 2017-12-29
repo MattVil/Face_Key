@@ -52,11 +52,11 @@ int main(){
 	}
 
 	splited_req = str_split(buf, ';', &splited_req_size);
+	splited_req[splited_req_size-1] = removechar(splited_req[splited_req_size-1], '\n');
 	if (DEBUG)
 		print_splt_str(splited_req, splited_req_size);
 
 	char *login, *pssw;
-
 
 	switch(atoi(splited_req[0])){
 		case AUTH:
@@ -65,9 +65,29 @@ int main(){
 			splited_data = str_split(splited_req[1], 44/* = ','*/, &splited_data_size);
 			if (DEBUG)
 				print_splt_str(splited_data, splited_data_size);
-			login = splited_data[0]; pssw = splited_data[1];
-			if (DEBUG)
-				printf("%s/%s\n", login, pssw);
+			if (splited_data_size == 2){
+				login = splited_data[0]; pssw = splited_data[1];
+				if (DEBUG)
+					printf("%s/%s\n", login, pssw);
+				sprintf(query, "SELECT password FROM Users WHERE Users.mail = '%s';", login);
+				if (DEBUG)
+					printf("Query: %s\n", query);
+				result = PQexec(conn, query);
+				if (DEBUG)
+					printf("Number of results: %d\n", PQntuples(result));
+				if (PQntuples(result) == 0)
+					send_data(s_dial, WRG_LOGIN, "Wrong login", buf, sizeof(buf));
+				else{
+					if (strcmp(PQgetvalue(result, 0, 0), pssw) != 0)
+						send_data(s_dial, WRG_PSSW, "Wrong password", buf, sizeof(buf));
+					else 
+						send_data(s_dial, GOD, "Access granted", buf, sizeof(buf));
+				}
+				db_display_result(result);
+				PQclear(result);
+			}
+			else
+				send_data(s_dial, MISSING, "Missing data", buf, sizeof(buf));
 			break;
 
 		case IDS_REQU:

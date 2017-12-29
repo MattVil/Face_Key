@@ -4,7 +4,7 @@ server: server.o util.o dbutil.o
 	gcc server.o util.o dbutil.o -o server -lpq
 
 client: client.o util.o
-	gcc client.o -o client
+	gcc client.o util.o -o client
 
 server.o: server.c util.h
 	gcc -c server.c

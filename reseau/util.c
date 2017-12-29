@@ -39,9 +39,6 @@ char** str_split(char* str, const char sep, int *size){
 		temp++;
 	}
 
-	if (DEBUG)
-		printf("Separator found %d times\n", count - 1);
-
 	result = malloc(count*sizeof(char*));
 	result_temp = result;
 
@@ -71,4 +68,16 @@ void print_splt_str(char **tab, int size){
 void recv_data(int socket, char *buf){
 	memset(buf, 0, BUF_SIZE);
 	read(socket, buf, BUF_SIZE);
+}
+
+char* removechar(char* string, char car){
+	char *result = calloc(strlen(string), sizeof(char));
+	int i, j=0;
+	for (i=0; i<strlen(string); i++){
+		if (string[i] != car){
+			result[j] = string[i];
+			j++;
+		}
+	}
+	return result;
 }
