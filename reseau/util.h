@@ -11,15 +11,17 @@
 #include <errno.h>
 
 #define DEBUG 1
+#define FULL_DEBUG 0
 #define BUF_SIZE 1000
 #define PORT 5000
-#define TIMEOUT 30
+#define TIMEOUT 120
 #define QUEUE 5
 
 #define REQU_SEP 58
 #define DATA_SEP 44
 
 //Diagramme Codes
+#define OK 000
 #define CONNEXION 001
 #define CREATION 002
 #define UPDATE 003
@@ -39,6 +41,8 @@
 #define MISSING 401
 #define WRG_LOGIN 402
 #define WRG_PSSW 403
+#define ERR_TIMEOUT 405
+#define FORBIDDEN_REQU 406
 
 //Commande Serveur
 #define SHUTDOWN 999
@@ -51,3 +55,4 @@ void print_splt_str(char** splited_req, int size);
 int recv_data(int socket, char *buf);
 char* removechar(char* string, char car);
 int getCode(char *message);
+int getData(char* message, char** data);

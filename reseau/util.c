@@ -8,14 +8,14 @@ void send_data(int socket, int code, char* info, char* buf, int bufsize){
 
 	//itoa(code, str_code, 10);
 	sprintf(str_code, "%d", code);
-	if (DEBUG)
+	if (FULL_DEBUG)
 		printf("\tCODE CONVERTED IN STRING\n");
 	memset(buf, 0, bufsize);
-	if (DEBUG)
+	if (FULL_DEBUG)
 		printf("\tBUFFER CLEARED\n");
 	strcat(str_code, ";");
 	strcpy(buf, strcat(str_code, info));
-	if (DEBUG)
+	if (FULL_DEBUG)
 		printf("\tREQUEST BUILD\n");
 	write(socket, buf, strlen(buf));
 	if (DEBUG)
@@ -50,7 +50,7 @@ char** str_split(char* str, const char sep, int *size){
 	}
 
 	*size = count;
-	if (DEBUG)
+	if (FULL_DEBUG)
 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
 
 	free(toksep);
@@ -90,4 +90,16 @@ int getCode(char *message){
 		return -1;
 	else
 		return atoi(splited_message[0]);
+}
+
+int getData(char* message, char** data){
+	char **splited_message;
+	int splited_message_size;
+	splited_message = str_split(message, ';', &splited_message_size);
+	if (splited_message_size != 2)
+		return 1;
+	else{
+		*data = splited_message[1];
+		return 0;
+	}
 }
