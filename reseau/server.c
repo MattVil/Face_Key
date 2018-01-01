@@ -47,7 +47,7 @@ int main(){
 	memset(buf, 0, BUF_SIZE);
 	read(s_dial, buf, BUF_SIZE);
 	if (DEBUG){
-		printf("------------MESSAGE------------\n");
+		printf("------------DIAGRAMME BEGIN------------\n");
 		printf("MESSAGE RECEIVED: %s\n", buf);
 	}
 
@@ -83,7 +83,6 @@ int main(){
 					else 
 						send_data(s_dial, GOD, "Access granted", buf, sizeof(buf));
 				}
-				db_display_result(result);
 				PQclear(result);
 			}
 			else

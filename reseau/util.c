@@ -65,9 +65,9 @@ void print_splt_str(char **tab, int size){
 	}
 }
 
-void recv_data(int socket, char *buf){
+int recv_data(int socket, char *buf){
 	memset(buf, 0, BUF_SIZE);
-	read(socket, buf, BUF_SIZE);
+	return read(socket, buf, BUF_SIZE);
 }
 
 char* removechar(char* string, char car){
@@ -80,4 +80,14 @@ char* removechar(char* string, char car){
 		}
 	}
 	return result;
+}
+
+int getCode(char *message){
+	char **splited_message;
+	int splited_message_size;
+	splited_message = str_split(message, ';', &splited_message_size);
+	if (splited_message_size != 2)
+		return -1;
+	else
+		return atoi(splited_message[0]);
 }

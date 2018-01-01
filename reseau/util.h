@@ -5,12 +5,24 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/select.h>
+#include <errno.h>
 
 #define DEBUG 1
 #define BUF_SIZE 1000
+#define PORT 5000
+#define TIMEOUT 30
+#define QUEUE 5
 
 #define REQU_SEP 58
 #define DATA_SEP 44
+
+//Diagramme Codes
+#define CONNEXION 001
+#define CREATION 002
+#define UPDATE 003
 
 //Codes Client -> Serveur
 #define IDS_REQU 100
@@ -36,5 +48,6 @@
 void send_data(int socket, int code, char* info, char* buf, int bufsize);
 char** str_split(char* str, char sep, int *size);
 void print_splt_str(char** splited_req, int size);
-void recv_data(int socket, char *buf);
+int recv_data(int socket, char *buf);
 char* removechar(char* string, char car);
+int getCode(char *message);
