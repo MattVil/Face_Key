@@ -6,6 +6,7 @@ void database_connect(PGconn* conn);
 int connect_to_client(int s_ecoute, struct sockaddr_in* cli_addr);
 void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout);
 int authentification(char* login, char* password, PGconn *conn);
+void verif_conn(PGconn* conn);
 
 int main(){
 	/*Socket var*/
@@ -72,7 +73,10 @@ int main(){
 								send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
 								break;
 							}
-							database_connect(conn);
+							//database_connect(conn);
+							split_data[1] = removechar(split_data[1], '\n');
+							conn = PQconnectdb(CONN_INFO);
+							verif_conn(conn);
 							int user_id = authentification(split_data[0], split_data[1], conn);
 							PQfinish(conn);
 							if (user_id == -1){
@@ -144,8 +148,19 @@ int connect_to_client(int s_ecoute, struct sockaddr_in* cli_addr){
 	return s_dial;
 }
 
+void verif_conn(PGconn* conn){
+	if (PQstatus(conn) != CONNECTION_OK){
+        fprintf(stderr, "Connection to database failed: %s",
+                PQerrorMessage(conn));
+        db_exit_nicely(conn);
+    }
+    else
+    	printf("Connection to database successed !\n");
+}
+
 void database_connect(PGconn* conn){
-	conn = PQconnectdb(CONN_INFO);
+	const char* conninfo = CONN_INFO;
+	conn = PQconnectdb(conninfo);
 	if (PQstatus(conn) != CONNECTION_OK){
         fprintf(stderr, "Connection to database failed: %s",
                 PQerrorMessage(conn));
@@ -173,7 +188,8 @@ int authentification(char* login, char* password, PGconn *conn){
 		printf("AUTHENTIFICATION: %s/%s\n", login, password);
 	sprintf(query, "SELECT id_user, password FROM Users WHERE Users.mail = '%s';", login);
 	result = PQexec(conn, query);
-	printf("%s\n", query);
+	if (FULL_DEBUG)
+		db_display_result(result);
 	if (PQntuples(result) == 0){
 		// if (DEBUG)
 		// 	printf("AUTHENTIFICATION: Wrong Login\n");
