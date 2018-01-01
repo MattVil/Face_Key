@@ -43,6 +43,7 @@
 #define WRG_PSSW 403
 #define ERR_TIMEOUT 405
 #define FORBIDDEN_REQU 406
+#define NO_ACC 407
 
 //Commande Serveur
 #define SHUTDOWN 999
