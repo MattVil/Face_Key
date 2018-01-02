@@ -1,14 +1,13 @@
 #include "util.h"
 
-#define WORDY_DEBUG 0
-#define ID_CLIENT 1
 
-
+int first_conn_routine(char buf[BUF_SIZE]);
 int conn_to_website_routine(char buf[BUF_SIZE]);
 
 
 char* IP_SERV = "127.0.0.1";
 int PORT_SERV = 5000;
+int ID_CLIENT = 1;
 
 int main(int argc, char const *argv[]) {
 
@@ -28,10 +27,11 @@ int main(int argc, char const *argv[]) {
 
   /*connexion*/
   //connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-  if(WORDY_DEBUG)
-    printf("connexion au serveur OK\n");
+  if(DEBUG)
+    printf("\t### Connexion au serveur OK\n");
 
   char choise;
+  int flag;
 
   printf("-----------------------------------------\n");
   printf("|\t\t\t\t\t|\n");
@@ -58,7 +58,8 @@ int main(int argc, char const *argv[]) {
       case 'p': //premiere connexion,creation du compte FK
         break;
       case 'c': //connexion à un site
-        conn_to_website_routine(buf);
+        flag = conn_to_website_routine(buf);
+        if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
         break;
       case 'u': //update quotidienne des poids du réseau
         break;
@@ -79,7 +80,7 @@ int main(int argc, char const *argv[]) {
   return 0;
 }
 
-int first_conn_routine(/*...*/){
+int first_conn_routine(char buf[BUF_SIZE]){
 
 }
 
@@ -92,6 +93,24 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
   memset(site, 0, 50);
   memset(buf, 0, BUF_SIZE);
 
+  /*Demande de connexion*/
+  strcpy(buf, "001;");
+  if(DEBUG)
+    printf("\t### Message envoyé : %s\n", buf);
+  //write(s_cli, buf, strlen(buf));
+
+  memset(buf, 0, BUF_SIZE);
+  strcpy(buf, "000;0K");
+  //read(buf, 0, BUF_SIZE);
+  if(DEBUG)
+    printf("\t### Message recu : %s\n", buf);
+  splited_req = str_split(buf, ';', &splited_req_size);
+  if(atoi(splited_req[0]) != OK){
+    if(DEBUG)
+      printf("\t### Permission de connexion au serveur refusé.\n");
+    return 0;
+  }
+
   /*demande utilisateur*/
   printf("Veuillez choisir le site auquel se connecter : \t");
   scanf("%s", site);
@@ -99,6 +118,7 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
   printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
 
   /*Envoie 100;site;ID_CLIENT*/
+  memset(buf, 0, BUF_SIZE);
   strcpy(buf, "100");
   strcat(buf, ";");
   strcat(buf, site);
@@ -128,8 +148,12 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
       int num_choice;
       scanf("%d", &num_choice);
 
-      if(num_choice<0 || num_choice>splited_req_size)
+      printf("size  %d\n", splited_req_size);
+      if(num_choice<0 || num_choice>splited_req_size-1){
+        if(DEBUG)
+          printf("\t### Erreur dans la selection du compte\n");
         return 0;
+      }
 
       /*construction de la chaine d'envoi*/
       memset(buf, 0, BUF_SIZE);
