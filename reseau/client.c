@@ -56,6 +56,8 @@ int main(int argc, char const *argv[]) {
 
     switch(choise){
       case 'p': //premiere connexion,creation du compte FK
+        flag = first_conn_routine(buf);
+        if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
         break;
       case 'c': //connexion à un site
         flag = conn_to_website_routine(buf);
@@ -82,6 +84,120 @@ int main(int argc, char const *argv[]) {
 
 int first_conn_routine(char buf[BUF_SIZE]){
 
+  char mail[50], pseudo[50], mdp[50], mdp_confirmation[50];
+  char **splited_req;
+  int splited_req_size;
+  int login_ok = 0, mdp_ok = 0;
+  memset(mail, 0, 50);
+  memset(pseudo, 0, 50);
+  memset(buf, 0, BUF_SIZE);
+
+  /*Demande de creation*/
+  strcpy(buf, "002;");
+  if(DEBUG)
+    printf("\t### Message envoyé : %s\n", buf);
+  //write(s_cli, buf, strlen(buf));
+
+  memset(buf, 0, BUF_SIZE);
+  //read(s_cli, buf, BUF_SIZE);
+  strcpy(buf, "000;0K");//exemple
+  if(DEBUG)
+    printf("\t### Message recu : %s\n", buf);
+  splited_req = str_split(buf, ';', &splited_req_size);
+  if(atoi(splited_req[0]) != OK){
+    if(DEBUG)
+      printf("\t### Permission de connexion au serveur refusé.\n");
+    return 0;
+  }
+
+  while(!login_ok){
+
+    /*Demande utilisateur*/
+    printf("Votre adresse mail ('quit' pour quitter) : ");
+    scanf("%s", mail);
+    if(strcmp(mail, "quit") == 0)
+      return 2;
+    printf("Votre pseudo : ");
+    scanf("%s", pseudo);
+
+    /*envoi*/
+    memset(buf, 0, BUF_SIZE);
+    strcpy(buf, "110;");
+    strcat(buf, mail);
+    strcat(buf, ";");
+    strcat(buf, pseudo);
+
+    if(DEBUG)
+      printf("\t### Message envoyé : %s\n", buf);
+    //write(s_cli, buf, strlen(buf));
+
+    /*reponse*/
+    memset(buf, 0, BUF_SIZE);
+    //read(s_cli, buf, BUF_SIZE);
+    strcpy(buf, "000");//exemples
+    if(DEBUG)
+      printf("\t### Message recu : %s\n", buf);
+
+    splited_req = str_split(buf, ';', &splited_req_size);
+    switch(atoi(splited_req[0])){
+      case OK :
+        login_ok = 1;
+        break;
+      case ERR_MAIL :
+        printf("Ce mail est déjà utilisé\n");
+        break;
+      case ERR_PSEUDO :
+        printf("Ce pseudo est déjà utilisé\n");
+        break;
+      default :
+        if(DEBUG)
+          printf("\t### Erreur dans le code recu : %s\n", buf);
+        printf("Une erreur est survenue :(\n");
+        return 0;
+        break;
+    }
+  }
+
+  /*Demande et verif des MDPs*/
+  while(!mdp_ok){
+    printf("Votre mot de passe ('quit' pour quitter) : ");
+    scanf("%s", mdp);
+
+    if(strcmp(mdp, "quit") == 0)
+      return 2;
+
+    printf("Confirmé votre mot de passe : ");
+    scanf("%s", mdp_confirmation);
+
+    if(strcmp(mdp, mdp_confirmation) == 0)
+      mdp_ok = 1;
+
+    if(FULL_DEBUG)
+      printf("\t### %s = %s ? -> %d\n", mdp, mdp_confirmation, mdp_ok);
+
+    if(strlen(mdp) < 10){
+      printf("Votre mot de passe n'est pas assez complexe, 10 caractère minimum\n");
+      mdp_ok = 0;
+    }
+  }
+
+  memset(buf, 0, BUF_SIZE);
+  strcpy(buf, "111;");
+  strcat(buf, mdp);
+  //write(s_cli, buf, BUF_SIZE);
+  if(DEBUG)
+    printf("\t### Message envoyé : %s\n", buf);
+
+  memset(buf, 0, BUF_SIZE);
+  //read(s_cli, buf, BUF_SIZE);
+  strcpy(buf, "000");//exemple
+  splited_req = str_split(buf, ';', &splited_req_size);
+  if(atoi(splited_req[0]) != OK)
+    return 0;
+  printf("Mot de passe enregistré sur le serveur\n");
+
+  return 1;
+
 }
 
 int conn_to_website_routine(char buf[BUF_SIZE]){
@@ -100,8 +216,8 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
   //write(s_cli, buf, strlen(buf));
 
   memset(buf, 0, BUF_SIZE);
-  strcpy(buf, "000;0K");
-  //read(buf, 0, BUF_SIZE);
+  //read(s_cli, buf, BUF_SIZE);
+  strcpy(buf, "000;0K");//exemple
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
@@ -132,7 +248,7 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
 
   /*Reception de la liste des comptes pour ce sites*/
   memset(buf, 0, BUF_SIZE);
-  //read(buf, 0, BUF_SIZE);
+  //read(s_cli, buf, BUF_SIZE);
   strcpy(buf, "200;mattvil@gmail.com;jean@ucp.fr;jack@mit.com"); //exemple
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
@@ -165,7 +281,7 @@ int conn_to_website_routine(char buf[BUF_SIZE]){
       //write(s_cli, buf, strlen(buf));
 
       memset(buf, 0, BUF_SIZE);
-      //read(buf, 0, BUF_SIZE);
+      //read(s_cli, buf, BUF_SIZE);
       strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
       if(DEBUG)
         printf("\t### Message recu : %s\n", buf);
