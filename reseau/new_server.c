@@ -14,11 +14,14 @@ void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout);
 int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
+char* extractPssw(int id, PGconn* conn);
+//Account List Function
 AccountList insert(char* mail, int id_account, AccountList list);
 AccountList createNode(char* mail, int account_id);
 void displayAccountList(AccountList list);
 AccountList addToList(PGresult *result, AccountList list);
 AccountList freeAccountList(AccountList list);
+int extractID(AccountList list, char* mail);
 
 int main(){
 	/*Socket var*/
@@ -40,7 +43,7 @@ int main(){
 	char *data, temp_buf[BUF_SIZE], **split_data;
 	int split_data_size;
 	AccountList list = NULL;
-	int code;
+	int code, account_id;
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -142,7 +145,6 @@ int main(){
 				strcpy(temp_buf, buf);
 				getData(temp_buf, &data);
 				if (code != IDS_REQU){
-					printf("%d\n", IDS_REQU);
 					if (DEBUG)
 						printf("CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", code);
 					send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
@@ -162,6 +164,51 @@ int main(){
 				//printf("%d\n", (list == NULL));
 				if (DEBUG)
 					displayAccountList(list);
+				PQfinish(conn);
+
+				//PSSW_RQ
+				timeout_config(s_dial, &readfds, &timeout);
+				select_tt = select(5, &readfds, NULL, NULL, &timeout);
+				if (!select_tt){
+					if (DEBUG)
+						printf("CONNEXION: PSSW_REQU timeout\n");
+					send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+					break;
+				}
+				read_tt = recv_data(s_dial, buf);
+				if (read_tt == -1){
+					if (DEBUG)
+						printf("CONNEXION: Read failed\n");
+					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+					break;
+				}
+				printf("MESSAGE RECEIVED: %s\n", buf);
+				strcpy(temp_buf, buf);
+				code = getCode(temp_buf);
+				strcpy(temp_buf, buf);
+				getData(temp_buf, &data);
+				if (code != PSSW_REQU){
+					if (DEBUG)
+						printf("CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", code);
+					send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+					break;
+				}
+				account_id = extractID(list, removechar(data, '\n'));
+				if (account_id == -1){
+					if (DEBUG)
+						printf("CONNEXION: (PSSW_REQU) The Account List is empty\n");
+					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+					break;
+				}
+				else if(account_id == -2){
+					if (DEBUG)
+						printf("CONNEXION: (PSSW_REQU) No ID matching with Login given (%s)\n", data);
+					send_data(s_dial, ERR_MATCH_ID, "The Login provided is not an option", buf, sizeof(buf));
+					break;
+				}
+				conn = PQconnectdb(CONN_INFO);
+				verif_conn(conn);
+				send_data(s_dial, PSSW_SD, extractPssw(account_id, conn), buf, sizeof(buf));
 				PQfinish(conn);
 
 				//END
@@ -323,6 +370,22 @@ void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, Acco
 	}
 }
 
+char* extractPssw(int id, PGconn* conn){
+	char query[500];
+	PGresult *result;
+	char* pssw;
+
+	if(DEBUG)
+		printf("Extracting Password ...\n");
+
+	sprintf(query, "SELECT password FROM Account WHERE id_account='%d'", id);
+	result = PQexec(conn, query);
+	pssw = PQgetvalue(result, 0, 0);
+	PQclear(result);
+
+	return pssw;
+}
+
 AccountList insert(char* mail, int id_account, AccountList list){
 	AccountList temp = list;
 	if (list == NULL){
@@ -348,7 +411,7 @@ AccountList createNode(char* mail, int account_id){
 void displayAccountList(AccountList list){
 	AccountList temp = list;
 	if (temp == NULL)
-		printf("No account in the AccountList");
+		printf("No account in the AccountList\n");
 	else{
 		printf("Account List:\n");
 		while(temp != NULL){
@@ -372,4 +435,20 @@ AccountList freeAccountList(AccountList list){
 	if (list != NULL)
 		free(list);
 	return NULL;
+}
+
+int extractID(AccountList list, char* mail){
+	if (DEBUG)
+		printf("Extracting ID ...\n");
+	AccountList temp = list;
+	if (temp == NULL)
+		return -1;
+	else{
+		while (temp != NULL){
+			if (strcmp(temp->mail, mail) == 0)
+				return temp->account_id;
+			temp = temp->next;
+		}
+		return -2;
+	}
 }

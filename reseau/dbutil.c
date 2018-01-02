@@ -28,8 +28,8 @@ char* build_id_data(PGresult *result){
 	data = calloc(bytes_count, sizeof(char));
 
 	for (i=0;i<PQntuples(result);i++){
-		for (j=0; j<PQnfields(result);j++){
-			if ((i == 0) && (j == 0)){
+		for (j=/*0*/1; j<PQnfields(result);/*j++*/j+=2){
+			if ((i == 0) && (j == /*0*/1)){
 				sprintf(data, "%s", PQgetvalue(result, i, j));
 			}
 			else{

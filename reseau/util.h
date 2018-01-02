@@ -11,7 +11,7 @@
 #include <errno.h>
 
 #define DEBUG 1
-#define FULL_DEBUG 0
+#define FULL_DEBUG 1
 #define BUF_SIZE 1000
 #define PORT 5000
 #define TIMEOUT 120
@@ -44,6 +44,7 @@
 #define ERR_TIMEOUT 405
 #define FORBIDDEN_REQU 406
 #define NO_ACC 407
+#define ERR_MATCH_ID 408
 
 //Commande Serveur
 #define SHUTDOWN 999

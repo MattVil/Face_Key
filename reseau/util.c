@@ -42,6 +42,8 @@ char** str_split(char* str, const char sep, int *size){
 	result = malloc(count*sizeof(char*));
 	result_temp = result;
 
+	if (FULL_DEBUG)
+		printf("Separator: %c(%s)\n", *toksep, toksep);
 	token = strtok(str, toksep);
 	while(token != NULL) {
 		*result_temp = strdup(token);
@@ -86,6 +88,12 @@ int getCode(char *message){
 	char **splited_message;
 	int splited_message_size;
 	splited_message = str_split(message, ';', &splited_message_size);
+	if (FULL_DEBUG){
+		int i;
+		for (i=0; i< splited_message_size; i++)
+			printf("%s/", splited_message[i]);
+		printf("\n");
+	}
 	if (splited_message_size != 2)
 		return -1;
 	else
@@ -99,7 +107,7 @@ int getData(char* message, char** data){
 	if (splited_message_size != 2)
 		return 1;
 	else{
-		*data = splited_message[1];
+		*data = removechar(splited_message[1], '\n');
 		return 0;
 	}
 }
