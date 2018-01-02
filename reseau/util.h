@@ -11,7 +11,7 @@
 #include <errno.h>
 
 #define DEBUG 1
-#define FULL_DEBUG 1
+#define FULL_DEBUG 0
 #define BUF_SIZE 1000
 #define PORT 5000
 #define TIMEOUT 120
