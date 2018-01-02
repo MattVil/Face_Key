@@ -13,8 +13,9 @@ void send_data(int socket, int code, char* info, char* buf, int bufsize){
 	memset(buf, 0, bufsize);
 	if (FULL_DEBUG)
 		printf("\tBUFFER CLEARED\n");
-	strcat(str_code, ";");
-	strcpy(buf, strcat(str_code, info));
+	/*strcat(str_code, ";");
+	strcpy(buf, strcat(str_code, info));*/
+	sprintf(buf, "%s;%s", str_code, info);
 	if (FULL_DEBUG)
 		printf("\tREQUEST BUILD\n");
 	write(socket, buf, strlen(buf));
@@ -28,8 +29,9 @@ char** str_split(char* str, const char sep, int *size){
 	char **result, **result_temp;
 	char *temp = str;
 	char *token;
-	char *toksep = malloc(sizeof(char));
-	*toksep = sep;
+	/*char *toksep = malloc(sizeof(char));
+	*toksep = sep;*/
+	char toksep[10]; sprintf(toksep, "%c%c%c%c", sep, sep, sep, sep);
 	int count = 1;
 	int i;
 
@@ -42,8 +44,11 @@ char** str_split(char* str, const char sep, int *size){
 	result = malloc(count*sizeof(char*));
 	result_temp = result;
 
-	if (FULL_DEBUG)
-		printf("Separator: %c(%s)\n", *toksep, toksep);
+	if (FULL_DEBUG){
+		printf("String: %s\n", str);
+		//printf("Separator: %c -->%c(%s)\n", sep, *toksep, toksep);
+		printf("Separator: %c --> %s\n", sep, toksep);
+	}
 	token = strtok(str, toksep);
 	while(token != NULL) {
 		*result_temp = strdup(token);
@@ -55,7 +60,7 @@ char** str_split(char* str, const char sep, int *size){
 	if (FULL_DEBUG)
 		printf("MESSAGE SPLITTED: %d PART(S)\n", count);
 
-	free(toksep);
+	//free(toksep);
 
 	return result;
 }
@@ -104,6 +109,12 @@ int getData(char* message, char** data){
 	char **splited_message;
 	int splited_message_size;
 	splited_message = str_split(message, ';', &splited_message_size);
+	if (FULL_DEBUG){
+		int i;
+		for (i=0; i< splited_message_size; i++)
+			printf("%s/", splited_message[i]);
+		printf("\n");
+	}
 	if (splited_message_size != 2)
 		return 1;
 	else{
