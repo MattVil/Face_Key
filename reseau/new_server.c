@@ -319,7 +319,7 @@ void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, Acco
 	}
 	else{
 		data = "";
-		send_data(s_dial, NO_ACCESS_ACCOUNT, "There is no accessible account for this website", buf, sizeof(buf));
+		send_data(s_dial, NO_ACC, "There is no accessible account for this website", buf, sizeof(buf));
 	}
 }
 
