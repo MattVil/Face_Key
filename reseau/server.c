@@ -47,7 +47,6 @@ int main(){
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
-	s_dial = connect_to_client(s_ecoute, &cli_addr);
 
 	// timeout_config(s_dial, &readfds, &timeout);
 	// select_tt = select(5, &readfds, NULL, NULL, &timeout);
@@ -61,183 +60,194 @@ int main(){
 	// 		printf("%s\n", buf);
 	// }
 
+	while (1){
+		s_dial = connect_to_client(s_ecoute, &cli_addr);
 
-	read_tt = recv_data(s_dial, buf);
-	if (read_tt != -1){
-		printf("MESSAGE RECEIVED: %s\n", buf);
-		switch(getCode(buf)){
-			case CONNEXION:
-				send_data(s_dial, OK, "OK", buf, sizeof(buf));
-
-				//AUTHENTIFICATION
-				timeout_config(s_dial, &readfds, &timeout);
-				select_tt = select(5, &readfds, NULL, NULL, &timeout);
-				if (!select_tt){
-					if (DEBUG)
-						printf("CONNEXION: Auth timeout\n");
-					send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
-					break;
-				}
-				read_tt = recv_data(s_dial, buf);
-				if (read_tt == -1){
-					if (DEBUG)
-						printf("CONNEXION: Read failed\n");
-					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-					break;
-				}
+		if (fork() == 0){
+			read_tt = recv_data(s_dial, buf);
+			if (read_tt != -1){
 				printf("MESSAGE RECEIVED: %s\n", buf);
-				strcpy(temp_buf, buf);
-				code = getCode(temp_buf);
-				strcpy(temp_buf, buf);
-				getData(temp_buf, &data);
-				if (code != AUTH){
-					if (DEBUG)
-						printf("CONNEXION: (AUTH) Code unrecognized at this point (%d)\n", code);
-					send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
-					break;
+				switch(getCode(buf)){
+					case CONNEXION:
+						send_data(s_dial, OK, "OK", buf, sizeof(buf));
+
+						//AUTHENTIFICATION
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("CONNEXION: Auth timeout\n");
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("CONNEXION: Read failed\n");
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("MESSAGE RECEIVED: %s\n", buf);
+						strcpy(temp_buf, buf);
+						code = getCode(temp_buf);
+						strcpy(temp_buf, buf);
+						getData(temp_buf, &data);
+						if (code != AUTH){
+							if (DEBUG)
+								printf("CONNEXION: (AUTH) Code unrecognized at this point (%d)\n", code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 2){
+							if (DEBUG)
+								printf("AUTHENTIFICATION: Too much or not enough data\n");
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						//database_connect(conn);
+						split_data[1] = removechar(split_data[1], '\n');
+						conn = PQconnectdb(CONN_INFO);
+						verif_conn(conn);
+						int user_id = authentification(split_data[0], split_data[1], conn);
+						PQfinish(conn);
+						if (user_id == -1){
+							if (DEBUG)
+								printf("AUTHENTIFICATION: Wrong Login\n");
+							send_data(s_dial, WRG_LOGIN, "Wrong login", buf, sizeof(buf));
+							break;
+						}
+						else if (user_id == -2){
+							if (DEBUG)
+								printf("AUTHENTIFICATION: Wrong Password\n");
+							send_data(s_dial, WRG_PSSW, "Wrong Password", buf, sizeof(buf));
+							break;
+						}
+						send_data(s_dial, OK, "You're logged in", buf, sizeof(buf));
+
+						//DOMAIN
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("CONNEXION: IDS_REQU timeout\n");
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("CONNEXION: Read failed\n");
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("MESSAGE RECEIVED: %s\n", buf);
+						strcpy(temp_buf, buf);
+						code = getCode(temp_buf);
+						strcpy(temp_buf, buf);
+						getData(temp_buf, &data);
+						if (code != IDS_REQU){
+							if (DEBUG)
+								printf("CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 1){
+							if (DEBUG)
+								printf("IDS_REQU: Too much or not enough data\n");
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						split_data[0] = removechar(split_data[0], '\n');
+						conn = PQconnectdb(CONN_INFO);
+						verif_conn(conn);
+						idrequ(split_data[0], user_id, s_dial, conn, buf, &list);
+						//printf("%d\n", (list == NULL));
+						if (DEBUG)
+							displayAccountList(list);
+						PQfinish(conn);
+
+						//PSSW_RQ
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("CONNEXION: PSSW_REQU timeout\n");
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("CONNEXION: Read failed\n");
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("MESSAGE RECEIVED: %s\n", buf);
+						strcpy(temp_buf, buf);
+						code = getCode(temp_buf);
+						strcpy(temp_buf, buf);
+						getData(temp_buf, &data);
+						if (code != PSSW_REQU){
+							if (DEBUG)
+								printf("CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						account_id = extractID(list, removechar(data, '\n'));
+						if (account_id == -1){
+							if (DEBUG)
+								printf("CONNEXION: (PSSW_REQU) The Account List is empty\n");
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						else if(account_id == -2){
+							if (DEBUG)
+								printf("CONNEXION: (PSSW_REQU) No ID matching with Login given (%s)\n", data);
+							send_data(s_dial, ERR_MATCH_ID, "The Login provided is not an option", buf, sizeof(buf));
+							break;
+						}
+						conn = PQconnectdb(CONN_INFO);
+						verif_conn(conn);
+						send_data(s_dial, PSSW_SD, extractPssw(account_id, conn), buf, sizeof(buf));
+						PQfinish(conn);
+
+						//END
+						list = freeAccountList(list);
+						break;
+
+					case CREATION:
+						break;
+					case UPDATE:
+						break;
+					case -1:
+						if (DEBUG)
+							printf("The message is not well formed\n");
+						send_data(s_dial, MISSING, "The message is not well formed", buf, sizeof(buf));
+						break;
+					default:
+						printf("Code unrecognized at this point\n");
+						break;
 				}
-				split_data = str_split(data, ',', &split_data_size);
-				if (split_data_size != 2){
-					if (DEBUG)
-						printf("AUTHENTIFICATION: Too much or not enough data\n");
-					send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
-					break;
-				}
-				//database_connect(conn);
-				split_data[1] = removechar(split_data[1], '\n');
-				conn = PQconnectdb(CONN_INFO);
-				verif_conn(conn);
-				int user_id = authentification(split_data[0], split_data[1], conn);
+			}
+			else{
+				printf("Read failed\n");
+			}
+			if (list != NULL)
+			list = freeAccountList(list);
+			if (PQstatus(conn) == CONNECTION_OK)
 				PQfinish(conn);
-				if (user_id == -1){
-					if (DEBUG)
-						printf("AUTHENTIFICATION: Wrong Login\n");
-					send_data(s_dial, WRG_LOGIN, "Wrong login", buf, sizeof(buf));
-					break;
-				}
-				else if (user_id == -2){
-					if (DEBUG)
-						printf("AUTHENTIFICATION: Wrong Password\n");
-					send_data(s_dial, WRG_PSSW, "Wrong Password", buf, sizeof(buf));
-					break;
-				}
-				send_data(s_dial, OK, "You're logged in", buf, sizeof(buf));
 
-				//DOMAIN
-				timeout_config(s_dial, &readfds, &timeout);
-				select_tt = select(5, &readfds, NULL, NULL, &timeout);
-				if (!select_tt){
-					if (DEBUG)
-						printf("CONNEXION: IDS_REQU timeout\n");
-					send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
-					break;
-				}
-				read_tt = recv_data(s_dial, buf);
-				if (read_tt == -1){
-					if (DEBUG)
-						printf("CONNEXION: Read failed\n");
-					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-					break;
-				}
-				printf("MESSAGE RECEIVED: %s\n", buf);
-				strcpy(temp_buf, buf);
-				code = getCode(temp_buf);
-				strcpy(temp_buf, buf);
-				getData(temp_buf, &data);
-				if (code != IDS_REQU){
-					if (DEBUG)
-						printf("CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", code);
-					send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
-					break;
-				}
-				split_data = str_split(data, ',', &split_data_size);
-				if (split_data_size != 1){
-					if (DEBUG)
-						printf("IDS_REQU: Too much or not enough data\n");
-					send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
-					break;
-				}
-				split_data[0] = removechar(split_data[0], '\n');
-				conn = PQconnectdb(CONN_INFO);
-				verif_conn(conn);
-				idrequ(split_data[0], user_id, s_dial, conn, buf, &list);
-				//printf("%d\n", (list == NULL));
-				if (DEBUG)
-					displayAccountList(list);
-				PQfinish(conn);
-
-				//PSSW_RQ
-				timeout_config(s_dial, &readfds, &timeout);
-				select_tt = select(5, &readfds, NULL, NULL, &timeout);
-				if (!select_tt){
-					if (DEBUG)
-						printf("CONNEXION: PSSW_REQU timeout\n");
-					send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
-					break;
-				}
-				read_tt = recv_data(s_dial, buf);
-				if (read_tt == -1){
-					if (DEBUG)
-						printf("CONNEXION: Read failed\n");
-					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-					break;
-				}
-				printf("MESSAGE RECEIVED: %s\n", buf);
-				strcpy(temp_buf, buf);
-				code = getCode(temp_buf);
-				strcpy(temp_buf, buf);
-				getData(temp_buf, &data);
-				if (code != PSSW_REQU){
-					if (DEBUG)
-						printf("CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", code);
-					send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
-					break;
-				}
-				account_id = extractID(list, removechar(data, '\n'));
-				if (account_id == -1){
-					if (DEBUG)
-						printf("CONNEXION: (PSSW_REQU) The Account List is empty\n");
-					send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-					break;
-				}
-				else if(account_id == -2){
-					if (DEBUG)
-						printf("CONNEXION: (PSSW_REQU) No ID matching with Login given (%s)\n", data);
-					send_data(s_dial, ERR_MATCH_ID, "The Login provided is not an option", buf, sizeof(buf));
-					break;
-				}
-				conn = PQconnectdb(CONN_INFO);
-				verif_conn(conn);
-				send_data(s_dial, PSSW_SD, extractPssw(account_id, conn), buf, sizeof(buf));
-				PQfinish(conn);
-
-				//END
-				list = freeAccountList(list);
-				break;
-
-			case CREATION:
-				break;
-			case UPDATE:
-				break;
-			case -1:
-				if (DEBUG)
-					printf("The message is not well formed\n");
-				send_data(s_dial, MISSING, "The message is not well formed", buf, sizeof(buf));
-				break;
-			default:
-				printf("Code unrecognized at this point\n");
-				break;
+			return 1;
 		}
-	}
-	else{
-		printf("Read failed\n");
+		close (s_dial);
 	}
 
 	if (list != NULL)
 		list = freeAccountList(list);
 	if (PQstatus(conn) == CONNECTION_OK)
 		PQfinish(conn);
-	close (s_dial);
 	close (s_ecoute);
 	return EXIT_SUCCESS;
 }
