@@ -10,7 +10,7 @@
 #include <sys/select.h>
 #include <errno.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
 #define PORT 5000
@@ -34,6 +34,7 @@
 #define AUTH 103
 #define LOG_CREA 110
 #define PSSW_CREA 111
+#define ID_INFO 112
 
 //Codes Serveur -> Client
 #define IDS_SD 200
