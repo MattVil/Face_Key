@@ -48,7 +48,7 @@
 
 //Commande Serveur
 #define SHUTDOWN 999
-#define SHUTD_PW ((char *)"ketchup\n")
+#define SHUTD_PW ((char *)"ketchup")
 #define GOD 1000
 
 void send_data(int socket, int code, char* info, char* buf, int bufsize);

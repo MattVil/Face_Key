@@ -44,6 +44,7 @@ int main(){
 	int split_data_size;
 	AccountList list = NULL;
 	int code, account_id;
+	int on = 1;
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -60,14 +61,30 @@ int main(){
 	// 		printf("%s\n", buf);
 	// }
 
-	while (1){
+	while (on){
 		s_dial = connect_to_client(s_ecoute, &cli_addr);
 
 		if (fork() == 0){
+			char trace[20];
+			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
 			if (read_tt != -1){
-				printf("MESSAGE RECEIVED: %s\n", buf);
-				switch(getCode(buf)){
+				printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+				strcpy(temp_buf, buf);
+				code = getCode(temp_buf);
+				strcpy(temp_buf, buf);
+				getData(temp_buf, &data);
+				switch(code){
+					/*case SHUTDOWN:
+						if (strcmp(removechar(data,'\n'), SHUTD_PW) == 0){
+							printf("%s Shuting down the server\n", trace);
+							on = 0;
+						}
+						else{
+							printf("%s %s tried to shutdown the server\n", trace, inet_ntoa(cli_addr.sin_addr));
+							send_data(s_dial, GOD, "Don't tease with me", buf, sizeof(buf));
+						}
+						break;*/
 					case CONNEXION:
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
@@ -76,32 +93,32 @@ int main(){
 						select_tt = select(5, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("CONNEXION: Auth timeout\n");
+								printf("%s CONNEXION: Auth timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
 						read_tt = recv_data(s_dial, buf);
 						if (read_tt == -1){
 							if (DEBUG)
-								printf("CONNEXION: Read failed\n");
+								printf("%s CONNEXION: Read failed\n", trace);
 							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
 							break;
 						}
-						printf("MESSAGE RECEIVED: %s\n", buf);
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
 						strcpy(temp_buf, buf);
 						code = getCode(temp_buf);
 						strcpy(temp_buf, buf);
 						getData(temp_buf, &data);
 						if (code != AUTH){
 							if (DEBUG)
-								printf("CONNEXION: (AUTH) Code unrecognized at this point (%d)\n", code);
+								printf("%s CONNEXION: (AUTH) Code unrecognized at this point (%d)\n", trace, code);
 							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
 							break;
 						}
 						split_data = str_split(data, ',', &split_data_size);
 						if (split_data_size != 2){
 							if (DEBUG)
-								printf("AUTHENTIFICATION: Too much or not enough data\n");
+								printf("%s AUTHENTIFICATION: Too much or not enough data\n", trace);
 							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
 							break;
 						}
@@ -113,13 +130,13 @@ int main(){
 						PQfinish(conn);
 						if (user_id == -1){
 							if (DEBUG)
-								printf("AUTHENTIFICATION: Wrong Login\n");
+								printf("%s AUTHENTIFICATION: Wrong Login\n", trace);
 							send_data(s_dial, WRG_LOGIN, "Wrong login", buf, sizeof(buf));
 							break;
 						}
 						else if (user_id == -2){
 							if (DEBUG)
-								printf("AUTHENTIFICATION: Wrong Password\n");
+								printf("%s AUTHENTIFICATION: Wrong Password\n", trace);
 							send_data(s_dial, WRG_PSSW, "Wrong Password", buf, sizeof(buf));
 							break;
 						}
@@ -130,32 +147,32 @@ int main(){
 						select_tt = select(5, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("CONNEXION: IDS_REQU timeout\n");
+								printf("%s CONNEXION: IDS_REQU timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
 						read_tt = recv_data(s_dial, buf);
 						if (read_tt == -1){
 							if (DEBUG)
-								printf("CONNEXION: Read failed\n");
+								printf("%s CONNEXION: Read failed\n", trace);
 							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
 							break;
 						}
-						printf("MESSAGE RECEIVED: %s\n", buf);
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
 						strcpy(temp_buf, buf);
 						code = getCode(temp_buf);
 						strcpy(temp_buf, buf);
 						getData(temp_buf, &data);
 						if (code != IDS_REQU){
 							if (DEBUG)
-								printf("CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", code);
+								printf("%s CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", trace, code);
 							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
 							break;
 						}
 						split_data = str_split(data, ',', &split_data_size);
 						if (split_data_size != 1){
 							if (DEBUG)
-								printf("IDS_REQU: Too much or not enough data\n");
+								printf("%s IDS_REQU: Too much or not enough data\n", trace);
 							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
 							break;
 						}
@@ -173,38 +190,38 @@ int main(){
 						select_tt = select(5, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("CONNEXION: PSSW_REQU timeout\n");
+								printf("%s CONNEXION: PSSW_REQU timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
 						read_tt = recv_data(s_dial, buf);
 						if (read_tt == -1){
 							if (DEBUG)
-								printf("CONNEXION: Read failed\n");
+								printf("%s CONNEXION: Read failed\n", trace);
 							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
 							break;
 						}
-						printf("MESSAGE RECEIVED: %s\n", buf);
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
 						strcpy(temp_buf, buf);
 						code = getCode(temp_buf);
 						strcpy(temp_buf, buf);
 						getData(temp_buf, &data);
 						if (code != PSSW_REQU){
 							if (DEBUG)
-								printf("CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", code);
+								printf("%s CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", trace, code);
 							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
 							break;
 						}
 						account_id = extractID(list, removechar(data, '\n'));
 						if (account_id == -1){
 							if (DEBUG)
-								printf("CONNEXION: (PSSW_REQU) The Account List is empty\n");
+								printf("%s CONNEXION: (PSSW_REQU) The Account List is empty\n", trace);
 							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
 							break;
 						}
 						else if(account_id == -2){
 							if (DEBUG)
-								printf("CONNEXION: (PSSW_REQU) No ID matching with Login given (%s)\n", data);
+								printf("%s CONNEXION: (PSSW_REQU) No ID matching with Login given (%s)\n", trace, data);
 							send_data(s_dial, ERR_MATCH_ID, "The Login provided is not an option", buf, sizeof(buf));
 							break;
 						}
@@ -223,11 +240,11 @@ int main(){
 						break;
 					case -1:
 						if (DEBUG)
-							printf("The message is not well formed\n");
+							printf("%s The message is not well formed\n", trace);
 						send_data(s_dial, MISSING, "The message is not well formed", buf, sizeof(buf));
 						break;
 					default:
-						printf("Code unrecognized at this point\n");
+						printf("%s Code unrecognized at this point (%d)\n", trace, code);
 						break;
 				}
 			}
