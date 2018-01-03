@@ -13,6 +13,7 @@
 #define DEBUG 1
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
+#define ONLINE 0
 #define PORT 5000
 #define TIMEOUT 120
 #define QUEUE 5
@@ -22,6 +23,7 @@
 
 //Diagramme Codes
 #define OK 000
+#define NO 999
 #define CONNEXION 001
 #define CREATION 002
 #define UPDATE 003
@@ -31,6 +33,9 @@
 #define PSSW_REQU 101
 #define PICGPS_UPDT 102
 #define AUTH 103
+#define LOG_CREA 110
+#define PSSW_CREA 111
+#define ID_INFO 112
 
 //Codes Serveur -> Client
 #define IDS_SD 200
@@ -45,6 +50,8 @@
 #define FORBIDDEN_REQU 406
 #define NO_ACC 407
 #define ERR_MATCH_ID 408
+#define ERR_MAIL 409
+#define ERR_PSEUDO 410
 
 //Commande Serveur
 #define SHUTDOWN 999

@@ -15,6 +15,9 @@ int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
 char* extractPssw(int id, PGconn* conn);
+int split_message(int *code, char** data, char *buf, int s_dial);
+int exist_mail(PGconn *conn, char *mail);
+int exist_pseudo(PGconn *conn, char *pseudo);
 //Account List Function
 AccountList insert(char* mail, int id_account, AccountList list);
 AccountList createNode(char* mail, int account_id);
@@ -45,6 +48,10 @@ int main(){
 	AccountList list = NULL;
 	int code, account_id;
 	int on = 1;
+
+	//Creation var
+	char *mail, *pseudo, *pssw, *name, *firstname, *lang;
+	int gender;
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -105,10 +112,8 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						strcpy(temp_buf, buf);
-						code = getCode(temp_buf);
-						strcpy(temp_buf, buf);
-						getData(temp_buf, &data);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
 						if (code != AUTH){
 							if (DEBUG)
 								printf("%s CONNEXION: (AUTH) Code unrecognized at this point (%d)\n", trace, code);
@@ -118,7 +123,7 @@ int main(){
 						split_data = str_split(data, ',', &split_data_size);
 						if (split_data_size != 2){
 							if (DEBUG)
-								printf("%s AUTHENTIFICATION: Too much or not enough data\n", trace);
+								printf("%s AUTHENTIFICATION: Too much or not enough data (%s)\n", trace, data);
 							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
 							break;
 						}
@@ -159,10 +164,8 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						strcpy(temp_buf, buf);
-						code = getCode(temp_buf);
-						strcpy(temp_buf, buf);
-						getData(temp_buf, &data);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
 						if (code != IDS_REQU){
 							if (DEBUG)
 								printf("%s CONNEXION: (IDS_REQU) Code unrecognized at this point (%d)\n", trace, code);
@@ -202,10 +205,8 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						strcpy(temp_buf, buf);
-						code = getCode(temp_buf);
-						strcpy(temp_buf, buf);
-						getData(temp_buf, &data);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
 						if (code != PSSW_REQU){
 							if (DEBUG)
 								printf("%s CONNEXION: (PSSW_REQU) Code unrecognized at this point (%d)\n", trace, code);
@@ -235,7 +236,138 @@ int main(){
 						break;
 
 					case CREATION:
+						send_data(s_dial, OK, "OK", buf, sizeof(buf));
+
+						//REC MAIL+PSEUDO
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Auth timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
+						if (code != LOG_CREA){
+							if (DEBUG)
+								printf("%s CREATION: (LOG_CREA) Code unrecognized at this point (%d)\n", trace, code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 2){
+							if (DEBUG)
+								printf("%s LOG_CREA: Too much or not enough data\n", trace);
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						conn = PQconnectdb(CONN_INFO);
+						if (exist_mail(conn, split_data[0])){
+							if (DEBUG)
+								printf("%s Mail provided (%s) is already used\n", trace, split_data[0]);
+							send_data(s_dial, ERR_MAIL, "Mail provided is already used, please choose another one", buf, sizeof(buf));
+							break;
+						}
+						if (exist_pseudo(conn, split_data[1])){
+							if (DEBUG)
+								printf("%s Pseudo provided (%s) is already used\n", trace, split_data[1]);
+							send_data(s_dial, ERR_MAIL, "Pseudo provided is already used, please choose another one", buf, sizeof(buf));
+							break;
+						}
+						mail = split_data[0];
+						pseudo = split_data[1];
+						PQfinish(conn);
+						send_data(s_dial, OK, "OK", buf, sizeof(buf));
+
+						//MDP
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Auth timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
+						if (code != PSSW_CREA){
+							if (DEBUG)
+								printf("%s CREATION: (PSSW_CREA) Code unrecognized at this point (%d)\n", trace, code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 1){
+							if (DEBUG)
+								printf("%s PSSW_CREA: Too much or not enough data\n", trace);
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						pssw = split_data[0];
+						send_data(s_dial, OK, "OK", buf, sizeof(buf));
+
+						//OTHER INFO
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Auth timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, &data, buf, s_dial))
+							break;
+						if (code != ID_INFO){
+							if (DEBUG)
+								printf("%s CREATION: (ID_INFO) Code unrecognized at this point (%d)\n", trace, code);
+							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+							break;
+						}
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 4){
+							if (DEBUG)
+								printf("%s ID_INFO: Too much or not enough data\n", trace);
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						gender = atoi(split_data[0]);
+						name = split_data[1];
+						firstname = split_data[2];
+						lang = split_data[3];
+						if (DEBUG){
+							printf("%s Account will be created with:\n", trace);
+							printf("\tMAIL: %s\n\tPSEUDO: %s\n\tPASSWORD: %s\n\tGENDER: %d\n\tNAME: %s\n\tFIRSTNAME: %s\n\tLANG: %s\n", mail, pseudo, pssw, gender, name, firstname, lang);
+						}
+
+						send_data(s_dial, OK, "Account created", buf, sizeof(buf));
+						
 						break;
+
 					case UPDATE:
 						break;
 					case -1:
@@ -289,10 +421,6 @@ int connect_to_client(int s_ecoute, struct sockaddr_in* cli_addr){
 	if (DEBUG)
 		printf("CLIENT CONNECTED: %s:%d\n", inet_ntoa (cli_addr->sin_addr), ntohs (cli_addr->sin_port));
 	return s_dial;
-}
-
-void verif_read(int read_tt){
-
 }
 
 void verif_conn(PGconn* conn){
@@ -422,6 +550,52 @@ char* extractPssw(int id, PGconn* conn){
 		printf("Password Extracted !\n");
 
 	return pssw;
+}
+
+int split_message(int *code, char** data, char *buf, int s_dial){
+	char temp_buf[BUF_SIZE];
+
+	buf = removechar(buf, '\n');
+	strcpy(temp_buf, buf);
+	*code = getCode(temp_buf);
+	if (*code == -1){
+		if (DEBUG)
+			printf("The message is not well formed (%s)\n", buf);
+		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
+		return 1;
+	}
+	strcpy(temp_buf, buf);
+	if (getData(temp_buf, data)){
+		if (DEBUG)
+			printf("The message is not well formed (%s)\n", buf);
+		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
+		return 1;
+	}
+	return 0;
+}
+
+int exist_mail(PGconn *conn, char *mail){
+	char query[500];
+	PGresult *result;
+
+	sprintf(query, "SELECT * FROM Users WHERE mail='%s'", mail);
+	result = PQexec(conn, query);
+	if (PQntuples(result) >= 1)
+		return 1;
+	else
+		return 0;
+}
+
+int exist_pseudo(PGconn *conn, char *pseudo){
+	char query[500];
+	PGresult *result;
+
+	sprintf(query, "SELECT * FROM Users WHERE pseudo='%s'", pseudo);
+	result = PQexec(conn, query);
+	if (PQntuples(result) >= 1)
+		return 1;
+	else
+		return 0;
 }
 
 AccountList insert(char* mail, int id_account, AccountList list){
