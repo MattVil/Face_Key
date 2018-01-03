@@ -10,9 +10,10 @@
 #include <sys/select.h>
 #include <errno.h>
 
-#define DEBUG 0
+#define DEBUG 1
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
+#define ONLINE 0
 #define PORT 5000
 #define TIMEOUT 120
 #define QUEUE 5

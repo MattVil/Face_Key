@@ -1,6 +1,5 @@
 #include "util.h"
 
-
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
 
@@ -26,7 +25,9 @@ int main(int argc, char const *argv[]) {
 	memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
 
   /*connexion*/
-  //connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+  if(ONLINE)
+    connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+
   if(DEBUG)
     printf("\t### Connexion au serveur OK\n");
 
@@ -96,11 +97,15 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   strcpy(buf, "002;");
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
-  //write(s_cli, buf, strlen(buf));
+  if(ONLINE)
+    write(s_cli, buf, strlen(buf));
 
   memset(buf, 0, BUF_SIZE);
-  //read(s_cli, buf, BUF_SIZE);
-  strcpy(buf, "000;0K");//exemple
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "000;0K");//exemple
+
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
@@ -129,12 +134,16 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
 
     if(DEBUG)
       printf("\t### Message envoyé : %s\n", buf);
-    //write(s_cli, buf, strlen(buf));
+    if(ONLINE)
+      write(s_cli, buf, strlen(buf));
 
     /*reponse*/
     memset(buf, 0, BUF_SIZE);
-    //read(s_cli, buf, BUF_SIZE);
-    strcpy(buf, "000");//exemples
+    if(ONLINE)
+      read(s_cli, buf, BUF_SIZE);
+    else
+      strcpy(buf, "000");//exemples
+
     if(DEBUG)
       printf("\t### Message recu : %s\n", buf);
 
@@ -186,13 +195,18 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   memset(buf, 0, BUF_SIZE);
   strcpy(buf, "111;");
   strcat(buf, mdp);
-  //write(s_cli, buf, BUF_SIZE);
+  if(ONLINE)
+    write(s_cli, buf, BUF_SIZE);
+
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
 
   memset(buf, 0, BUF_SIZE);
-  //read(s_cli, buf, BUF_SIZE);
-  strcpy(buf, "000");//exemple
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "000");//exemple
+
   splited_req = str_split(buf, ';', &splited_req_size);
   if(atoi(splited_req[0]) != OK){
     printf("Une erreur est survenue :(\n");
@@ -231,13 +245,18 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   strcat(buf, ";");
   strcat(buf, lang);
 
-  //write(s_cli, buf, strlen(buf));
+  if(ONLINE)
+    write(s_cli, buf, strlen(buf));
+
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
 
   memset(buf, 0, BUF_SIZE);
-  //read(s_cli, buf, BUF_SIZE);
-  strcpy(buf, "000;34");//exemple
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "000;34");//exemple
+
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
 
@@ -269,7 +288,9 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   else  {
     memset(buf, 0, BUF_SIZE);
     strcpy(buf, "115");
-    //write(s_cli, buf, strlen(buf));
+    if(ONLINE)
+      write(s_cli, buf, strlen(buf));
+
     if(DEBUG)
       printf("\t### Message envoyé : %s\n", buf);
 
@@ -298,11 +319,15 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
   strcpy(buf, "001;");
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
-  //write(s_cli, buf, strlen(buf));
+  if(ONLINE)
+    write(s_cli, buf, strlen(buf));
 
   memset(buf, 0, BUF_SIZE);
-  //read(s_cli, buf, BUF_SIZE);
-  strcpy(buf, "000;0K");//exemple
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "000;0K");//exemple
+
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
@@ -329,12 +354,16 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
   strcat(buf, tmp_id);
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
-  //write(s_cli, buf, strlen(buf));
+  if(ONLINE)
+    write(s_cli, buf, strlen(buf));
 
   /*Reception de la liste des comptes pour ce sites*/
   memset(buf, 0, BUF_SIZE);
-  //read(s_cli, buf, BUF_SIZE);
-  strcpy(buf, "200;mattvil@gmail.com;jean@ucp.fr;jack@mit.com"); //exemple
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "200;mattvil@gmail.com;jean@ucp.fr;jack@mit.com"); //exemple
+
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
@@ -345,11 +374,10 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
       printf("Voici les comptes %s auquel vous avez accès : \n", site);
       for(i=1; i<splited_req_size; i++)
         printf("\t%d - %s\n", i, splited_req[i]);
-      printf("A quel compte voulez vous vous connecter ? (choisir un numero) : \t");
+      printf("A quel compte voulez vous vous connecter ? (choisir un numero) : ");
       int num_choice;
       scanf("%d", &num_choice);
 
-      printf("size  %d\n", splited_req_size);
       if(num_choice<0 || num_choice>splited_req_size-1){
         if(DEBUG)
           printf("\t### Erreur dans la selection du compte\n");
@@ -363,11 +391,15 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
       strcat(buf, splited_req[num_choice]);
       if(DEBUG)
         printf("\t### Message envoyé : %s\n", buf);
-      //write(s_cli, buf, strlen(buf));
+      if(ONLINE)
+        write(s_cli, buf, strlen(buf));
 
       memset(buf, 0, BUF_SIZE);
-      //read(s_cli, buf, BUF_SIZE);
-      strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
+      if(ONLINE)
+        read(s_cli, buf, BUF_SIZE);
+      else
+        strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
+
       if(DEBUG)
         printf("\t### Message recu : %s\n", buf);
       splited_mdp = str_split(buf, ';', &splited_mdp_size);
