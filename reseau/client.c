@@ -85,7 +85,7 @@ int main(int argc, char const *argv[]) {
   return 0;
 }
 
-int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
+int first_conn_routine(int s_cli, char *buf){
 
   char mail[50], pseudo[50], mdp[50], mdp_confirmation[50], gender[10], name[50], first_name[50], lang[10];
   char **splited_req;
@@ -96,7 +96,7 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   memset(buf, 0, BUF_SIZE);
 
   /*Demande de creation*/
-  strcpy(buf, "002;");
+  strcpy(buf, "002;creation");
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
   if(ONLINE)
@@ -319,27 +319,29 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
 
 }
 
-int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
+int conn_to_website_routine(int s_cli, char *buf){
 
   char login[100], pssw[100];
 
+  int buf_len = sizeof(buf);
   int i;
   char site[50], password[50];
   int splited_req_size, splited_mdp_size, splited_data_size;
   char **splited_req, **splited_mdp, **splited_data;
   memset(site, 0, 50);
-  memset(buf, 0, BUF_SIZE);
+  memset(buf, 0, buf_len);
 
   /*Demande de connexion*/
-  strcpy(buf, "001;");
+  strcpy(buf, "001;connexion");
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
   if(ONLINE)
     write(s_cli, buf, strlen(buf));
 
-  memset(buf, 0, BUF_SIZE);
-  if(ONLINE)
-    read(s_cli, buf, BUF_SIZE);
+  if(ONLINE){
+    memset(buf, 0, buf_len);
+    read(s_cli, buf, sizeof(buf));
+  }
   else
     strcpy(buf, "000;0K");//exemple
 
@@ -473,9 +475,9 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
 }
 
 int weight_update_routine(/*...*/){
-
+ return 0;
 }
 
 int photo_transfer_routine(/*...*/){
-
+  return 0;
 }
