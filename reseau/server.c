@@ -131,6 +131,7 @@ int main(){
 						split_data[1] = removechar(split_data[1], '\n');
 						conn = PQconnectdb(CONN_INFO);
 						verif_conn(conn);
+						printf("%s/%s\n", split_data[0], split_data[1]);
 						int user_id = authentification(split_data[0], split_data[1], conn);
 						PQfinish(conn);
 						if (user_id == -1){
