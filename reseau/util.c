@@ -122,3 +122,30 @@ int getData(char* message, char** data){
 		return 0;
 	}
 }
+
+int read_file(char* file_name, char buf[BUF_SIZE]){
+	FILE* file = fopen(file_name, "r");
+	memset(buf, 0, BUF_SIZE);
+	int MAX = 1000;
+	char chaine[MAX];
+	memset(chaine, 0, MAX);
+
+	if(file != NULL){
+		while(fgets(chaine, MAX, file) != NULL){
+			strcat(buf, chaine);
+		}
+		fclose(file);
+		return 1;
+	}
+	return 0;
+}
+
+int write_file(char* file_name, char* buf){
+	FILE* file = fopen(file_name, "r");
+	if(file != NULL){
+		fprintf(file, "%s", buf);
+		fclose(file);
+		return 1;
+	}
+	return 0;
+}
