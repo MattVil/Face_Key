@@ -457,7 +457,7 @@ void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
 	if (FULL_DEBUG)
 		printf("TIMEOUT_SETTING: ");
 	if (DEBUG)
-		printf("Timeout set to: %ld sec %d µsec\n", timeout->tv_sec, timeout->tv_usec);
+		printf("Timeout set to: %ld sec %ld µsec\n", timeout->tv_sec, timeout->tv_usec);
 }
 
 int authentification(char* login, char* password, PGconn *conn){
