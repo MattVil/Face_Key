@@ -22,4 +22,4 @@ clean_object:
 	rm -f util.o server.o client.o
 
 clean:
-	rm -f util.o server.o client.o server client
+	rm -f util.o server.o client.o dbutil.o server client
