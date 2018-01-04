@@ -24,10 +24,6 @@ int main(int argc, char const *argv[]) {
 	serv_addr.sin_port = htons(PORT_SERV);
 	memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
 
-  /*connexion*/
-  if(ONLINE)
-    connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-
   if(DEBUG)
     printf("\t### Connexion au serveur OK\n");
 
@@ -57,11 +53,17 @@ int main(int argc, char const *argv[]) {
 
     switch(choise){
       case 'p': //premiere connexion,creation du compte FK
-        flag = first_conn_routine(s_cli, buf);
+        /*connexion*/
+        if(ONLINE)
+          connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+          flag = first_conn_routine(s_cli, buf);
         if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
         break;
       case 'c': //connexion à un site
-        flag = conn_to_website_routine(s_cli, buf);
+        /*connexion*/
+        if(ONLINE)
+          connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+          flag = conn_to_website_routine(s_cli, buf);
         if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
         break;
       case 'u': //update quotidienne des poids du réseau
@@ -129,13 +131,13 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
     memset(buf, 0, BUF_SIZE);
     strcpy(buf, "110;");
     strcat(buf, mail);
-    strcat(buf, ";");
+    strcat(buf, ",");
     strcat(buf, pseudo);
 
-    if(DEBUG)
-      printf("\t### Message envoyé : %s\n", buf);
     if(ONLINE)
       write(s_cli, buf, strlen(buf));
+    if(DEBUG)
+      printf("\t### Message envoyé : %s\n", buf);
 
     /*reponse*/
     memset(buf, 0, BUF_SIZE);
@@ -207,6 +209,9 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   else
     strcpy(buf, "000");//exemple
 
+  if(DEBUG)
+    printf("\t### Message recu : %s\n", buf);
+
   splited_req = str_split(buf, ';', &splited_req_size);
   if(atoi(splited_req[0]) != OK){
     printf("Une erreur est survenue :(\n");
@@ -218,6 +223,14 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
     memset(gender, 0, 10);
     scanf("%s", gender);
   }while(strcmp(gender, "homme") != 0 && strcmp(gender, "femme") != 0);
+  if(strcmp(gender, "homme") == 0){
+    memset(gender, 0, 10);
+    strcpy(gender, "1");
+  }
+  else{
+    memset(gender, 0, 10);
+    strcpy(gender, "0");
+  }
 
   printf("Votre nom : ");
   memset(name, 0, 50);
@@ -238,11 +251,11 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
   memset(buf, 0, BUF_SIZE);
   strcpy(buf, "112;");
   strcat(buf, gender);
-  strcat(buf, ";");
+  strcat(buf, ",");
   strcat(buf, name);
-  strcat(buf, ";");
+  strcat(buf, ",");
   strcat(buf, first_name);
-  strcat(buf, ";");
+  strcat(buf, ",");
   strcat(buf, lang);
 
   if(ONLINE)
@@ -310,8 +323,8 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
 
   int i;
   char site[50], password[50];
-  int splited_req_size, splited_mdp_size;
-  char **splited_req, **splited_mdp;
+  int splited_req_size, splited_mdp_size, splited_data_size;
+  char **splited_req, **splited_mdp, **splited_data;
   memset(site, 0, 50);
   memset(buf, 0, BUF_SIZE);
 
@@ -348,10 +361,7 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
   strcpy(buf, "100");
   strcat(buf, ";");
   strcat(buf, site);
-  strcat(buf, ";");
-  char tmp_id[20];
-  sprintf(tmp_id, "%d", ID_CLIENT);
-  strcat(buf, tmp_id);
+
   if(DEBUG)
     printf("\t### Message envoyé : %s\n", buf);
   if(ONLINE)
@@ -362,23 +372,24 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
   if(ONLINE)
     read(s_cli, buf, BUF_SIZE);
   else
-    strcpy(buf, "200;mattvil@gmail.com;jean@ucp.fr;jack@mit.com"); //exemple
+    strcpy(buf, "200;mattvil@gmail.com,jean@ucp.fr,jack@mit.com"); //exemple
 
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
+  splited_data = str_split(splited_req[1], ',', &splited_data_size);
 
   switch(atoi(splited_req[0])){
     /*Site il y a une lisye de site dispo*/
     case IDS_SD :
       printf("Voici les comptes %s auquel vous avez accès : \n", site);
-      for(i=1; i<splited_req_size; i++)
-        printf("\t%d - %s\n", i, splited_req[i]);
+      for(i=1; i<splited_data_size; i++)
+        printf("\t%d - %s\n", i, splited_req[i-1]);
       printf("A quel compte voulez vous vous connecter ? (choisir un numero) : ");
       int num_choice;
       scanf("%d", &num_choice);
 
-      if(num_choice<0 || num_choice>splited_req_size-1){
+      if(num_choice<0 || num_choice>splited_data_size-1){
         if(DEBUG)
           printf("\t### Erreur dans la selection du compte\n");
         return 0;
@@ -386,8 +397,7 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
 
       /*construction de la chaine d'envoi*/
       memset(buf, 0, BUF_SIZE);
-      strcpy(buf, "101");
-      strcat(buf, ";");
+      strcpy(buf, "101;");
       strcat(buf, splited_req[num_choice]);
       if(DEBUG)
         printf("\t### Message envoyé : %s\n", buf);

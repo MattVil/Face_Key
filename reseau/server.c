@@ -97,7 +97,7 @@ int main(){
 
 						//AUTHENTIFICATION
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CONNEXION: Auth timeout\n", trace);
@@ -149,7 +149,7 @@ int main(){
 
 						//DOMAIN
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CONNEXION: IDS_REQU timeout\n", trace);
@@ -190,7 +190,7 @@ int main(){
 
 						//PSSW_RQ
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CONNEXION: PSSW_REQU timeout\n", trace);
@@ -240,11 +240,16 @@ int main(){
 
 						//REC MAIL+PSEUDO
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+						printf("%d - %d\n", select_tt, s_dial);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CREATION: Auth timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						else if (select_tt == -1){
+							printf("Erreur\n");
 							break;
 						}
 						read_tt = recv_data(s_dial, buf);
@@ -290,7 +295,7 @@ int main(){
 
 						//MDP
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CREATION: Auth timeout\n", trace);
@@ -325,7 +330,7 @@ int main(){
 
 						//OTHER INFO
 						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(5, &readfds, NULL, NULL, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
 								printf("%s CREATION: Auth timeout\n", trace);
@@ -365,7 +370,7 @@ int main(){
 						}
 
 						send_data(s_dial, OK, "Account created", buf, sizeof(buf));
-						
+
 						break;
 
 					case UPDATE:

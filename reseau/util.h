@@ -10,10 +10,12 @@
 #include <sys/select.h>
 #include <errno.h>
 
+#define max(a, b) ((a) > (b) ? (a) : (b))
+
 #define DEBUG 1
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
-#define ONLINE 0
+#define ONLINE 1
 #define PORT 5000
 #define TIMEOUT 120
 #define QUEUE 5
