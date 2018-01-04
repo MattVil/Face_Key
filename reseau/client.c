@@ -321,6 +321,8 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]){
 
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
 
+  char login[100], pssw[100];
+
   int i;
   char site[50], password[50];
   int splited_req_size, splited_mdp_size, splited_data_size;
@@ -344,6 +346,36 @@ int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]){
   if(DEBUG)
     printf("\t### Message recu : %s\n", buf);
   splited_req = str_split(buf, ';', &splited_req_size);
+  if(atoi(splited_req[0]) != OK){
+    if(DEBUG)
+      printf("\t### Permission de connexion au serveur refusé.\n");
+    return 0;
+  }
+
+  /*authentification*/
+  printf("Veuillez entrer vos identifiants de connexion:\n");
+  printf("\tLogin: ");
+  scanf("%s", login);
+  printf("\tPassword: ");
+  scanf("%s", pssw);
+  memset(buf, 0, BUF_SIZE);
+  sprintf(buf, "%d;%s,%s", 103, login, pssw);
+  printf("%s\n", buf);
+  if(DEBUG)
+    printf("\t### Message envoyé : %s\n", buf);
+  if(ONLINE)
+    write(s_cli, buf, strlen(buf));
+
+  memset(buf, 0, BUF_SIZE);
+  if(ONLINE)
+    read(s_cli, buf, BUF_SIZE);
+  else
+    strcpy(buf, "000;0K");//exemple
+
+  if(DEBUG)
+    printf("\t### Message recu : %s\n", buf);
+  splited_req = str_split(buf, ';', &splited_req_size);
+
   if(atoi(splited_req[0]) != OK){
     if(DEBUG)
       printf("\t### Permission de connexion au serveur refusé.\n");
