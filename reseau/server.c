@@ -276,6 +276,7 @@ int main(){
 							break;
 						}
 						conn = PQconnectdb(CONN_INFO);
+						verif_conn(conn);
 						if (exist_mail(conn, split_data[0])){
 							if (DEBUG)
 								printf("%s Mail provided (%s) is already used\n", trace, split_data[0]);
