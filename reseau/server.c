@@ -15,7 +15,7 @@ int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
 char* extractPssw(int id, PGconn* conn);
-int split_message(int *code, char** data, char *buf, int s_dial);
+int split_message(int *code, char* data, char *buf, int s_dial);
 int exist_mail(PGconn *conn, char *mail);
 int exist_pseudo(PGconn *conn, char *pseudo);
 //Account List Function
@@ -43,7 +43,7 @@ int main(){
 	int read_bytes, select_tt, read_tt;
 
 	/*Util var*/
-	char *data, temp_buf[BUF_SIZE], **split_data;
+	char data[BUF_SIZE], temp_buf[BUF_SIZE], **split_data;
 	int split_data_size;
 	AccountList list = NULL;
 	int code, account_id;
@@ -80,7 +80,7 @@ int main(){
 				strcpy(temp_buf, buf);
 				code = getCode(temp_buf);
 				strcpy(temp_buf, buf);
-				getData(temp_buf, &data);
+				getData(temp_buf, data);
 				switch(code){
 					/*case SHUTDOWN:
 						if (strcmp(removechar(data,'\n'), SHUTD_PW) == 0){
@@ -112,7 +112,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != AUTH){
 							if (DEBUG)
@@ -131,7 +131,7 @@ int main(){
 						split_data[1] = removechar(split_data[1], '\n');
 						conn = PQconnectdb(CONN_INFO);
 						verif_conn(conn);
-						printf("%s/%s\n", split_data[0], split_data[1]);
+						printf("%s/%s\n", *split_data, *(split_data+1));
 						int user_id = authentification(split_data[0], split_data[1], conn);
 						PQfinish(conn);
 						if (user_id == -1){
@@ -165,7 +165,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != IDS_REQU){
 							if (DEBUG)
@@ -206,7 +206,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != PSSW_REQU){
 							if (DEBUG)
@@ -261,7 +261,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != LOG_CREA){
 							if (DEBUG)
@@ -312,7 +312,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != PSSW_CREA){
 							if (DEBUG)
@@ -347,7 +347,7 @@ int main(){
 							break;
 						}
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, &data, buf, s_dial))
+						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code != ID_INFO){
 							if (DEBUG)
@@ -559,11 +559,16 @@ char* extractPssw(int id, PGconn* conn){
 	return pssw;
 }
 
-int split_message(int *code, char** data, char *buf, int s_dial){
+int split_message(int *code, char* data, char *buf, int s_dial){
 	char temp_buf[BUF_SIZE];
 
 	buf = removechar(buf, '\n');
-	strcpy(temp_buf, buf);
+	memset(temp_buf, 0, BUF_SIZE);
+	printf("temp_buf: %s / buf: %s\n", temp_buf, buf);
+	//sprintf(temp_buf, "%s", buf);
+	strncpy(temp_buf, buf, strlen(buf));
+	memcpy(temp_buf, buf, BUF_SIZE);
+	printf("%s\n", temp_buf);
 	*code = getCode(temp_buf);
 	if (*code == -1){
 		if (DEBUG)

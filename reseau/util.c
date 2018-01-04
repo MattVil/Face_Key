@@ -25,7 +25,7 @@ void send_data(int socket, int code, char* info, char* buf, int bufsize){
 	free(str_code);
 }
 
-char** str_split(char* str, const char sep, int *size){
+char** str_split(char *str, const char sep, int *size){
 	char **result, **result_temp;
 	char *temp = str;
 	char *token;
@@ -51,6 +51,7 @@ char** str_split(char* str, const char sep, int *size){
 	}
 	token = strtok(str, toksep);
 	while(token != NULL) {
+		//printf("%s\n", token);
 		*result_temp = strdup(token);
 		token = strtok(NULL, toksep);
 		result_temp++;
@@ -78,7 +79,7 @@ int recv_data(int socket, char *buf){
 }
 
 char* removechar(char* string, char car){
-	char *result = calloc(strlen(string), sizeof(char));
+	char *result = calloc(strlen(string)+1, sizeof(char));
 	int i, j=0;
 	for (i=0; i<strlen(string); i++){
 		if (string[i] != car){
@@ -86,6 +87,7 @@ char* removechar(char* string, char car){
 			j++;
 		}
 	}
+	result[j] = '\0';
 	return result;
 }
 
@@ -105,7 +107,7 @@ int getCode(char *message){
 		return atoi(splited_message[0]);
 }
 
-int getData(char* message, char** data){
+int getData(char* message, char* data){
 	char **splited_message;
 	int splited_message_size;
 	splited_message = str_split(message, ';', &splited_message_size);
@@ -118,7 +120,7 @@ int getData(char* message, char** data){
 	if (splited_message_size != 2)
 		return 1;
 	else{
-		*data = removechar(splited_message[1], '\n');
+		sprintf(data, "%s", removechar(splited_message[1], '\n'));
 		return 0;
 	}
 }

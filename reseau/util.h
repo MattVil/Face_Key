@@ -66,6 +66,6 @@ void print_splt_str(char** splited_req, int size);
 int recv_data(int socket, char *buf);
 char* removechar(char* string, char car);
 int getCode(char *message);
-int getData(char* message, char** data);
+int getData(char* message, char* data);
 int read_file(char* file_name, char buf[BUF_SIZE]);
 int write_file(char* file_name, char buf[BUF_SIZE]);
