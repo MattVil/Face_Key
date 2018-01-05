@@ -47,7 +47,7 @@ int main(){
 	int split_data_size;
 	AccountList list = NULL;
 	int code, account_id;
-	int on = 1;
+	int on = 1, user_id;
 
 	//Creation var
 	char *mail, *pseudo, *pssw, *name, *firstname, *lang;
@@ -92,6 +92,34 @@ int main(){
 							send_data(s_dial, GOD, "Don't tease with me", buf, sizeof(buf));
 						}
 						break;*/
+					case AUTH:
+						split_data = str_split(data, ',', &split_data_size);
+						if (split_data_size != 2){
+							if (DEBUG)
+								printf("%s AUTHENTIFICATION: Too much or not enough data (%s)\n", trace, data);
+							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+							break;
+						}
+						split_data[1] = removechar(split_data[1], '\n');
+						conn = PQconnectdb(CONN_INFO);
+						verif_conn(conn);
+						printf("%s/%s\n", *split_data, *(split_data+1));
+						user_id = authentification(split_data[0], split_data[1], conn);
+						PQfinish(conn);
+						if (user_id == -1){
+							if (DEBUG)
+								printf("%s AUTHENTIFICATION: Wrong Login\n", trace);
+							send_data(s_dial, WRG_LOGIN, "Wrong login", buf, sizeof(buf));
+							break;
+						}
+						else if (user_id == -2){
+							if (DEBUG)
+								printf("%s AUTHENTIFICATION: Wrong Password\n", trace);
+							send_data(s_dial, WRG_PSSW, "Wrong Password", buf, sizeof(buf));
+							break;
+						}
+						send_data(s_dial, OK, "You're logged in", buf, sizeof(buf));
+						break;
 					case CONNEXION:
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
@@ -432,24 +460,24 @@ int connect_to_client(int s_ecoute, struct sockaddr_in* cli_addr){
 
 void verif_conn(PGconn* conn){
 	if (PQstatus(conn) != CONNECTION_OK){
-        fprintf(stderr, "Connection to database failed: %s",
-                PQerrorMessage(conn));
-        db_exit_nicely(conn);
-    }
-    else
-    	printf("Connection to database successed !\n");
+				fprintf(stderr, "Connection to database failed: %s",
+								PQerrorMessage(conn));
+				db_exit_nicely(conn);
+		}
+		else
+			printf("Connection to database successed !\n");
 }
 
 void database_connect(PGconn* conn){
 	const char* conninfo = CONN_INFO;
 	conn = PQconnectdb(conninfo);
 	if (PQstatus(conn) != CONNECTION_OK){
-        fprintf(stderr, "Connection to database failed: %s",
-                PQerrorMessage(conn));
-        db_exit_nicely(conn);
-    }
-    else
-    	printf("Connection to database successed !\n");
+				fprintf(stderr, "Connection to database failed: %s",
+								PQerrorMessage(conn));
+				db_exit_nicely(conn);
+		}
+		else
+			printf("Connection to database successed !\n");
 }
 
 void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
