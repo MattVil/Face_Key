@@ -270,6 +270,12 @@ int receive_file(int s_dial){
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	sprintf(file_name, "%s", buf);
 
+	read(s_dial, buf, BUF_SIZE);
+	if (strcmp(buf, "999;Abort file transfer") == 0){
+		printf("Sender stop transfer\n");
+		return 1;
+	}
+
 	if ((file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC,0666)) == -1){
 		perror("Can't open file");
 		send_data(s_dial, NO, "Abort file transfer", buf, BUF_SIZE);
