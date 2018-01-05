@@ -9,6 +9,8 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
