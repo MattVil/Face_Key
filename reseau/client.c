@@ -29,21 +29,35 @@ int main(int argc, char const *argv[]) {
 	char choise;
 	int flag;
 
-	int flag_co = 1, choice;
+	int flag_co = 1, choice, connect_flag;
 	int splited_req_size;
 	char **splited_req;
+
+	printf("------------------------------------------\n");
+	printf("|                 Client                 |\n");	
+	printf("------------------------------------------\n");
+
 	while (flag_co){
 		s_cli = socket(PF_INET, SOCK_STREAM, 0);
-		connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-		printf("------------------------------------------\n");
-		printf("Veuillez vous connecter à votre compte ou creer un compte\n");
+		connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+		if (connect_flag == -1){
+			connect_err();
+			printf("An error occurred: you may need to reconfigure the conf file\n");
+			return 1;
+		}
+		printf("\nVeuillez vous connecter à votre compte ou creer un compte\n");
 		printf("1 - Connexion\n");
 		printf("2 - Creer un compte\n");
+		printf("3 - Quitter\n");
 		printf("------------------------------------------\n");
 		printf("Votre choix: ");
 		scanf("%d", &choice);
-		if (choice != 1 && choice != 2){
+		if (choice != 1 && choice != 2 && choice != 3){
 			printf("Ce choix n'est pas disponible\n");
+		}
+		else if (choice == 3){
+			printf("Arrêt...\n");
+			exit(0);
 		}
 		else if (choice){
 			printf("Veuillez entrer vos identifiants de connexion:\n");

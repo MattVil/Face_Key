@@ -152,8 +152,10 @@ int write_file(char* file_name, char* buf){
 	return 0;
 }
 
-int verif_connect(int flag){
-	switch(flag){
+int connect_err(){
+	//perror("Error ");
+	printf("Error: ");
+	switch(errno){
 		case EACCES:
 			printf("You're trying to connect via broadcast or your firewall doesn't allow you to connect\n");
 			return 1;
