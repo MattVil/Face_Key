@@ -75,6 +75,7 @@ int recv_data(int socket, char *buf);
 char* removechar(char* string, char car);
 int getCode(char *message);
 int getData(char* message, char* data);
+int split_message(int *code, char* data, char *buf, int s_dial);
 int read_file(char* file_name, char buf[BUF_SIZE]);
 int write_file(char* file_name, char buf[BUF_SIZE]);
 int connect_err();

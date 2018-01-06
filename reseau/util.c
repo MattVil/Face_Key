@@ -24,6 +24,7 @@ int config(char* filename, int* port, char* ip){
 			 printf("Ligne : %s", line);
 		}
 		fclose(file);
+		return 0;
 	}
 	else{
 		if(DEBUG)
@@ -83,7 +84,6 @@ char** str_split(char *str, const char sep, int *size){
 	}
 	token = strtok(str, toksep);
 	while(token != NULL) {
-		//printf("%s\n", token);
 		*result_temp = strdup(token);
 		token = strtok(NULL, toksep);
 		result_temp++;
@@ -155,6 +155,34 @@ int getData(char* message, char* data){
 		sprintf(data, "%s", removechar(splited_message[1], '\n'));
 		return 0;
 	}
+}
+
+int split_message(int *code, char* data, char *buf, int s_dial){
+	char temp_buf[BUF_SIZE];
+
+	buf = removechar(buf, '\n');
+	memset(temp_buf, 0, BUF_SIZE);
+	if (FULL_DEBUG)
+		printf("temp_buf: %s / buf: %s\n", temp_buf, buf);
+	//sprintf(temp_buf, "%s", buf);
+	strncpy(temp_buf, buf, strlen(buf));
+	memcpy(temp_buf, buf, BUF_SIZE);
+	printf("%s\n", temp_buf);
+	*code = getCode(temp_buf);
+	if (*code == -1){
+		if (DEBUG)
+			printf("The message is not well formed (%s)\n", buf);
+		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
+		return 1;
+	}
+	strcpy(temp_buf, buf);
+	if (getData(temp_buf, data)){
+		if (DEBUG)
+			printf("The message is not well formed (%s)\n", buf);
+		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
+		return 1;
+	}
+	return 0;
 }
 
 int read_file(char* file_name, char buf[BUF_SIZE]){

@@ -14,7 +14,6 @@ int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
 char* extractPssw(int id, PGconn* conn);
-int split_message(int *code, char* data, char *buf, int s_dial);
 int exist_mail(PGconn *conn, char *mail);
 int exist_pseudo(PGconn *conn, char *pseudo);
 //Account List Function
@@ -497,10 +496,11 @@ int main(){
 			if (PQstatus(conn) == CONNECTION_OK)
 				PQfinish(conn);
 
+			printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
+			close (s_dial);
+
 			return 1;
 		}
-		printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
-		close (s_dial);
 	}
 
 	if (list != NULL)
@@ -651,33 +651,6 @@ char* extractPssw(int id, PGconn* conn){
 		printf("Password Extracted !\n");
 
 	return pssw;
-}
-
-int split_message(int *code, char* data, char *buf, int s_dial){
-	char temp_buf[BUF_SIZE];
-
-	buf = removechar(buf, '\n');
-	memset(temp_buf, 0, BUF_SIZE);
-	printf("temp_buf: %s / buf: %s\n", temp_buf, buf);
-	//sprintf(temp_buf, "%s", buf);
-	strncpy(temp_buf, buf, strlen(buf));
-	memcpy(temp_buf, buf, BUF_SIZE);
-	printf("%s\n", temp_buf);
-	*code = getCode(temp_buf);
-	if (*code == -1){
-		if (DEBUG)
-			printf("The message is not well formed (%s)\n", buf);
-		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
-		return 1;
-	}
-	strcpy(temp_buf, buf);
-	if (getData(temp_buf, data)){
-		if (DEBUG)
-			printf("The message is not well formed (%s)\n", buf);
-		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
-		return 1;
-	}
-	return 0;
 }
 
 int exist_mail(PGconn *conn, char *mail){
