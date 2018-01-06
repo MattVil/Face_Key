@@ -166,3 +166,152 @@ int write_file(char* file_name, char* buf){
 	}
 	return 0;
 }
+
+int connect_err(){
+	//perror("Error ");
+	printf("Error: ");
+	switch(errno){
+		case EACCES:
+			printf("You're trying to connect via broadcast or your firewall doesn't allow you to connect\n");
+			return 1;
+		case EPERM:
+			printf("You're trying to connect via broadcast or your firewall doesn't allow you to connect\n");
+			return 1;
+		case EADDRINUSE:
+			printf("Local address is already used\n");
+			return 1;
+		case EAFNOSUPPORT:
+			printf("sa_family field is incorrect\n");
+			return 1;
+		case EAGAIN:
+			printf("No local port available\n");
+			return 1;
+		case EALREADY:
+			printf("The socket is nonblocking and a previous connection attempt has not yet been completed.\n");
+			return 1;
+		case EBADF:
+			printf("Bad filedesc\n");
+			return 1;
+		case ECONNREFUSED:
+			printf("Connexion refused\n");
+			return 1;
+		case EFAULT:
+			printf("The socket structure address is outside the user's address space.\n");
+			return 1;
+		case EINPROGRESS:
+			printf("The socket is nonblocking and the connection cannot be completed immediately.\n");
+			return 1;
+		case EINTR:
+			printf("The system call was interrupted by a signal that was caught\n");
+			return 1;
+		case EISCONN:
+			printf("The socket is already connected.\n");
+			return 1;
+		case ENETUNREACH:
+			printf("Network is unreachable.\n");
+			return 1;
+		case ENOTSOCK:
+			printf("The file descriptor sockfd does not refer to a socket\n");
+			return 1;
+		case EPROTOTYPE:
+			printf("The socket type does not support the requested communications protocol\n");
+			return 1;
+		case ETIMEDOUT:
+			printf("Timeout while attempting connection\n");
+			return 1;
+		default:
+			printf("\n");
+			return 0;
+	}
+}
+
+
+int send_file(char *filename, char *send_filename, int s_dial){
+	int file, file_size, bytes_sent, total_bytes_sent = 0, bytes_read;
+	struct stat file_info;
+	char buf[BUF_SIZE];
+	if ((file = open(filename ,O_RDONLY)) == -1){
+		perror("File can't be open");
+		send_data(s_dial, NO, "Abort file transfer", buf, BUF_SIZE);
+		return 1;
+	}
+	memset(buf, 0, BUF_SIZE);
+	sprintf(buf, "%s", send_filename);
+	write(s_dial, buf, sizeof(buf));
+
+	memset(buf, 0, BUF_SIZE);
+	read(s_dial, buf, BUF_SIZE);
+	if (strcmp(buf, "0;Continue") != 0){
+		printf("Receiver stop transfer\n");
+		return 1;
+	}
+
+	fstat(file, &file_info);
+	file_size = file_info.st_size;
+	if (DEBUG)
+		printf("Taille du fichier %s: %d\n", filename, file_size);
+	memset(buf, 0, BUF_SIZE);
+	sprintf(buf, "%d", file_size);
+	write(s_dial, buf, sizeof(buf));
+
+	while((bytes_read = read(file, buf, BUF_SIZE)) > 0){
+		if((bytes_sent = write(s_dial, buf, BUF_SIZE)) < 0){
+			perror("Error during transfer");
+			return 1;
+		}
+		memset(buf, 0, BUF_SIZE);
+		total_bytes_sent+=bytes_sent;
+	}
+	if (bytes_read < 0){
+		perror("Read file error");
+		return 1;
+	}
+	if (total_bytes_sent != file_size){
+		printf("Curious thing that: File size is %d and sent size is %d\n", file_size, total_bytes_sent);
+	}
+
+	close(file);
+
+	return 0;
+}
+
+int receive_file(int s_dial, char* directory){
+	char buf[BUF_SIZE];
+	char file_name[1000];
+	int file, file_size, total_size_receive = 0;
+	int read_flag;
+
+	memset(buf, 0, BUF_SIZE);
+	read_flag = read(s_dial, buf, BUF_SIZE);
+	sprintf(file_name, "%s/%s", directory, buf);
+
+	read(s_dial, buf, BUF_SIZE);
+	if (strcmp(buf, "999;Abort file transfer") == 0){
+		printf("Sender stop transfer\n");
+		return 1;
+	}
+
+	if ((file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC,0666)) == -1){
+		perror("Can't open file");
+		send_data(s_dial, NO, "Abort file transfer", buf, BUF_SIZE);
+		return 1;
+	}
+	send_data(s_dial, OK, "Continue", buf, BUF_SIZE);
+
+	memset(buf, 0, BUF_SIZE);
+	read_flag = read(s_dial, buf, BUF_SIZE);
+	printf("Taille du fichier en arrivé: %s bytes\n", buf);
+	file_size = atoi(buf);
+	
+	while((read_flag = read(s_dial, buf, BUF_SIZE)) > 0){
+		write(file, buf, sizeof(buf));
+		total_size_receive+=read_flag;
+	}
+	if (read_flag < 0){
+		perror("Read file error");
+		return 1;
+	}
+
+	close(file);
+	return 0;
+}
