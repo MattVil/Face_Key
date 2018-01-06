@@ -18,6 +18,10 @@ int main(int argc, char const *argv[]) {
 	int s_cli;
 	struct sockaddr_in serv_addr;
 
+	/*Timeout var*/
+	fd_set readfds;
+	struct timeval timeout;
+
 	s_cli = socket(PF_INET, SOCK_STREAM, 0);
 
 	/*Config serveur*/
@@ -56,12 +60,21 @@ int main(int argc, char const *argv[]) {
 			printf("%s\n", buf);
 			if(DEBUG)
 				printf("\t### Message envoyé : %s\n", buf);
-			if(ONLINE)
-				write(s_cli, buf, strlen(buf));
+			if(ONLINE){
+				int o = write(s_cli, buf, strlen(buf));
+				printf("%d\n", o);
+			}
 
 			memset(buf, 0, BUF_SIZE);
-			if(ONLINE)
+			if(ONLINE){
+				timeout_config(s_cli+1, &readfds, NULL, NULL, &timeout);
+				if (!select_tt){
+					if (DEBUG)
+						printf("\t### CONNEXION: Auth timeout\n");
+					break;
+				}
 				read(s_cli, buf, BUF_SIZE);
+			}
 			else
 				strcpy(buf, "000;0K");//exemple
 
@@ -156,6 +169,10 @@ int first_conn_routine(int s_cli, char *buf){
 	memset(pseudo, 0, 50);
 	memset(buf, 0, BUF_SIZE);
 
+	/*Timeout var*/
+	fd_set readfds;
+	struct timeval timeout;
+
 	/*Demande de creation*/
 	strcpy(buf, "002;creation");
 	if(DEBUG)
@@ -164,8 +181,10 @@ int first_conn_routine(int s_cli, char *buf){
 		write(s_cli, buf, strlen(buf));
 
 	memset(buf, 0, BUF_SIZE);
-	if(ONLINE)
+	if(ONLINE){
+
 		read(s_cli, buf, BUF_SIZE);
+	}
 	else
 		strcpy(buf, "000;0K");//exemple
 
@@ -392,6 +411,10 @@ int conn_to_website_routine(int s_cli, char *buf){
 	memset(site, 0, 50);
 	memset(buf, 0, buf_len);
 
+	/*Timeout var*/
+	fd_set readfds;
+	struct timeval timeout;
+
 	/*Demande de connexion*/
 	strcpy(buf, "001;connexion");
 	if(DEBUG)
@@ -536,7 +559,7 @@ int conn_to_website_routine(int s_cli, char *buf){
 }
 
 int weight_update_routine(/*...*/){
- return 0;
+	return 0;
 }
 
 int photo_transfer_routine(/*...*/){
