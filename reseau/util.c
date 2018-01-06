@@ -260,7 +260,7 @@ int send_file(char *filename, char *send_filename, int s_dial){
 	return 0;
 }
 
-int receive_file(int s_dial){
+int receive_file(int s_dial, char* directory){
 	char buf[BUF_SIZE];
 	char file_name[1000];
 	int file, file_size, total_size_receive = 0;
@@ -268,7 +268,7 @@ int receive_file(int s_dial){
 
 	memset(buf, 0, BUF_SIZE);
 	read_flag = read(s_dial, buf, BUF_SIZE);
-	sprintf(file_name, "%s", buf);
+	sprintf(file_name, "%s/%s", directory, buf);
 
 	read(s_dial, buf, BUF_SIZE);
 	if (strcmp(buf, "999;Abort file transfer") == 0){
