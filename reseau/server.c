@@ -436,13 +436,19 @@ int main(){
 }
 
 void serv_config(struct sockaddr_in* serv_addr, int* s_ecoute){
+	int bind_flag;
+
 	serv_addr->sin_family = AF_INET;
 	serv_addr->sin_addr.s_addr = INADDR_ANY;
 	serv_addr->sin_port = htons(PORT);
 	memset(serv_addr->sin_zero, 0, sizeof(serv_addr->sin_zero));
 
 	*s_ecoute = socket(PF_INET, SOCK_STREAM, 0);
-	bind(*s_ecoute, (struct sockaddr *) serv_addr, sizeof(*serv_addr));
+	bind_flag = bind(*s_ecoute, (struct sockaddr *) serv_addr, sizeof(*serv_addr));
+	if (bind_flag == -1){
+		bind_err();
+		exit(1);
+	}
 	listen(*s_ecoute, QUEUE);
 	if (DEBUG)
 		printf("SERVER STARTED: %s:%d\n", inet_ntoa(serv_addr->sin_addr), ntohs(serv_addr->sin_port));

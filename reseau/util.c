@@ -225,6 +225,61 @@ int connect_err(){
 	}
 }
 
+int bind_err(){
+	//perror("Error ");
+	printf("Error: ");
+	switch(errno){
+		case EACCES:
+			printf("Address is protected\n");
+			return 1;
+		case EADDRINUSE:
+			printf("Address is already used\n");
+			return 1;
+		case EBADF:
+			printf("Bad filedesc\n");
+			return 1;
+		case EFAULT:
+			printf("The socket structure address is outside the user's address space.\n");
+			return 1;
+		case EINPROGRESS:
+			printf("The socket is nonblocking and the connection cannot be completed immediately.\n");
+			return 1;
+		case ENOTSOCK:
+			printf("The file descriptor sockfd does not refer to a socket\n");
+			return 1;
+		case EINVAL:
+			printf("Socket is already linked to an address\n");
+			return 1;
+		case ENOTSOCK:
+			printf("File descriptor refered to a file not a socket\n");
+			return 1;
+		case EADDRNOTAVAIL:
+			printf("Address not available\n");
+			return 1;
+		case ELOOP:
+			printf("Addr contain circular references\n");
+			return 1;
+		case ENAMETOOLONG:
+			printf("Address is too long\n");
+			return 1;
+		case ENOENT:
+			printf("File doesn't exist\n");
+			return 1;
+		case ENOMEM:
+			printf("Not enough memory\n");
+			return 1;
+		case ENOTDIR:
+			printf("Is not a directory\n");
+			return 1;
+		case EROFS:
+			printf("Inode is read-only\n");
+			return 1;
+		default:
+			printf("\n");
+			return 0;
+	}
+}
+
 
 int send_file(char *filename, char *send_filename, int s_dial){
 	int file, file_size, bytes_sent, total_bytes_sent = 0, bytes_read;
