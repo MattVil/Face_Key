@@ -10,7 +10,6 @@ typedef struct node{
 void serv_config(struct sockaddr_in* serv_addr, int* s_ecoute);
 void database_connect(PGconn* conn);
 int connect_to_client(int s_ecoute, struct sockaddr_in* cli_addr);
-void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout);
 int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
@@ -478,21 +477,6 @@ void database_connect(PGconn* conn){
 		}
 		else
 			printf("Connection to database successed !\n");
-}
-
-void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
-	FD_ZERO(readfds);//Put to zero
-	FD_SET(file_desc, readfds);//Set the FileDescriptor
-
-	if (FULL_DEBUG)
-		printf("TIMEOUT_SETTING: FileDescriptor set\n");
-
-	timeout->tv_sec = TIMEOUT; //Timeout seconds
-	timeout->tv_usec = 0; //Timeout microseconds
-	if (FULL_DEBUG)
-		printf("TIMEOUT_SETTING: ");
-	if (DEBUG)
-		printf("Timeout set to: %ld sec %ld µsec\n", timeout->tv_sec, timeout->tv_usec);
 }
 
 int authentification(char* login, char* password, PGconn *conn){
