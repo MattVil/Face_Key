@@ -38,7 +38,7 @@ int main(int argc, char const *argv[]) {
 	char **splited_req;
 
 	printf("------------------------------------------\n");
-	printf("|                 Client                 |\n");	
+	printf("|                 Client                 |\n");
 	printf("------------------------------------------\n");
 
 	while (flag_co){
@@ -81,10 +81,11 @@ int main(int argc, char const *argv[]) {
 
 			memset(buf, 0, BUF_SIZE);
 			if(ONLINE){
-				timeout_config(s_cli+1, &readfds, NULL, NULL, &timeout);
+				timeout_config(s_cli, &readfds, &timeout);
+				int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
 				if (!select_tt){
 					if (DEBUG)
-						printf("\t### CONNEXION: Auth timeout\n");
+						printf("\t### CONNEXION Timeout\n");
 					break;
 				}
 				read(s_cli, buf, BUF_SIZE);
@@ -196,7 +197,13 @@ int first_conn_routine(int s_cli, char *buf){
 
 	memset(buf, 0, BUF_SIZE);
 	if(ONLINE){
-
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		read(s_cli, buf, BUF_SIZE);
 	}
 	else
@@ -235,8 +242,16 @@ int first_conn_routine(int s_cli, char *buf){
 
 		/*reponse*/
 		memset(buf, 0, BUF_SIZE);
-		if(ONLINE)
+		if(ONLINE){
+			timeout_config(s_cli, &readfds, &timeout);
+			int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+			if (!select_tt){
+				if (DEBUG)
+					printf("\t### CONNEXION Timeout\n");
+				break;
+			}
 			read(s_cli, buf, BUF_SIZE);
+		}
 		else
 			strcpy(buf, "000");//exemples
 
@@ -298,8 +313,16 @@ int first_conn_routine(int s_cli, char *buf){
 		printf("\t### Message envoyé : %s\n", buf);
 
 	memset(buf, 0, BUF_SIZE);
-	if(ONLINE)
+	if(ONLINE){
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		read(s_cli, buf, BUF_SIZE);
+	}
 	else
 		strcpy(buf, "000");//exemple
 
@@ -359,8 +382,16 @@ int first_conn_routine(int s_cli, char *buf){
 		printf("\t### Message envoyé : %s\n", buf);
 
 	memset(buf, 0, BUF_SIZE);
-	if(ONLINE)
+	if(ONLINE){
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		read(s_cli, buf, BUF_SIZE);
+	}
 	else
 		strcpy(buf, "000;34");//exemple
 
@@ -395,9 +426,9 @@ int first_conn_routine(int s_cli, char *buf){
 	else	{
 		memset(buf, 0, BUF_SIZE);
 		strcpy(buf, "115");
-		if(ONLINE)
+		if(ONLINE){
 			write(s_cli, buf, strlen(buf));
-
+		}
 		if(DEBUG)
 			printf("\t### Message envoyé : %s\n", buf);
 
@@ -437,6 +468,13 @@ int conn_to_website_routine(int s_cli, char *buf){
 		write(s_cli, buf, strlen(buf));
 
 	if(ONLINE){
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		memset(buf, 0, buf_len);
 		read(s_cli, buf, sizeof(buf));
 	}
@@ -460,15 +498,22 @@ int conn_to_website_routine(int s_cli, char *buf){
 	scanf("%s", pssw);*/
 	memset(buf, 0, BUF_SIZE);
 	sprintf(buf, "%d;%s,%s", 103, login, pssw);
-	printf("%s\n", buf);
 	if(DEBUG)
 		printf("\t### Message envoyé : %s\n", buf);
 	if(ONLINE)
 		write(s_cli, buf, strlen(buf));
 
 	memset(buf, 0, BUF_SIZE);
-	if(ONLINE)
+	if(ONLINE){
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		read(s_cli, buf, BUF_SIZE);
+	}
 	else
 		strcpy(buf, "000;0K");//exemple
 
@@ -501,8 +546,16 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	/*Reception de la liste des comptes pour ce sites*/
 	memset(buf, 0, BUF_SIZE);
-	if(ONLINE)
+	if(ONLINE){
+		timeout_config(s_cli, &readfds, &timeout);
+		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+		if (!select_tt){
+			if (DEBUG)
+				printf("\t### CONNEXION Timeout\n");
+			return 0;
+		}
 		read(s_cli, buf, BUF_SIZE);
+	}
 	else
 		strcpy(buf, "200;mattvil@gmail.com,jean@ucp.fr,jack@mit.com"); //exemple
 
@@ -537,8 +590,16 @@ int conn_to_website_routine(int s_cli, char *buf){
 				write(s_cli, buf, strlen(buf));
 
 			memset(buf, 0, BUF_SIZE);
-			if(ONLINE)
+			if(ONLINE){
+				timeout_config(s_cli, &readfds, &timeout);
+				int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+				if (!select_tt){
+					if (DEBUG)
+						printf("\t### CONNEXION Timeout\n");
+					return 0;
+				}
 				read(s_cli, buf, BUF_SIZE);
+			}
 			else
 				strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
 
