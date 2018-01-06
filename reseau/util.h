@@ -41,6 +41,9 @@
 #define LOG_CREA 110
 #define PSSW_CREA 111
 #define ID_INFO 112
+#define NO_PHOTO 115
+#define PHOTO 113
+#define LAST_PHOTO 114
 
 //Codes Serveur -> Client
 #define IDS_SD 200

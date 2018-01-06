@@ -327,7 +327,7 @@ int main(){
 						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("%s CREATION: Auth timeout\n", trace);
+								printf("%s CREATION: Password timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
@@ -362,7 +362,7 @@ int main(){
 						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("%s CREATION: Auth timeout\n", trace);
+								printf("%s CREATION: Info timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
@@ -400,6 +400,81 @@ int main(){
 
 						send_data(s_dial, OK, "Account created", buf, sizeof(buf));
 
+						//PHOTO
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Photo timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, data, buf, s_dial))
+							break;
+						if (code == NO_PHOTO){
+							if (DEBUG)
+							printf("%s Client doesn't want to upload photos\n", trace);
+						}
+						else{
+							int cont = 1;
+							int id_user;
+							char directory[100];
+							if (ONLINE){
+								char query[500];
+								sprintf(query, "SELECT id_user FROM Users WHERE mail='%s';", mail);
+								PGresult *result;
+								conn = PQconnectdb(CONN_INFO);
+								verif_conn(conn);
+								result = PQexec(conn, query);
+								id = atoi(PQgetvalue(result, 0, 0));
+								PQfinish(conn);
+							}
+							else{
+								id = 100;
+							}
+							sprintf(directory, "/face_key/usr/%d", id);
+							while (cont){
+								if (code == LAST_PHOTO){
+									receive_file(s_dial, directory);
+									cont = 0;
+								}
+								else if(code == PHOTO){
+									receive_file(s_dial, directory);
+								}
+								else if (code != PHOTO || code != LAST_PHOTO){
+									if (DEBUG)
+										printf("%s CREATION: (PHOTO) Code unrecognized at this point (%d)\n", trace, code);
+									send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+									break;
+								}
+								timeout_config(s_dial, &readfds, &timeout);
+								select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+								if (!select_tt){
+									if (DEBUG)
+										printf("%s CREATION: Photo timeout\n", trace);
+									send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+									break;
+								}
+								read_tt = recv_data(s_dial, buf);
+								if (read_tt == -1){
+									if (DEBUG)
+										printf("%s CREATION: Read failed\n", trace);
+									send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+									break;
+								}
+								printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+								if (split_message(&code, data, buf, s_dial))
+									break;
+							}
+						}
 						break;
 
 					case UPDATE:
@@ -424,6 +499,7 @@ int main(){
 
 			return 1;
 		}
+		printf("%s End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 		close (s_dial);
 	}
 
