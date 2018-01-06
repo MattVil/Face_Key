@@ -434,13 +434,13 @@ int main(){
 								conn = PQconnectdb(CONN_INFO);
 								verif_conn(conn);
 								result = PQexec(conn, query);
-								id = atoi(PQgetvalue(result, 0, 0));
+								id_user = atoi(PQgetvalue(result, 0, 0));
 								PQfinish(conn);
 							}
 							else{
-								id = 100;
+								id_user = 100;
 							}
-							sprintf(directory, "/face_key/usr/%d", id);
+							sprintf(directory, "/face_key/usr/%d", id_user);
 							while (cont){
 								if (code == LAST_PHOTO){
 									receive_file(s_dial, directory);
@@ -499,7 +499,7 @@ int main(){
 
 			return 1;
 		}
-		printf("%s End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
+		printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 		close (s_dial);
 	}
 

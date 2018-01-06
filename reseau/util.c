@@ -378,15 +378,9 @@ int receive_file(int s_dial, char* directory){
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	printf("Taille du fichier en arrivé: %s bytes\n", buf);
 	file_size = atoi(buf);
-<<<<<<< HEAD
 
-	while((read_flag = read(s_dial, buf, BUF_SIZE)) > 0){
-		write(file, buf, sizeof(buf));
-=======
-	
 	while((read_flag = read(s_dial, buf_file, sizeof(buf_file))) > 0){
 		write(file, buf_file, sizeof(buf_file));
->>>>>>> 9068f37881d67f76509e33f67a47491980d18f1a
 		total_size_receive+=read_flag;
 	}
 	if (read_flag < 0){
