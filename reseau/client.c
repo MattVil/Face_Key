@@ -22,6 +22,8 @@ int main(int argc, char const *argv[]) {
 	fd_set readfds;
 	struct timeval timeout;
 
+	config("configClient", PORT_SERV, IP_SERV);
+
 	s_cli = socket(PF_INET, SOCK_STREAM, 0);
 
 	/*Config serveur*/
