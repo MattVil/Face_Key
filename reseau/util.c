@@ -242,7 +242,7 @@ int connect_err(){
 	}
 }
 
-int bind_err(){
+int bind_error(){
 	//perror("Error ");
 	printf("Error: ");
 	switch(errno){
@@ -266,9 +266,6 @@ int bind_err(){
 			return 1;
 		case EINVAL:
 			printf("Socket is already linked to an address\n");
-			return 1;
-		case ENOTSOCK:
-			printf("File descriptor refered to a file not a socket\n");
 			return 1;
 		case EADDRNOTAVAIL:
 			printf("Address not available\n");
@@ -301,10 +298,11 @@ int bind_err(){
 int send_file(char *filename, char *send_filename, int s_dial){
 	int file, file_size, bytes_sent, total_bytes_sent = 0, bytes_read;
 	struct stat file_info;
+	char buf_file[1];
 	char buf[BUF_SIZE];
 	if ((file = open(filename ,O_RDONLY)) == -1){
 		perror("File can't be open");
-		send_data(s_dial, NO, "Abort file transfer", buf, BUF_SIZE);
+		send_data(s_dial, 999, "Abort file transfer", buf, BUF_SIZE);
 		return 1;
 	}
 	memset(buf, 0, BUF_SIZE);
@@ -326,13 +324,18 @@ int send_file(char *filename, char *send_filename, int s_dial){
 	sprintf(buf, "%d", file_size);
 	write(s_dial, buf, sizeof(buf));
 
-	while((bytes_read = read(file, buf, BUF_SIZE)) > 0){
-		if((bytes_sent = write(s_dial, buf, BUF_SIZE)) < 0){
+	while(total_bytes_sent < file_size){
+		if ((bytes_read = read(file, buf_file, sizeof(buf_file))) < 0){
+			perror("Error");
+			return 1;
+		}
+		if((bytes_sent = write(s_dial, buf_file, sizeof(buf_file))) < 0){
 			perror("Error during transfer");
 			return 1;
 		}
-		memset(buf, 0, BUF_SIZE);
+		memset(buf, 0, sizeof(buf_file));
 		total_bytes_sent+=bytes_sent;
+		printf("Bytes sent: %d\n", total_bytes_sent);
 	}
 	if (bytes_read < 0){
 		perror("Read file error");
@@ -349,6 +352,7 @@ int send_file(char *filename, char *send_filename, int s_dial){
 
 int receive_file(int s_dial, char* directory){
 	char buf[BUF_SIZE];
+	char buf_file[1];
 	char file_name[1000];
 	int file, file_size, total_size_receive = 0;
 	int read_flag;
@@ -374,9 +378,15 @@ int receive_file(int s_dial, char* directory){
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	printf("Taille du fichier en arrivé: %s bytes\n", buf);
 	file_size = atoi(buf);
+<<<<<<< HEAD
 
 	while((read_flag = read(s_dial, buf, BUF_SIZE)) > 0){
 		write(file, buf, sizeof(buf));
+=======
+	
+	while((read_flag = read(s_dial, buf_file, sizeof(buf_file))) > 0){
+		write(file, buf_file, sizeof(buf_file));
+>>>>>>> 9068f37881d67f76509e33f67a47491980d18f1a
 		total_size_receive+=read_flag;
 	}
 	if (read_flag < 0){

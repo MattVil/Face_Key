@@ -75,6 +75,6 @@ int getData(char* message, char* data);
 int read_file(char* file_name, char buf[BUF_SIZE]);
 int write_file(char* file_name, char buf[BUF_SIZE]);
 int connect_err();
-int bind_err()
+int bind_error();
 int send_file(char *filename, char *send_filename, int s_dial);
 int receive_file(int s_dial, char* directory);
