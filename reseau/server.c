@@ -446,7 +446,7 @@ void serv_config(struct sockaddr_in* serv_addr, int* s_ecoute){
 	*s_ecoute = socket(PF_INET, SOCK_STREAM, 0);
 	bind_flag = bind(*s_ecoute, (struct sockaddr *) serv_addr, sizeof(*serv_addr));
 	if (bind_flag == -1){
-		bind_err();
+		bind_error();
 		exit(1);
 	}
 	listen(*s_ecoute, QUEUE);
