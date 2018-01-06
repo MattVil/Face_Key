@@ -1,5 +1,20 @@
 #include "util.h"
 
+void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
+	FD_ZERO(readfds);//Put to zero
+	FD_SET(file_desc, readfds);//Set the FileDescriptor
+
+	if (FULL_DEBUG)
+		printf("TIMEOUT_SETTING: FileDescriptor set\n");
+
+	timeout->tv_sec = TIMEOUT; //Timeout seconds
+	timeout->tv_usec = 0; //Timeout microseconds
+	if (FULL_DEBUG)
+		printf("TIMEOUT_SETTING: ");
+	if (DEBUG)
+		printf("Timeout set to: %ld sec %ld µsec\n", timeout->tv_sec, timeout->tv_usec);
+}
+
 void send_data(int socket, int code, char* info, char* buf, int bufsize){
 	char* str_code;
 	str_code = (char*) malloc(3*sizeof(char));
