@@ -15,6 +15,23 @@ void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
 		printf("Timeout set to: %ld sec %ld µsec\n", timeout->tv_sec, timeout->tv_usec);
 }
 
+int config(char* filename, int* port, char* ip){
+	FILE *file = fopen(filename, "r");
+	if (file != NULL){
+		char line[128];
+
+		while(fgets(line, sizeof line, file) != NULL){
+			 printf("Ligne : %s", line);
+		}
+		fclose(file);
+	}
+	else{
+		if(DEBUG)
+			printf("Error with configfile\n");
+		return 1;
+	}
+}
+
 void send_data(int socket, int code, char* info, char* buf, int bufsize){
 	char* str_code;
 	str_code = (char*) malloc(3*sizeof(char));
@@ -357,7 +374,7 @@ int receive_file(int s_dial, char* directory){
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	printf("Taille du fichier en arrivé: %s bytes\n", buf);
 	file_size = atoi(buf);
-	
+
 	while((read_flag = read(s_dial, buf, BUF_SIZE)) > 0){
 		write(file, buf, sizeof(buf));
 		total_size_receive+=read_flag;

@@ -64,6 +64,7 @@
 #define GOD 1000
 
 void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout);
+int config(char* filename, int* port, char* ip);
 void send_data(int socket, int code, char* info, char* buf, int bufsize);
 char** str_split(char* str, char sep, int *size);
 void print_splt_str(char** splited_req, int size);
