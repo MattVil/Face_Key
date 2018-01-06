@@ -29,6 +29,7 @@
 #define CONNEXION 001
 #define CREATION 002
 #define UPDATE 003
+#define CLOSE_REQ 808
 
 //Codes Client -> Serveur
 #define IDS_REQU 100

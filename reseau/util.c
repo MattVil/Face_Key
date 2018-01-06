@@ -151,3 +151,59 @@ int write_file(char* file_name, char* buf){
 	}
 	return 0;
 }
+
+int verif_connect(int flag){
+	switch(flag){
+		case EACCES:
+			printf("You're trying to connect via broadcast or your firewall doesn't allow you to connect\n");
+			return 1;
+		case EPERM:
+			printf("You're trying to connect via broadcast or your firewall doesn't allow you to connect\n");
+			return 1;
+		case EADDRINUSE:
+			printf("Local address is already used\n");
+			return 1;
+		case EAFNOSUPPORT:
+			printf("sa_family field is incorrect\n");
+			return 1;
+		case EAGAIN:
+			printf("No local port available\n");
+			return 1;
+		case EALREADY:
+			printf("The socket is nonblocking and a previous connection attempt has not yet been completed.\n");
+			return 1;
+		case EBADF:
+			printf("Bad filedesc\n");
+			return 1;
+		case ECONNREFUSED:
+			printf("Connexion refused\n");
+			return 1;
+		case EFAULT:
+			printf("The socket structure address is outside the user's address space.\n");
+			return 1;
+		case EINPROGRESS:
+			printf("The socket is nonblocking and the connection cannot be completed immediately.\n");
+			return 1;
+		case EINTR:
+			printf("The system call was interrupted by a signal that was caught\n");
+			return 1;
+		case EISCONN:
+			printf("The socket is already connected.\n");
+			return 1;
+		case ENETUNREACH:
+			printf("Network is unreachable.\n");
+			return 1;
+		case ENOTSOCK:
+			printf("The file descriptor sockfd does not refer to a socket\n");
+			return 1;
+		case EPROTOTYPE:
+			printf("The socket type does not support the requested communications protocol\n");
+			return 1;
+		case ETIMEDOUT:
+			printf("Timeout while attempting connection\n");
+			return 1;
+		default:
+			printf("\n");
+			return 0;
+	}
+}
