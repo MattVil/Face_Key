@@ -4,7 +4,7 @@ int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
 
 
-char* IP_SERV = "127.0.0.1";
+char IP_SERV[20] = "127.0.0.1";
 int PORT_SERV = 5000;
 int ID_CLIENT = 1;
 char login[100];
@@ -22,7 +22,8 @@ int main(int argc, char const *argv[]) {
 	fd_set readfds;
 	struct timeval timeout;
 
-	config("configClient", PORT_SERV, IP_SERV);
+	config("configClient.txt", &PORT_SERV, IP_SERV);
+	printf("p : %d\tip : %s\n", PORT_SERV, IP_SERV);
 
 	s_cli = socket(PF_INET, SOCK_STREAM, 0);
 
@@ -640,5 +641,7 @@ int weight_update_routine(/*...*/){
 }
 
 int photo_transfer_routine(/*...*/){
+
+
 	return 0;
 }

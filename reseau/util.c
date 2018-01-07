@@ -18,11 +18,37 @@ void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout){
 int config(char* filename, int* port, char* ip){
 	FILE *file = fopen(filename, "r");
 	if (file != NULL){
-		char line[128];
+		char line[128], line_cp[128];
+		int size_line;
+		char **splited_line;
 
-		while(fgets(line, sizeof line, file) != NULL){
-			 printf("Ligne : %s", line);
+		if(DEBUG)
+			printf("\t### Lecture du fichier de config\n");
+
+		fgets(line, sizeof line, file);
+		splited_line = str_split(line, ';', &size_line);
+		if(strlen(splited_line[0]) == 1){
+			if(DEBUG)
+				printf("\t\tPas de modif du port\n");
+			return 0;
 		}
+		else{
+			*port = atoi(splited_line[0]);
+			if(DEBUG)
+				printf("\t\tport : %d\n", *port);
+		}
+		if(strlen(splited_line[1]) == 1){
+			if(DEBUG)
+				printf("\t\tPas de modif de l'ip\n");
+			return 0;
+		}
+		else{
+			memset(ip, 0, 20);
+			strcpy(ip,splited_line[1]);
+			if(DEBUG)
+				printf("\t\tip : %s\n", ip);
+		}
+
 		fclose(file);
 	}
 	else{
@@ -378,15 +404,9 @@ int receive_file(int s_dial, char* directory){
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	printf("Taille du fichier en arrivé: %s bytes\n", buf);
 	file_size = atoi(buf);
-<<<<<<< HEAD
 
-	while((read_flag = read(s_dial, buf, BUF_SIZE)) > 0){
-		write(file, buf, sizeof(buf));
-=======
-	
 	while((read_flag = read(s_dial, buf_file, sizeof(buf_file))) > 0){
 		write(file, buf_file, sizeof(buf_file));
->>>>>>> 9068f37881d67f76509e33f67a47491980d18f1a
 		total_size_receive+=read_flag;
 	}
 	if (read_flag < 0){
