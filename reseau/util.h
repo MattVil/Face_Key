@@ -41,6 +41,9 @@
 #define LOG_CREA 110
 #define PSSW_CREA 111
 #define ID_INFO 112
+#define NO_PHOTO 115
+#define PHOTO 113
+#define LAST_PHOTO 114
 
 //Codes Serveur -> Client
 #define IDS_SD 200
@@ -72,6 +75,7 @@ int recv_data(int socket, char *buf);
 char* removechar(char* string, char car);
 int getCode(char *message);
 int getData(char* message, char* data);
+int split_message(int *code, char* data, char *buf, int s_dial);
 int read_file(char* file_name, char buf[BUF_SIZE]);
 int write_file(char* file_name, char buf[BUF_SIZE]);
 int connect_err();

@@ -40,6 +40,9 @@ int main(int argc, char const *argv[]) {
 	int splited_req_size;
 	char **splited_req;
 
+  int code;
+  char data[BUF_SIZE];
+
 	printf("------------------------------------------\n");
 	printf("|                 Client                 |\n");
 	printf("------------------------------------------\n");
@@ -79,7 +82,6 @@ int main(int argc, char const *argv[]) {
 				printf("\t### Message envoyé : %s\n", buf);
 			if(ONLINE){
 				int o = write(s_cli, buf, strlen(buf));
-				printf("%d\n", o);
 			}
 
 			memset(buf, 0, BUF_SIZE);
@@ -98,9 +100,11 @@ int main(int argc, char const *argv[]) {
 
 			if(DEBUG)
 				printf("\t### Message recu : %s\n", buf);
-			splited_req = str_split(buf, ';', &splited_req_size);
 
-			if(atoi(splited_req[0]) != OK){
+      if (split_message(&code, data, buf, s_cli))
+        break;
+
+			if(code != OK){
 				if(DEBUG)
 					printf("\t### Permission de connexion au serveur refusé.\n");
 			}
@@ -133,6 +137,7 @@ int main(int argc, char const *argv[]) {
 
 	while(1){
 
+    fflush(stdin);
 		printf("\nVotre choix (p/c/u/t/q): ");
 
 		scanf("%c", &choise);

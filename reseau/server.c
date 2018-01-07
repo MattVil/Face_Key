@@ -14,7 +14,6 @@ int authentification(char* login, char* password, PGconn *conn);
 void verif_conn(PGconn* conn);
 void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, AccountList *list);
 char* extractPssw(int id, PGconn* conn);
-int split_message(int *code, char* data, char *buf, int s_dial);
 int exist_mail(PGconn *conn, char *mail);
 int exist_pseudo(PGconn *conn, char *pseudo);
 //Account List Function
@@ -327,7 +326,7 @@ int main(){
 						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("%s CREATION: Auth timeout\n", trace);
+								printf("%s CREATION: Password timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
@@ -362,7 +361,7 @@ int main(){
 						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
 						if (!select_tt){
 							if (DEBUG)
-								printf("%s CREATION: Auth timeout\n", trace);
+								printf("%s CREATION: Info timeout\n", trace);
 							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
 							break;
 						}
@@ -400,6 +399,81 @@ int main(){
 
 						send_data(s_dial, OK, "Account created", buf, sizeof(buf));
 
+						//PHOTO
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Photo timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, data, buf, s_dial))
+							break;
+						if (code == NO_PHOTO){
+							if (DEBUG)
+							printf("%s Client doesn't want to upload photos\n", trace);
+						}
+						else{
+							int cont = 1;
+							int id_user;
+							char directory[100];
+							if (ONLINE){
+								char query[500];
+								sprintf(query, "SELECT id_user FROM Users WHERE mail='%s';", mail);
+								PGresult *result;
+								conn = PQconnectdb(CONN_INFO);
+								verif_conn(conn);
+								result = PQexec(conn, query);
+								id_user = atoi(PQgetvalue(result, 0, 0));
+								PQfinish(conn);
+							}
+							else{
+								id_user = 100;
+							}
+							sprintf(directory, "/face_key/usr/%d", id_user);
+							while (cont){
+								if (code == LAST_PHOTO){
+									receive_file(s_dial, directory);
+									cont = 0;
+								}
+								else if(code == PHOTO){
+									receive_file(s_dial, directory);
+								}
+								else if (code != PHOTO || code != LAST_PHOTO){
+									if (DEBUG)
+										printf("%s CREATION: (PHOTO) Code unrecognized at this point (%d)\n", trace, code);
+									send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+									break;
+								}
+								timeout_config(s_dial, &readfds, &timeout);
+								select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+								if (!select_tt){
+									if (DEBUG)
+										printf("%s CREATION: Photo timeout\n", trace);
+									send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+									break;
+								}
+								read_tt = recv_data(s_dial, buf);
+								if (read_tt == -1){
+									if (DEBUG)
+										printf("%s CREATION: Read failed\n", trace);
+									send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+									break;
+								}
+								printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+								if (split_message(&code, data, buf, s_dial))
+									break;
+							}
+						}
 						break;
 
 					case UPDATE:
@@ -422,9 +496,11 @@ int main(){
 			if (PQstatus(conn) == CONNECTION_OK)
 				PQfinish(conn);
 
+			printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
+			close (s_dial);
+
 			return 1;
 		}
-		close (s_dial);
 	}
 
 	if (list != NULL)
@@ -575,33 +651,6 @@ char* extractPssw(int id, PGconn* conn){
 		printf("Password Extracted !\n");
 
 	return pssw;
-}
-
-int split_message(int *code, char* data, char *buf, int s_dial){
-	char temp_buf[BUF_SIZE];
-
-	buf = removechar(buf, '\n');
-	memset(temp_buf, 0, BUF_SIZE);
-	printf("temp_buf: %s / buf: %s\n", temp_buf, buf);
-	//sprintf(temp_buf, "%s", buf);
-	strncpy(temp_buf, buf, strlen(buf));
-	memcpy(temp_buf, buf, BUF_SIZE);
-	printf("%s\n", temp_buf);
-	*code = getCode(temp_buf);
-	if (*code == -1){
-		if (DEBUG)
-			printf("The message is not well formed (%s)\n", buf);
-		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
-		return 1;
-	}
-	strcpy(temp_buf, buf);
-	if (getData(temp_buf, data)){
-		if (DEBUG)
-			printf("The message is not well formed (%s)\n", buf);
-		send_data(s_dial, UKNWREQ, "Message is not well formed", buf, sizeof(buf));
-		return 1;
-	}
-	return 0;
 }
 
 int exist_mail(PGconn *conn, char *mail){
