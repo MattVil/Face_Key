@@ -410,6 +410,7 @@ int main(){
 							verif_conn(conn);
 							sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
 							result = PQexec(conn, query);
+							PQclear(result);
 							PQfinish(conn);
 						}
 
@@ -450,6 +451,7 @@ int main(){
 								verif_conn(conn);
 								result = PQexec(conn, query);
 								id_user = atoi(PQgetvalue(result, 0, 0));
+								PQclear(result);
 								PQfinish(conn);
 							}
 							else{

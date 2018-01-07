@@ -459,7 +459,7 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	int buf_len = sizeof(buf);
 	int i;
-	char site[50], password[50];
+	char site[50], password[50], mail[100];
 	int splited_req_size, splited_mdp_size, splited_data_size;
 	char **splited_req, **splited_mdp, **splited_data;
 	memset(site, 0, 50);
@@ -618,7 +618,7 @@ int conn_to_website_routine(int s_cli, char *buf){
 			if(atoi(splited_mdp[0]) == PSSW_SD){
 				memset(password, 0, 50);
 				strcpy(password, splited_mdp[1]);
-				printf("Le mot de passe du compte %s pour le site %s est %s\n", splited_req[num_choice], site, password);
+				printf("Le mot de passe du compte %s pour le site %s est %s\n", splited_data[num_choice - 1], site, password);
 			}
 			else{
 				printf("Une erreur est survenue\n");
