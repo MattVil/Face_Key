@@ -50,6 +50,7 @@ int main(){
 	//Creation var
 	char *mail, *pseudo, *pssw, *name, *firstname, *lang;
 	int gender;
+	int login_ok = 0;
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -263,63 +264,67 @@ int main(){
 						break;
 
 					case CREATION:
+
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
 						//REC MAIL+PSEUDO
-						timeout_config(s_dial, &readfds, &timeout);
-						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
-						printf("%d - %d\n", select_tt, s_dial);
-						if (!select_tt){
-							if (DEBUG)
-								printf("%s CREATION: Auth timeout\n", trace);
-							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
-							break;
+						while (!login_ok){
+							timeout_config(s_dial, &readfds, &timeout);
+							select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+							printf("%d - %d\n", select_tt, s_dial);
+							if (!select_tt){
+								if (DEBUG)
+									printf("%s CREATION: Auth timeout\n", trace);
+								send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+								break;
+							}
+							else if (select_tt == -1){
+								printf("Erreur\n");
+								break;
+							}
+							read_tt = recv_data(s_dial, buf);
+							if (read_tt == -1){
+								if (DEBUG)
+									printf("%s CREATION: Read failed\n", trace);
+								send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+								break;
+							}
+							printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+							if (split_message(&code, data, buf, s_dial))
+								break;
+							if (code != LOG_CREA){
+								if (DEBUG)
+									printf("%s CREATION: (LOG_CREA) Code unrecognized at this point (%d)\n", trace, code);
+								send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
+								break;
+							}
+							split_data = str_split(data, ',', &split_data_size);
+							if (split_data_size != 2){
+								if (DEBUG)
+									printf("%s LOG_CREA: Too much or not enough data\n", trace);
+								send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
+								break;
+							}
+							conn = PQconnectdb(CONN_INFO);
+							verif_conn(conn);
+							if (exist_mail(conn, split_data[0])){
+								if (DEBUG)
+									printf("%s Mail provided (%s) is already used\n", trace, split_data[0]);
+								send_data(s_dial, ERR_MAIL, "Mail provided is already used, please choose another one", buf, sizeof(buf));
+							}
+							else if (exist_pseudo(conn, split_data[1])){
+								if (DEBUG)
+									printf("%s Pseudo provided (%s) is already used\n", trace, split_data[1]);
+								send_data(s_dial, ERR_MAIL, "Pseudo provided is already used, please choose another one", buf, sizeof(buf));
+							}
+							else{
+								mail = split_data[0];
+								pseudo = split_data[1];
+								send_data(s_dial, OK, "OK", buf, sizeof(buf));
+								login_ok = 1;
+							}
+							PQfinish(conn);
 						}
-						else if (select_tt == -1){
-							printf("Erreur\n");
-							break;
-						}
-						read_tt = recv_data(s_dial, buf);
-						if (read_tt == -1){
-							if (DEBUG)
-								printf("%s CREATION: Read failed\n", trace);
-							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-							break;
-						}
-						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-						if (split_message(&code, data, buf, s_dial))
-							break;
-						if (code != LOG_CREA){
-							if (DEBUG)
-								printf("%s CREATION: (LOG_CREA) Code unrecognized at this point (%d)\n", trace, code);
-							send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
-							break;
-						}
-						split_data = str_split(data, ',', &split_data_size);
-						if (split_data_size != 2){
-							if (DEBUG)
-								printf("%s LOG_CREA: Too much or not enough data\n", trace);
-							send_data(s_dial, MISSING, "Too much or not enough data", buf, sizeof(buf));
-							break;
-						}
-						conn = PQconnectdb(CONN_INFO);
-						verif_conn(conn);
-						if (exist_mail(conn, split_data[0])){
-							if (DEBUG)
-								printf("%s Mail provided (%s) is already used\n", trace, split_data[0]);
-							send_data(s_dial, ERR_MAIL, "Mail provided is already used, please choose another one", buf, sizeof(buf));
-							break;
-						}
-						if (exist_pseudo(conn, split_data[1])){
-							if (DEBUG)
-								printf("%s Pseudo provided (%s) is already used\n", trace, split_data[1]);
-							send_data(s_dial, ERR_MAIL, "Pseudo provided is already used, please choose another one", buf, sizeof(buf));
-							break;
-						}
-						mail = split_data[0];
-						pseudo = split_data[1];
-						PQfinish(conn);
-						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
 						//MDP
 						timeout_config(s_dial, &readfds, &timeout);

@@ -65,6 +65,13 @@ int main(int argc, char const *argv[]) {
 		if (choice != 1 && choice != 2 && choice != 3){
 			printf("Ce choix n'est pas disponible\n");
 		}
+    else if (choice == 2){
+      connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+      flag = first_conn_routine(s_cli, buf);
+      if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+      printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
+      close(s_cli);
+    }
 		else if (choice == 3){
 			printf("Arrêt...\n");
 			exit(0);
@@ -111,13 +118,6 @@ int main(int argc, char const *argv[]) {
 			else{
 				flag_co = 0;
 			}
-			close(s_cli);
-		}
-		else if (choice == 2){
-			connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-			flag = conn_to_website_routine(s_cli, buf);
-			if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-			printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
 			close(s_cli);
 		}
 	}
