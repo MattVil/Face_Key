@@ -51,6 +51,9 @@ int main(){
 	char *mail, *pseudo, *pssw, *name, *firstname, *lang;
 	int gender;
 	int login_ok = 0;
+	char query[500];
+	PGresult *result;
+	int version = 20180108;
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -402,6 +405,14 @@ int main(){
 							printf("\tMAIL: %s\n\tPSEUDO: %s\n\tPASSWORD: %s\n\tGENDER: %d\n\tNAME: %s\n\tFIRSTNAME: %s\n\tLANG: %s\n", mail, pseudo, pssw, gender, name, firstname, lang);
 						}
 
+						if (ONLINE){
+							conn = PQconnectdb(CONN_INFO);
+							verif_conn(conn);
+							sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
+							result = PQexec(conn, query);
+							PQfinish(conn);
+						}
+
 						send_data(s_dial, OK, "Account created", buf, sizeof(buf));
 
 						//PHOTO
@@ -479,6 +490,30 @@ int main(){
 									break;
 							}
 						}
+
+						//Version Réseau
+						sprintf(query, "%d", version);
+						send_data(s_dial, OK, query, buf, sizeof(buf));
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Neuron timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, data, buf, s_dial))
+							break;
+						if (code == OK)
+							send_file("neuron/network.npz", "network.npz", s_dial);
 						break;
 
 					case UPDATE:
