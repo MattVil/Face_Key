@@ -8,6 +8,7 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]);
 char IP_SERV[20] = "127.0.0.1";
 int PORT_SERV = 5000;
 int ID_CLIENT = 1;
+int version = 0;
 char login[100];
 char pssw[100];
 
@@ -447,10 +448,45 @@ int first_conn_routine(int s_cli, char *buf){
 
 	//ouverture du flux video + transmission des images
 	printf("ouverture du flux video + transmission des images ...\n");
-	int iti =photo_transfer_routine(s_cli, buf);
+	photo_transfer_routine(s_cli, buf);
+
+	memset(buf, 0, BUF_SIZE);
+	timeout_config(s_cli, &readfds, &timeout);
+	int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+	if (!select_tt){
+		if (DEBUG)
+			printf("\t### CONNEXION Timeout\n");
+		return 0;
+	}
+	read(s_cli, buf, BUF_SIZE);
+
+	if(DEBUG)
+		printf("\t### Message recu : %s\n", buf);
+
+	splited_req = str_split(buf, ';', &splited_req_size);
+	if(atoi(splited_req[0]) == OK){
+		if(splited_req[1] != NULL){
+			version = atoi(splited_req[1]);
+			if(DEBUG)
+				printf("\t### Nouvelle version actuelle du reseau de neurones : %d \n", atoi(splited_req[1]));
+		}
+	}
+	else{
+		if(DEBUG)
+			printf("\t### Erreur - code attendu : %d recu : %d\n", OK, atoi(splited_req[0]));
+		return 0;
+	}
+
+	memset(buf, 0, BUF_SIZE);
+	strcpy(buf, "000;Version_recu");
+	write(s_cli, buf, strlen(buf));
+	if(DEBUG)
+		printf("\t### Message envoyé : %s\n", buf);
+
+	receive_file(s_cli, "client_x/");
+
 
 	return 1;
-
 }
 
 int conn_to_website_routine(int s_cli, char *buf){
@@ -649,11 +685,12 @@ int weight_update_routine(/*...*/){
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 	int nb_photo = 29;
+	//int nb_photo = system("./take_picture");
 	int flag;
 	int i;
 	for(i=1; i<=nb_photo; i++){
 		char path[50];
-		sprintf(path, "image_client/%d.jpg", i);
+		sprintf(path, "./client_x/image/%d.jpg", i);
 		FILE* file = fopen(path, "r");
 		if(file != NULL){
 			fclose(file);
@@ -671,11 +708,11 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 			printf("Transfer du fichier : %s ... ", path);
 			int flag = send_file(path, path, s_cli);
+			//remove(path);
 			if(flag == 0)
 				printf("OK\n");
 			else{
 				printf("Erreur\n");
-			return 1;
 			}
 		}
 	}

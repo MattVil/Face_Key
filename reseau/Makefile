@@ -1,10 +1,13 @@
-all: server client
+all: server client take_picture
 
 server: server.o util.o dbutil.o
 	gcc server.o util.o dbutil.o -o server -lpq
 
 client: client.o util.o
 	gcc client.o util.o -o client
+
+take_picture:
+	g++ take_picture.cpp -o take_picture `pkg-config --cflags opencv` `pkg-config --libs opencv`
 
 server.o: server.c util.h
 	gcc -c server.c
@@ -21,5 +24,8 @@ dbutil.o: dbutil.c dbutil.h
 clean_object:
 	rm -f util.o server.o client.o
 
+clean_take_picture:
+	rm -f take_picture
+
 clean:
-	rm -f util.o server.o client.o dbutil.o server client
+	rm -f util.o server.o client.o dbutil.o server client take_picture
