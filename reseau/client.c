@@ -2,6 +2,7 @@
 
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
+int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]);
 
 
 char IP_SERV[20] = "127.0.0.1";
@@ -23,7 +24,6 @@ int main(int argc, char const *argv[]) {
 	struct timeval timeout;
 
 	config("configClient.txt", &PORT_SERV, IP_SERV);
-	printf("p : %d\tip : %s\n", PORT_SERV, IP_SERV);
 
 	s_cli = socket(PF_INET, SOCK_STREAM, 0);
 
@@ -433,7 +433,7 @@ int first_conn_routine(int s_cli, char *buf){
 	}
 	else	{
 		memset(buf, 0, BUF_SIZE);
-		strcpy(buf, "115");
+		strcpy(buf, "115;No_photo");
 		if(ONLINE){
 			write(s_cli, buf, strlen(buf));
 		}
@@ -447,6 +447,7 @@ int first_conn_routine(int s_cli, char *buf){
 
 	//ouverture du flux video + transmission des images
 	printf("ouverture du flux video + transmission des images ...\n");
+	int iti =photo_transfer_routine(s_cli, buf);
 
 	return 1;
 
@@ -645,8 +646,39 @@ int weight_update_routine(/*...*/){
 	return 0;
 }
 
-int photo_transfer_routine(/*...*/){
+int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
+	int nb_photo = 29;
+	int flag;
+	int i;
+	for(i=1; i<=nb_photo; i++){
+		char path[50];
+		sprintf(path, "image_client/%d.jpg", i);
+		FILE* file = fopen(path, "r");
+		if(file != NULL){
+			fclose(file);
+
+			memset(buf, 0, BUF_SIZE);
+			if(i == nb_photo)
+				strcpy(buf, "114;Last_picture_in_coming");
+			else
+				strcpy(buf, "113;Picture_in_coming");
+
+			write(s_cli, buf, strlen(buf));
+			if(DEBUG)
+				printf("\t### Message envoyé : %s\n", buf);
+
+
+			printf("Transfer du fichier : %s ... ", path);
+			int flag = send_file(path, path, s_cli);
+			if(flag == 0)
+				printf("OK\n");
+			else{
+				printf("Erreur\n");
+			return 1;
+			}
+		}
+	}
 
 	return 0;
 }
