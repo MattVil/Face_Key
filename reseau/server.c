@@ -613,15 +613,18 @@ void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, Acco
 	data_size = strlen(accessibleAccountPartOne) + strlen(accessibleAccountPartTwo);
 	data = malloc((data_size + 1)*sizeof(char));
 
-	if ((strlen(accessibleAccountPartOne) != 0) && (strlen(accessibleAccountPartTwo) != 0)){
+	if ((strcmp(accessibleAccountPartOne, "") > 0) && (strcmp(accessibleAccountPartTwo, "") > 0)){
+		printf("Cas 1\n");
 		sprintf(data, "%s,%s", accessibleAccountPartOne, accessibleAccountPartTwo);
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
-	else if (strlen(accessibleAccountPartTwo) == 0){
+	else if (strcmp(accessibleAccountPartOne, "") > 0){
+		printf("Cas 2\n");
 		data = accessibleAccountPartOne;
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
-	else if (strlen(accessibleAccountPartOne) == 0){
+	else if (strcmp(accessibleAccountPartTwo, "") > 0){
+		printf("Cas 3\n");
 		data = accessibleAccountPartTwo;
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
@@ -716,8 +719,10 @@ void displayAccountList(AccountList list){
 
 AccountList addToList(PGresult *result, AccountList list){
 	int i;
-	for (i=0;i<PQntuples(result);i++){
-		list = insert(PQgetvalue(result, i, 1), atoi(PQgetvalue(result, i, 0)), list);
+	if (PQntuples(result) > 0){
+		for (i=0;i<PQntuples(result);i++){
+			list = insert(PQgetvalue(result, i, 1), atoi(PQgetvalue(result, i, 0)), list);
+		}
 	}
 	return list;
 }

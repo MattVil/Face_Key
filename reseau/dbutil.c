@@ -26,18 +26,22 @@ char* build_id_data(PGresult *result){
 			bytes_count += strlen(PQgetvalue(result, i, j));
 
 	data = calloc(bytes_count, sizeof(char));
+	memset(data, 0, sizeof(data));
+	printf("%d\n", PQntuples(result));
 
-	for (i=0;i<PQntuples(result);i++){
-		for (j=/*0*/1; j<PQnfields(result);/*j++*/j+=2){
-			if ((i == 0) && (j == /*0*/1)){
-				sprintf(data, "%s", PQgetvalue(result, i, j));
+	if (PQntuples(result) == 0){
+		return "";
+	}
+	else{
+		for (i=0;i<PQntuples(result);i++){
+			if (i == 0){
+				sprintf(data, "%s", PQgetvalue(result, i, 1));
 			}
 			else{
-				sprintf(temp, ",%s", PQgetvalue(result, i, j));
+				sprintf(temp, ",%s", PQgetvalue(result, i, 1));
 				strcat(data, temp);
 			}
 		}
+		return data;
 	}
-
-	return data;
 }
