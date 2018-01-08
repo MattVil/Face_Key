@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="col-8">
                                     <a href="<?php echo $edit ?>" class="gradient-22 nava">Edit</a>
-                                    <a href="<?php echo $delete ?>" class="gradient-22 nava">Delete</a>
+                                    <!-- <a href="<?php // echo $delete ?>" class="gradient-22 nava">Delete</a> -->
                                 </div>
                                 <div class="col-4">
                                     <a href="./userview.php" class="nava white">Users </a>
@@ -81,13 +81,13 @@
                 </div>
                 <div class="col-6 col-sm-12">
                     <h3>Graph.</h3>
-                        <p>Unavailable on this version of php</p>
-                        <!-- <?php // createGraph($id);?>
-                        <img src="<?php // echo $imgpath ?>" alt="graphFreq"/> -->
+                        <!-- <p>Unavailable on this version of php</p> -->
+                        <?php  createGraph($id);?>
+                        <img src="<?php echo $imgpath ?>" alt="graphFreq"/>
             	</div>
             </div>
             <div class="row">
-                <h3>Connexions.</h3>
+                <h3>Accounts.</h3>
                     <div class="center"><a class="gradient-2" href="addaccount.php?id=<?php echo $id?>">Add new Account ></a></div>
                     <br/>
                     <div class="tablediv">
@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div class="row">
-        		<h3>Connexions shared with <?php echo get_info("users", $id, "pseudo","id_user") ?>.</h3>
+        		<h3>Accounts shared with <?php echo get_info("users", $id, "pseudo","id_user") ?>.</h3>
         		<div class="tablediv">
                     <?php
                         $query = "SELECT sharedAccount.id_account, domain, name, first_name, SharedAccount.expiration_date FROM SharedAccount INNER JOIN Account ON sharedAccount.id_account = account.id_account INNER JOIN Sites ON account.id_site = sites.id_site INNER JOIN Users ON account.id_user = users.id_user WHERE sharedAccount.id_receiver = $id";

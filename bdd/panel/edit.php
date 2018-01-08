@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="col-8">
                                     <a href="<?php echo $profile ?>" class="gradient-22 nava">Profile</a>
-                                    <a href="<?php echo $delete ?>" class="gradient-22 nava">Delete</a>
+                                    <!-- <a href="<?php // echo $delete ?>" class="gradient-22 nava">Delete</a> -->
                                 </div>
                                 <div class="col-4">
                                     <a href="./userview.php" class="nava white">Users </a>
