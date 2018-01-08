@@ -450,3 +450,95 @@ int receive_file(int s_dial, char* directory){
 	close(file);
 	return 0;
 }
+
+int send_file2(char *filename, char *send_filename, int s_dial){
+	int file, file_size, bytes_sent, total_bytes_sent = 0, bytes_read;
+	struct stat file_info;
+	char buf_file[BUF_FILE];
+	char buf[BUF_SIZE];
+	if ((file = open(filename ,O_RDONLY)) == -1){
+		perror("File can't be open");
+		send_data(s_dial, 999, "Abort file transfer", buf, BUF_SIZE);
+		return 1;
+	}
+	memset(buf, 0, BUF_SIZE);
+	sprintf(buf, "%s", send_filename);
+	write(s_dial, buf, sizeof(buf));
+
+	memset(buf, 0, BUF_SIZE);
+	read(s_dial, buf, BUF_SIZE);
+	if (strcmp(buf, "0;Continue") != 0){
+		printf("Receiver stop transfer\n");
+		return 1;
+	}
+
+	fstat(file, &file_info);
+	file_size = file_info.st_size;
+	if (DEBUG)
+		printf("Taille du fichier %s: %d\n", filename, file_size);
+	memset(buf, 0, BUF_SIZE);
+	sprintf(buf, "%d", file_size);
+	write(s_dial, buf, sizeof(buf));
+
+	while(total_bytes_sent < file_size){
+		if ((bytes_read = read(file, buf_file, BUF_FILE)) < 0){
+			perror("Error");
+			return 1;
+		}
+		if((bytes_sent = write(s_dial, buf_file, BUF_FILE)) < 0){
+			perror("Error during transfer");
+			return 1;
+		}
+		memset(buf, 0, BUF_FILE);
+		total_bytes_sent+=bytes_sent;
+		printf("Bytes sent: %d\n", total_bytes_sent);
+	}
+	if (bytes_read < 0){
+		perror("Read file error");
+		return 1;
+	}
+	if (total_bytes_sent != file_size){
+		printf("Curious thing that: File size is %d and sent size is %d\n", file_size, total_bytes_sent);
+	}
+
+	close(file);
+
+	return 0;
+}
+
+int receive_file2(int s_dial, char *directory){
+	char buf[BUF_SIZE];
+	char buf_file[BUF_FILE];
+	char file_name[1000];
+	int file, file_size, total_size_receive = 0;
+	int read_flag;
+
+	memset(buf, 0, BUF_SIZE);
+	read_flag = read(s_dial, buf, BUF_SIZE);
+	sprintf(file_name, "%s/%s", directory, buf);
+
+	mkdir(directory, 0700);
+	if ((file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC,0666)) == -1){
+		perror("Can't open file");
+		send_data(s_dial, 999, "Abort file transfer", buf, BUF_SIZE);
+		return 1;
+	}
+	send_data(s_dial, 0, "Continue", buf, BUF_SIZE);
+
+	memset(buf, 0, BUF_SIZE);
+	read_flag = read(s_dial, buf, BUF_SIZE);
+	printf("Taille du fichier en arrivé: %s bytes\n", buf);
+	file_size = atoi(buf);
+	
+	while((read_flag = read(s_dial, buf_file, BUF_FILE)) > 0){
+		write(file, buf_file, sizeof(buf_file));
+		total_size_receive+=read_flag;
+	}
+	if (read_flag < 0){
+		perror("Read file error");
+		return 1;
+	}
+
+	close(file);
+	return 0;
+}

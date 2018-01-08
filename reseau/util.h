@@ -82,3 +82,5 @@ int connect_err();
 int bind_error();
 int send_file(char *filename, char *send_filename, int s_dial);
 int receive_file(int s_dial, char* directory);
+int receive_file2(int s_dial, char *directory);
+int send_file2(char *filename, char *send_filename, int s_dial);
