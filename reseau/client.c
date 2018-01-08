@@ -706,10 +706,13 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 	//int nb_photo = system("./take_picture");
 	int flag;
 	int i;
+	char path[50];
+	char filename[50];
+	int file;
 	for(i=1; i<=nb_photo; i++){
-		char path[50];
 		sprintf(path, "./client_x/image/%d.jpg", i);
-		FILE* file = fopen(path, "r");
+		sprintf(filename, "%d.jpg", i);
+		file = fopen(path, "r");
 		if(file != NULL){
 			fclose(file);
 
@@ -725,7 +728,7 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 
 			printf("Transfer du fichier : %s ... ", path);
-			int flag = send_file(path, path, s_cli);
+			flag = send_file(path, filename, s_cli);
 			//remove(path);
 			if(flag == 0)
 				printf("OK\n");

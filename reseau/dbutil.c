@@ -27,7 +27,6 @@ char* build_id_data(PGresult *result){
 
 	data = calloc(bytes_count, sizeof(char));
 	memset(data, 0, sizeof(data));
-	printf("%d\n", PQntuples(result));
 
 	if (PQntuples(result) == 0){
 		return "";

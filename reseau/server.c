@@ -55,6 +55,10 @@ int main(){
 	char query[500];
 	PGresult *result;
 	int version = 20180108;
+	char *tempon;
+	int cont = 1;
+	int id_user;
+	char directory[100];
 
 	serv_config(&serv_addr, &s_ecoute);
 	//database_connect(conn); //DataBase connection block the timeout
@@ -123,6 +127,8 @@ int main(){
 						}
 						send_data(s_dial, OK, "You're logged in", buf, sizeof(buf));
 						break;
+
+
 					case CONNEXION:
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
@@ -441,33 +447,33 @@ int main(){
 							printf("%s Client doesn't want to upload photos\n", trace);
 						}
 						else{
-							int cont = 1;
-							int id_user;
-							char directory[100];
 							if (ONLINE){
-								char query[500];
 								sprintf(query, "SELECT id_user FROM Users WHERE mail='%s';", mail);
 								PGresult *result;
 								conn = PQconnectdb(CONN_INFO);
 								verif_conn(conn);
 								result = PQexec(conn, query);
-								id_user = atoi(PQgetvalue(result, 0, 0));
+								tempon = PQgetvalue(result, 0, 0);
 								PQclear(result);
 								PQfinish(conn);
 							}
 							else{
-								id_user = 100;
+								tempon = "100";
 							}
-							sprintf(directory, "/face_key/usr/%d", id_user);
+							sprintf(directory, "/face_key/usr/%s", tempon);
+							printf("flag\n");
 							while (cont){
 								if (code == LAST_PHOTO){
+									printf("Cas 1\n");
 									receive_file(s_dial, directory);
 									cont = 0;
 								}
 								else if(code == PHOTO){
+									printf("Cas 2\n");
 									receive_file(s_dial, directory);
 								}
 								else if (code != PHOTO || code != LAST_PHOTO){
+									printf("Cas 3\n");
 									if (DEBUG)
 										printf("%s CREATION: (PHOTO) Code unrecognized at this point (%d)\n", trace, code);
 									send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
@@ -540,10 +546,10 @@ int main(){
 				PQfinish(conn);
 
 			printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
-			close (s_dial);
 
 			return 1;
 		}
+		close (s_dial);
 	}
 
 	if (list != NULL)
@@ -657,17 +663,14 @@ void idrequ(char *domain, int id_user, int s_dial, PGconn *conn, char *buf, Acco
 	data = malloc((data_size + 1)*sizeof(char));
 
 	if ((strcmp(accessibleAccountPartOne, "") > 0) && (strcmp(accessibleAccountPartTwo, "") > 0)){
-		printf("Cas 1\n");
 		sprintf(data, "%s,%s", accessibleAccountPartOne, accessibleAccountPartTwo);
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
 	else if (strcmp(accessibleAccountPartOne, "") > 0){
-		printf("Cas 2\n");
 		data = accessibleAccountPartOne;
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
 	else if (strcmp(accessibleAccountPartTwo, "") > 0){
-		printf("Cas 3\n");
 		data = accessibleAccountPartTwo;
 		send_data(s_dial, IDS_SD, data, buf, sizeof(buf));
 	}
