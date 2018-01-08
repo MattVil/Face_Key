@@ -25,6 +25,7 @@ AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
 int main(){
+
 	/*Socket var*/
 	char buf[BUF_SIZE];
 	int s_ecoute, s_dial;

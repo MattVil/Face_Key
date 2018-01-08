@@ -186,6 +186,11 @@ int getData(char* message, char* data){
 int split_message(int *code, char* data, char *buf, int s_dial){
 	char temp_buf[BUF_SIZE];
 
+	if (strcmp(buf, "") == 0){
+		printf("Peer is down\n");
+		return 1;
+	}
+
 	buf = removechar(buf, '\n');
 	memset(temp_buf, 0, BUF_SIZE);
 	if (FULL_DEBUG)

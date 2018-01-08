@@ -110,7 +110,7 @@ int main(int argc, char const *argv[]) {
 				printf("\t### Message recu : %s\n", buf);
 
       if (split_message(&code, data, buf, s_cli))
-        break;
+        exit(1);
 
 			if(code != OK){
 				if(DEBUG)
@@ -162,6 +162,11 @@ int main(int argc, char const *argv[]) {
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
 					flag = conn_to_website_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+        if (flag){
+          close(s_cli);
+          printf("Server is down\n");
+          exit(1);
+        }
 				close(s_cli);
 				break;
 			case 'u': //update quotidienne des poids du réseau
@@ -189,6 +194,8 @@ int first_conn_routine(int s_cli, char *buf){
 	char **splited_req;
 	int splited_req_size;
 	int login_ok = 0, mdp_ok = 0;
+  int code;
+  char data[BUF_SIZE];
 	memset(mail, 0, 50);
 	memset(pseudo, 0, 50);
 	memset(buf, 0, BUF_SIZE);
@@ -199,10 +206,10 @@ int first_conn_routine(int s_cli, char *buf){
 
 	/*Demande de creation*/
 	strcpy(buf, "002;creation");
-	if(DEBUG)
-		printf("\t### Message envoyé : %s\n", buf);
 	if(ONLINE)
 		write(s_cli, buf, strlen(buf));
+  if(DEBUG)
+    printf("\t### Message envoyé : %s\n", buf);
 
 	memset(buf, 0, BUF_SIZE);
 	if(ONLINE){
@@ -220,8 +227,9 @@ int first_conn_routine(int s_cli, char *buf){
 
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
-	splited_req = str_split(buf, ';', &splited_req_size);
-	if(atoi(splited_req[0]) != OK){
+	if (split_message(&code, data, buf, s_cli))
+    return 1;
+	if(code != OK){
 		if(DEBUG)
 			printf("\t### Permission de connexion au serveur refusé.\n");
 		return 0;
