@@ -547,7 +547,7 @@ int main(){
 						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
 						if (split_message(&code, data, buf, s_dial))
 							break;
-						if (code == 136){
+						if (code == UP){
 							send_file("neuron/network.npz", "network.npz", s_dial);
 						}
 						read_tt = recv_data(s_dial, buf);

@@ -46,6 +46,7 @@
 #define NO_PHOTO 115
 #define PHOTO 113
 #define LAST_PHOTO 114
+#define UP 136
 
 //Codes Serveur -> Client
 #define IDS_SD 200
