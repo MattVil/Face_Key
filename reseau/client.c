@@ -3,6 +3,7 @@
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]);
+int weight_update_routine(int s_cli, char buf[BUF_SIZE]);
 
 
 char IP_SERV[20] = "127.0.0.1";
@@ -170,6 +171,18 @@ int main(int argc, char const *argv[]) {
 				close(s_cli);
 				break;
 			case 'u': //update quotidienne des poids du réseau
+			if(ONLINE)
+				s_cli = socket(PF_INET, SOCK_STREAM, 0);
+				connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+				flag = weight_update_routine(s_cli, buf);
+			if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+			if (flag){
+				close(s_cli);
+				printf("Server is down\n");
+				exit(1);
+			}
+			close(s_cli);
+			break;
 				break;
 			case 't': //transmission quotidienne des photos
 				break;
@@ -696,7 +709,38 @@ int conn_to_website_routine(int s_cli, char *buf){
 	return 1;
 }
 
-int weight_update_routine(/*...*/){
+int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
+	int select_tt, read_tt;
+	fd_set readfds;
+	struct timeval timeout;
+	int code;
+	char data[BUF_SIZE];
+	send_data(s_cli, UPDATE, "update", buf, BUF_SIZE);
+	timeout_config(s_cli, &readfds, &timeout);
+	select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+	if (!select_tt){
+		if (DEBUG)
+			printf("UPDATE: Neuron timeout\n");
+		send_data(s_cli, ERR_TIMEOUT, "Timeout Reached", buf, BUF_SIZE);
+		return 1;
+	}
+	read_tt = recv_data(s_cli, buf);
+	if (read_tt == -1){
+		if (DEBUG)
+			printf("UPDATE: Read failed\n");
+		send_data(s_cli, 1000, "Internal error", buf, BUF_SIZE);
+		return 1;
+	}
+	printf("MESSAGE RECEIVED: %s\n", buf);
+	if (split_message(&code, data, buf, s_cli))
+		return 1;
+	if (code != OK){
+		printf("Code unrecognized at this point (%d)\n", code);
+		send_data(s_cli, UKNWREQ, "Code unrecognized at this point", buf, BUF_SIZE);
+		return 1;
+	}
+	send_data(s_cli, 136, "OK", buf, BUF_SIZE);
+	receive_file(s_cli, "client_x");
 	return 0;
 }
 
