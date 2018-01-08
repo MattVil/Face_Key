@@ -228,7 +228,7 @@ int first_conn_routine(int s_cli, char *buf){
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
 	if (split_message(&code, data, buf, s_cli))
-    return 1;
+    	return 1;
 	if(code != OK){
 		if(DEBUG)
 			printf("\t### Permission de connexion au serveur refusé.\n");
@@ -275,8 +275,9 @@ int first_conn_routine(int s_cli, char *buf){
 		if(DEBUG)
 			printf("\t### Message recu : %s\n", buf);
 
-		splited_req = str_split(buf, ';', &splited_req_size);
-		switch(atoi(splited_req[0])){
+		if (split_message(&code, data, buf, s_cli))
+    		return 1;
+		switch(code){
 			case OK :
 				login_ok = 1;
 				break;
@@ -346,8 +347,9 @@ int first_conn_routine(int s_cli, char *buf){
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
 
-	splited_req = str_split(buf, ';', &splited_req_size);
-	if(atoi(splited_req[0]) != OK){
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+	if(code != OK){
 		printf("Une erreur est survenue :(\n");
 		return 0;
 	}
@@ -415,8 +417,9 @@ int first_conn_routine(int s_cli, char *buf){
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
 
-	splited_req = str_split(buf, ';', &splited_req_size);
-	if(atoi(splited_req[0]) == OK){
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+	if(code == OK){
 		ID_CLIENT = atoi(splited_req[1]);
 		printf("Bravo vous avez créé votre compte FaceKey !\n");
 		if(FULL_DEBUG)
@@ -471,10 +474,11 @@ int first_conn_routine(int s_cli, char *buf){
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
 
-	splited_req = str_split(buf, ';', &splited_req_size);
-	if(atoi(splited_req[0]) == OK){
-		if(splited_req[1] != NULL){
-			version = atoi(splited_req[1]);
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+	if(code == OK){
+		if(data != NULL){
+			version = atoi(data);
 			if(DEBUG)
 				printf("\t### Nouvelle version actuelle du reseau de neurones : %d \n", atoi(splited_req[1]));
 		}
@@ -508,6 +512,8 @@ int conn_to_website_routine(int s_cli, char *buf){
 	char **splited_req, **splited_mdp, **splited_data;
 	memset(site, 0, 50);
 	memset(buf, 0, buf_len);
+	int code;
+	char data[BUF_SIZE];
 
 	/*Timeout var*/
 	fd_set readfds;
@@ -536,8 +542,9 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
-	splited_req = str_split(buf, ';', &splited_req_size);
-	if(atoi(splited_req[0]) != OK){
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+	if(code != OK){
 		if(DEBUG)
 			printf("\t### Permission de connexion au serveur refusé.\n");
 		return 0;
@@ -572,9 +579,11 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
-	splited_req = str_split(buf, ';', &splited_req_size);
 
-	if(atoi(splited_req[0]) != OK){
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+
+	if(code != OK){
 		if(DEBUG)
 			printf("\t### Permission de connexion au serveur refusé.\n");
 		return 0;
@@ -614,10 +623,11 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	if(DEBUG)
 		printf("\t### Message recu : %s\n", buf);
-	splited_req = str_split(buf, ';', &splited_req_size);
-	splited_data = str_split(splited_req[1], ',', &splited_data_size);
+	if (split_message(&code, data, buf, s_cli))
+    	return 1;
+	splited_data = str_split(data, ',', &splited_data_size);
 
-	switch(atoi(splited_req[0])){
+	switch(code){
 		/*Site il y a une lisye de site dispo*/
 		case IDS_SD :
 			printf("Voici les comptes %s auquel vous avez accès : \n", site);
