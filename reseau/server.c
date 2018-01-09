@@ -460,17 +460,36 @@ int main(){
 							else{
 								tempon = "100";
 							}
-							sprintf(directory, "/face_key/usr/%s", tempon);
+							sprintf(directory, "face_key_db/usr/%s", tempon);
 							printf("flag\n");
+							printf("%s\n", directory);
 							while (cont){
 								if (code == LAST_PHOTO){
 									printf("Cas 1\n");
-									receive_file(s_dial, directory);
+									receive_file2(s_dial, directory);
 									cont = 0;
 								}
 								else if(code == PHOTO){
 									printf("Cas 2\n");
-									receive_file(s_dial, directory);
+									receive_file2(s_dial, directory);
+									timeout_config(s_dial, &readfds, &timeout);
+									select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+									if (!select_tt){
+										if (DEBUG)
+											printf("%s CREATION: Photo timeout\n", trace);
+										send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+										break;
+									}
+									read_tt = recv_data(s_dial, buf);
+									if (read_tt == -1){
+										if (DEBUG)
+											printf("%s CREATION: Read failed\n", trace);
+										send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+										break;
+									}
+									printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+									if (split_message(&code, data, buf, s_dial))
+										break;
 								}
 								else if (code != PHOTO || code != LAST_PHOTO){
 									printf("Cas 3\n");
@@ -479,24 +498,6 @@ int main(){
 									send_data(s_dial, FORBIDDEN_REQU, "Code unrecognized at this point", buf, sizeof(buf));
 									break;
 								}
-								timeout_config(s_dial, &readfds, &timeout);
-								select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
-								if (!select_tt){
-									if (DEBUG)
-										printf("%s CREATION: Photo timeout\n", trace);
-									send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
-									break;
-								}
-								read_tt = recv_data(s_dial, buf);
-								if (read_tt == -1){
-									if (DEBUG)
-										printf("%s CREATION: Read failed\n", trace);
-									send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
-									break;
-								}
-								printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
-								if (split_message(&code, data, buf, s_dial))
-									break;
 							}
 						}
 
@@ -526,6 +527,28 @@ int main(){
 						break;
 
 					case UPDATE:
+						sprintf(query, "%d", version);
+						send_data(s_dial, OK, query, buf, sizeof(buf));
+						timeout_config(s_dial, &readfds, &timeout);
+						select_tt = select(max(s_ecoute, s_dial)+1, &readfds, NULL, NULL, &timeout);
+						if (!select_tt){
+							if (DEBUG)
+								printf("%s CREATION: Neuron timeout\n", trace);
+							send_data(s_dial, ERR_TIMEOUT, "Timeout Reached", buf, sizeof(buf));
+							break;
+						}
+						read_tt = recv_data(s_dial, buf);
+						if (read_tt == -1){
+							if (DEBUG)
+								printf("%s CREATION: Read failed\n", trace);
+							send_data(s_dial, 1000, "Internal error", buf, sizeof(buf));
+							break;
+						}
+						printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+						if (split_message(&code, data, buf, s_dial))
+							break;
+						if (code == 136)
+							send_file("neuron/network.npz", "network.npz", s_dial);
 						break;
 					case -1:
 						if (DEBUG)
@@ -534,6 +557,7 @@ int main(){
 						break;
 					default:
 						printf("%s Code unrecognized at this point (%d)\n", trace, code);
+						send_data(s_dial, UKNWREQ, "Code unrecognized at this point", buf, sizeof(buf));
 						break;
 				}
 			}

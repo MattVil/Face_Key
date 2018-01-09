@@ -21,6 +21,7 @@
 #define PORT 5000
 #define TIMEOUT 120
 #define QUEUE 5
+#define BUF_FILE 1 
 
 #define REQU_SEP 58
 #define DATA_SEP 44

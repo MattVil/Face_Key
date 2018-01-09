@@ -513,11 +513,17 @@ int receive_file2(int s_dial, char *directory){
 	int file, file_size, total_size_receive = 0;
 	int read_flag;
 
+	struct stat st = {0};
+
+	if (stat(directory, &st) == -1) {
+		printf("Create directory\n");
+	    mkdir(directory, 0700);
+	}
+
 	memset(buf, 0, BUF_SIZE);
 	read_flag = read(s_dial, buf, BUF_SIZE);
 	sprintf(file_name, "%s/%s", directory, buf);
 
-	mkdir(directory, 0700);
 	if ((file = open(file_name, O_WRONLY | O_CREAT | O_TRUNC,0666)) == -1){
 		perror("Can't open file");
 		send_data(s_dial, 999, "Abort file transfer", buf, BUF_SIZE);
@@ -530,15 +536,19 @@ int receive_file2(int s_dial, char *directory){
 	printf("Taille du fichier en arrivé: %s bytes\n", buf);
 	file_size = atoi(buf);
 	
-	while((read_flag = read(s_dial, buf_file, BUF_FILE)) > 0){
+	do{
+		read_flag = read(s_dial, buf_file, BUF_FILE);
 		write(file, buf_file, sizeof(buf_file));
 		total_size_receive+=read_flag;
-	}
-	if (read_flag < 0){
-		perror("Read file error");
-		return 1;
-	}
+		printf("%d - %d\n", read_flag, total_size_receive);
+	}while(total_size_receive < file_size);
+	// if (read_flag < 0){
+	// 	perror("Read file error");
+	// 	return 1;
+	// }
+	send_data(s_dial, OK, "OK", buf, BUF_SIZE);
 
+	printf("End of transfer\n");
 	close(file);
 	return 0;
 }
