@@ -34,8 +34,11 @@ int main(int argc, char const *argv[]) {
 
   //check if parameter for folder name
   String folder = "./data/";
+  String instruction = "mkdir ";
   if(argc > 1){
     folder += (String)argv[1];
+    instruction += folder;
+    system(instruction.c_str());
     cout << folder << endl;
     mkdir(folder.c_str(), 0777);
   }
@@ -129,6 +132,9 @@ Mat detect_faces(Mat frame_origin, String folder, CascadeClassifier face_cascade
       imwrite(file_name, face_saved_resized);
     }
 
+    stringstream nbImg;
+    nbImg << nb_images++;
+    putText(frame, nbImg .str(), Point(10,25), CV_FONT_HERSHEY_DUPLEX, 0.8  , cvScalar(0,0,255), 1, CV_AA);
 
     ellipse(frame, face_center, Size(faces[i].width/2, faces[i].height/2), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
 
