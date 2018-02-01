@@ -60,7 +60,7 @@ include "include.php";
             if (isset($_POST['entre']) && isset($_POST['option'])){
             $choise = $_POST['option'];
             $search = $_POST['entre'];
-            $query = "SELECT * FROM Users WHERE $choise = '$search' ORDER BY id_user;";
+            $query = "SELECT id_user,  name, pseudo FROM Users WHERE $choise = '$search' ORDER BY id_user;";
             //echo $query;
             echo display_table_query($query,3);
             }

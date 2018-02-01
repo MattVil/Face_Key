@@ -170,10 +170,6 @@
               while ($j < $count)
               {
                   $c_row = current($row);
-                  if ($flag == 1 || $flag == 2){
-                    if ($j == 0)
-                      $id = $c_row;
-                  }
                   $char .= '<span class="gradient23">#' . $c_row . '</span>';
                   next($row);
                   $j = $j + 1;
@@ -227,12 +223,12 @@
               if($flag==3){ //profile
                 $char.= '<td><a class="gradient-2" href="profile.php?id='.$id.'">Check</a></td>';
                 $char.= '<td><a class="gradient-2" href="edit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a class="gradient-2" href="delete.php?id='.$id.'">Delete</a></td>';
+                // $char.= '<td><a class="gradient-2" href="delete.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==4){ //sites
                 $char.= '<td><a class="gradient-2" href="sitedetail.php?id='.$id.'">Check</a></td>';
                 $char.= '<td><a class="gradient-2" href="siteedit.php?id='.$id.'">Edit</a></td>';
-                $char.= '<td><a class="gradient-2" href="sitedelete.php?id='.$id.'">Delete</a></td>';
+                // $char.= '<td><a class="gradient-2" href="sitedelete.php?id='.$id.'">Delete</a></td>';
               }
               if($flag==5){ //shareco on co
                 $char.= '<td><a class="gradient-2" href="eshac.php?id='.$id.'">Edit shared connexion</a></td>';

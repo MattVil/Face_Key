@@ -42,7 +42,7 @@
                               </div>
                               <div class="col-8">
                                   <a href="<?php echo $thisedit ?>" class="gradient-22 nava">Edit</a>
-                                  <a href="<?php echo $thisdelete ?>" class="gradient-22 nava">Delete</a>
+                                  <!-- <a href="<?php // echo $thisdelete ?>" class="gradient-22 nava">Delete</a> -->
                               </div>
                               <div class="col-4">
                                   <a href="./userview.php" class="nava white">Users </a>
