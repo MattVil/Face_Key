@@ -27,8 +27,8 @@ possibleChanges = [
 ]
 seq = iaa.OneOf(possibleChanges)
 
-roots = ["origin/"]
-output_path = "augmented/"
+roots = ["learningSet/julien"]
+output_path = "fulljulien/"
 
 totalImages = 0
 index = 0
@@ -47,7 +47,7 @@ for root in roots:
     folder = path + "/" + directory
     files = [f for f in listdir(folder) if isfile(join(folder, f))]
 
-    print "Reading: " + root + "/" + directory + " (" + str(len(files)) + ")."
+    print("Reading: " + root + "/" + directory + " (" + str(len(files)) + ").")
 
     if not exists(output_path + "/" + directory):
       makedirs(output_path + "/" + directory)
@@ -63,4 +63,4 @@ for root in roots:
     for i in range(len(possibleChanges)):
       generateRandomImages(directory)
 
-print 'Got ' + str(index) + ' images.'
+print ('Got ' + str(index) + ' images.')
