@@ -124,22 +124,22 @@ int main(int argc, char const *argv[]) {
 		}
 	}
 
-	printf("-----------------------------------------\n");
-	printf("|\t\t\t\t\t|\n");
-	printf("|\tVous êtes le client %d\t\t|\n", ID_CLIENT);
-	printf("|\t\t\t\t\t|\n");
-	printf("-----------------------------------------\n");
-
-	printf("\n\nChoix :\n");
-	printf("\tp - Simuler une premiere connexion\n");
-	printf("\tc - Vous connecter à un site\n");
-	printf("\tu - Mettre à jour la version de votre réseau de neurones\n");
-	printf("\tt - Transmettre les photos de vous pour amélioration du réseau\n");
-	printf("\tq - Quitter\n");
-
 	while(1){
 
-    fflush(stdin);
+		printf("-----------------------------------------\n");
+		printf("|\t\t\t\t\t|\n");
+		printf("|\tVous êtes le client %d\t\t|\n", ID_CLIENT);
+		printf("|\t\t\t\t\t|\n");
+		printf("-----------------------------------------\n");
+
+		printf("\n\nChoix :\n");
+		printf("\tp - Simuler une premiere connexion\n");
+		printf("\tc - Vous connecter à un site\n");
+		printf("\tu - Mettre à jour la version de votre réseau de neurones\n");
+		printf("\tt - Transmettre les photos de vous pour amélioration du réseau\n");
+		printf("\tq - Quitter\n");
+
+	    fflush(stdin);
 		printf("\nVotre choix (p/c/u/t/q): ");
 
 		scanf("%c", &choise);
@@ -163,11 +163,11 @@ int main(int argc, char const *argv[]) {
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
 					flag = conn_to_website_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-        if (flag){
-          close(s_cli);
-          printf("Server is down\n");
-          exit(1);
-        }
+		        if (!flag){
+		          close(s_cli);
+		          printf("Server is down\n");
+		          exit(1);
+		        }
 				close(s_cli);
 				break;
 			case 'u': //update quotidienne des poids du réseau
@@ -187,6 +187,7 @@ int main(int argc, char const *argv[]) {
 			case 't': //transmission quotidienne des photos
 				break;
 			case 'q':
+				close(s_cli);
 				exit(0);
 				break;
 			default :
@@ -746,8 +747,8 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
-	//int nb_photo = 29;
-	int nb_photo = system("./take_picture");
+	int nb_photo = 29;
+	//int nb_photo = system("./take_picture");
 	int flag;
 	int i;
 	char data[BUF_SIZE];
@@ -775,7 +776,7 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 			printf("Transfer du fichier : %s ... ", path);
 			flag = send_file2(path, filename, s_cli);
-			remove(path);
+			//remove(path);
 			if(flag == 0)
 				printf("OK\n");
 			else{
@@ -792,6 +793,10 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 			if(code != OK)
 				return 1;
 
+		}
+		else{
+			if (DEBUG)
+				printf("File: %s is null\n", filename);
 		}
 
 	}
