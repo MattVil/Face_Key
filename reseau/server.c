@@ -523,7 +523,7 @@ int main(){
 						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code == OK)
-							send_file("neuron/network.npz", "network.npz", s_dial);
+							send_file2("neuron/network.npz", "network.npz", s_dial);
 						break;
 
 					case UPDATE:
@@ -548,7 +548,7 @@ int main(){
 						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code == UP){
-							send_file("neuron/network.npz", "network.npz", s_dial);
+							send_file2("neuron/network.npz", "network.npz", s_dial);
 						}
 						read_tt = recv_data(s_dial, buf);
 						break;

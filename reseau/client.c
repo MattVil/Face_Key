@@ -125,7 +125,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	while(1){
-		
+
 		printf("-----------------------------------------\n");
 		printf("|\t\t\t\t\t|\n");
 		printf("|\tVous êtes le client %d\t\t|\n", ID_CLIENT);
@@ -187,6 +187,7 @@ int main(int argc, char const *argv[]) {
 			case 't': //transmission quotidienne des photos
 				break;
 			case 'q':
+				close(s_cli);
 				exit(0);
 				break;
 			default :
