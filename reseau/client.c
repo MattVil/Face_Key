@@ -746,8 +746,8 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
-	//int nb_photo = 29;
-	int nb_photo = system("./take_picture");
+	int nb_photo = 29;
+	//int nb_photo = system("./take_picture");
 	int flag;
 	int i;
 	char data[BUF_SIZE];
@@ -775,7 +775,7 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 			printf("Transfer du fichier : %s ... ", path);
 			flag = send_file2(path, filename, s_cli);
-			remove(path);
+			//remove(path);
 			if(flag == 0)
 				printf("OK\n");
 			else{
@@ -792,6 +792,10 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 			if(code != OK)
 				return 1;
 
+		}
+		else{
+			if (DEBUG)
+				printf("File: %s is null\n", filename);
 		}
 
 	}

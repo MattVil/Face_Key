@@ -567,9 +567,10 @@ int main(){
 				printf("Read failed\n");
 			}
 			if (list != NULL)
-			list = freeAccountList(list);
+				list = freeAccountList(list);
 			if (PQstatus(conn) == CONNECTION_OK)
 				PQfinish(conn);
+			close (s_dial);
 
 			printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 
