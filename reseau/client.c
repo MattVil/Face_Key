@@ -125,6 +125,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	while(1){
+		choise = getchar();
 
 		printf("-----------------------------------------\n");
 		printf("|\t\t\t\t\t|\n");
@@ -171,18 +172,17 @@ int main(int argc, char const *argv[]) {
 				close(s_cli);
 				break;
 			case 'u': //update quotidienne des poids du réseau
-			if(ONLINE)
-				s_cli = socket(PF_INET, SOCK_STREAM, 0);
-				connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-				flag = weight_update_routine(s_cli, buf);
-			if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-			if (flag){
+				if(ONLINE)
+					s_cli = socket(PF_INET, SOCK_STREAM, 0);
+					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+					flag = weight_update_routine(s_cli, buf);
+				if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+				if (flag){
+					close(s_cli);
+					printf("Server is down\n");
+					exit(1);
+				}
 				close(s_cli);
-				printf("Server is down\n");
-				exit(1);
-			}
-			close(s_cli);
-			break;
 				break;
 			case 't': //transmission quotidienne des photos
 				break;
@@ -191,7 +191,7 @@ int main(int argc, char const *argv[]) {
 				exit(0);
 				break;
 			default :
-				//printf("Mauvais choix, veuillez entrer une nouvelle lettre\n");
+				printf("Mauvais choix, veuillez entrer une nouvelle lettre\n");
 				break;
 		}
 
