@@ -687,7 +687,7 @@ Pour répondre au premier besoin : " Il doit être accessible depuis un navigateur
 	 \label{Table:PDMN}
 \end{table}
 
-Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux navigateurs pour le développement d'un plug-in. Nous savons que les deux offrent cette possibilité mais nous devons étudier si les API des deux permettent de répondre aux deux besoin techniques suivants "pouvoir communiquer avec le client présent sur l'ordinateur" et "pouvoir interagir avec le contenu d'une page web affiché dans un navigateur". Pour cela nous isolons 4 fonctionnalité indisensables à implémenter 
+Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux navigateurs pour le développement d'un plug-in. Nous savons que les deux offrent cette possibilité mais nous devons étudier si les API des deux permettent de répondre aux deux besoin techniques suivants "pouvoir communiquer avec le client présent sur l'ordinateur" et "pouvoir interagir avec le contenu d'une page web affiché dans un navigateur". Pour cela nous isolons 3 fonctionnalité indisensables à implémenter 
 \begin{itemize}
 	\item Interaction avec le contenu d'une page web.
 	\begin{itemize}
@@ -709,8 +709,6 @@ Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux nav
 		\hline
 		Injection de contenu dans la page  & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark }        \\ 
 		\hline
-		Message inter-extension            & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.133,0.133,0.133}{X}  \\ 
-		\hline
 		UDP                                & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.133,0.133,0.133}{X}  \\
 		\hline
 	\end{tabular}	 
@@ -725,10 +723,74 @@ Avant de passer au développement intrinsèque du plug-in nous devons étudier les 
 	\item Les Applications
 	\item Les Extensions
 \end{itemize}
+\subsubsection{Application chrome}
+Les application chrome sont des web-applications développées en HTML5, CSS et javascript et dont l'objectif est de se rapprocher de l'expérience d'une application native.
+
+L'avantage majeur des application Chrome, en comparaison avec des application natives ou avec des web-applications, est qu'elles sont multi-plateformes. En effet, une fois développée, une application chrome fonctionnera aussi bien sur un navigateur tournant sur n'importe quel système d'exploitation d'ordinateur que sur tablette ou même téléphone.
+
+Elles n'ont pas de barre d'adresses, contrairement à chrome, mais ont une fenêtre classiques comme toutes les application traditionnelles. Leur fonctionnement est externe à celui de Chrome. 
+
+Le plus important est qu'elles ont accès à toutes les composantes matérel de l'ordinateur hôte. Nous pouvons donc utiliser le bluetooth, les ports USB et, ce qui nous intéresse ici, la carte réseau pour l'UDP.
+
+\subsubsection{Extension chrome}
+
+Les extensions chromes sont des petits logiciels qui permettent de customiser l'experience utilisateur du navigateur Chrome. Elles permettent aux utilisateurs d'accéder de modeler leur expérience personnelle du navigateur. Elles sont basées sur les technologies web HTML, JavaScript et CSS.
+
+Une extension doit servir à un seul objectif bien défini et facile  à comprendre. Une extension peut inclure de multiples composants et avoir une série de fonctionnalités, tant qu'elle sert cet objectif clairement défini.\\
+Les extensions Chrome sont accessibles depuis une icône la barre d'utilisateur en haut à droite de la fenêtre chrome.
+
+Les extensions chrome, contrairement aux applications Chrome, ne permettent pas d'accéder aux composantes matériel du système hôte.
+
+Tout comme les application Chrome, les extensions ne sont pas dépendantes du contenu du navigateur et ne nécessitent pas une connexion internet. Cependant elles fonctionnent à l'intérieur du navigateur.\\
+Les extensions possèdent un système de communication facilité avec les applications Chrome.
+
 \subsection{Développement}
+Après analyse des deux options offertes par le navigateur Chrome nous choisissons de décomposer notre IHM en deux parties : 
+\begin{itemize}
+	\item Une extension pour interagir avec le contenu des pages web
+	\item Une application pour interagir avec le client
+\end{itemize}
+Nous relions les deux composantes via une des fonctionnalités proposées via l'API de développement Google Chrome qui s'appelle Native Messaging.
 \subsubsection{Application}
+Dans un premier temps nous avons donc développé la première partie de notre IHM qui sera l'application. Cette application aura pour objectif d'être le relai entre le client C et l'extension qui interrigea 
 \subsubsection{Extension}
 
+\subsubsection{Communication Application-Extension}
+Pour relier les deux parties de notre plug-in nous utilisons une des fonctionnalités offertes par l'API de Google Chrome. Cette fonctionnalité, appelée Messaging, permet qui permet la communication inter-extensions (fonctionne aussi avec les applications).
+
+\begin{lstlisting}[language=js]
+// App 1
+var app2id = "abcdefghijklmnoabcdefhijklmnoab2";
+chrome.runtime.onMessageExternal.addListener(
+  // This should fire even if the app is not running, as long as it is
+  //   included in the event page (background script)
+  function(request, sender, sendResponse) {
+    if(sender.id == app2id && request.data) {
+      // Use data passed
+      // Pass an answer with sendResponse() if needed
+    }
+  }
+);
+
+// App 2
+var app1id = "abcdefghijklmnoabcdefhijklmnoab1";
+chrome.runtime.sendMessage(app1id, {data: /* some data */},
+  function(response) {
+    if(response) {
+      // Installed and responded
+    } else {
+      // Could not connect; not installed
+      // Maybe inspect chrome.runtime.lastError
+    }
+  }
+);
+\end{lstlisting}
+
+
+
+En résumant on obtient donc l'architecture suivante pour le plug-in web : 
+
+INSERER ARCHITECTURE
 \subsection{Intégration au reste du projet}
 \subsection{Conclusion}
 
