@@ -24,6 +24,11 @@ AccountList addToList(PGresult *result, AccountList list);
 AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
+RSA *pubkey, *privkey;
+int encrypt_enable = 1;
+char *encrypt_buf;
+char *err;
+
 int main(){
 
 	/*Socket var*/
@@ -80,10 +85,44 @@ int main(){
 
 		if (fork() == 0){
 			char trace[20];
+			char path[50];
+
+			pid_t pid = getpid();
+			sprintf(path, "face_key_db/keys/%d", pid);
+			receive_file2(s_dial, path);
+			send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
+			recv_data(s_dial, buf);
+			sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
+			privkey = loadKey("server_data/keys/privatekey.pem", PRIVKEY);
+			encrypt_buf = malloc(256);
+
 			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
 			if (read_tt != -1){
 				printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+
+				//RSA_DECRYPT_FLAG
+				if (encrypt_enable){
+					sprintf(encrypt_buf, "%s", buf);
+
+					unsigned char digest[MD5_DIGEST_LENGTH];
+					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
+				    char mdString[33];
+				    for(int i = 0; i < 16; i++)
+				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+				     if (DEBUG)
+				     	printf("md5: %s\n", mdString);
+
+					memset(buf, 0, BUF_SIZE);
+					int len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
+					printf("Decrypted message: %s\n", buf);
+					unsigned long e = ERR_get_error();
+					printf("Decrypt flag: %d | Err code: %lu\n", len, e);
+					ERR_load_crypto_strings();
+					printf("Error: %s\n", ERR_error_string(e, err));
+					printf("Private Key correctly loaded ?: %d\n", (privkey != NULL));
+				}
+
 				strcpy(temp_buf, buf);
 				code = getCode(temp_buf);
 				strcpy(temp_buf, buf);
@@ -274,7 +313,6 @@ int main(){
 						break;
 
 					case CREATION:
-
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
 						//REC MAIL+PSEUDO
@@ -527,6 +565,8 @@ int main(){
 						break;
 
 					case UPDATE:
+						receive_file2(s_dial, path);
+
 						sprintf(query, "%d", version);
 						send_data(s_dial, OK, query, buf, sizeof(buf));
 						timeout_config(s_dial, &readfds, &timeout);

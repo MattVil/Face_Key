@@ -548,9 +548,23 @@ int receive_file2(int s_dial, char *directory){
 	// 	perror("Read file error");
 	// 	return 1;
 	// }
+
 	send_data(s_dial, OK, "OK", buf, BUF_SIZE);
 
 	printf("End of transfer\n");
 	close(file);
 	return 0;
+}
+
+RSA* loadKey(char *path, int keytype){
+	RSA *keypair = RSA_new();
+	FILE *f;
+	f = fopen(path, "rb");
+	if (f == NULL)
+		return NULL;
+	if (keytype)
+		keypair = PEM_read_RSA_PUBKEY(f, &keypair, NULL, NULL);
+	else
+		keypair = PEM_read_RSAPrivateKey(f, &keypair, NULL, NULL);
+	return keypair;
 }
