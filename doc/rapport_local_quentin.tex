@@ -93,6 +93,21 @@ Notre clé publique est donc le couple \((e, n)\).
 Pour crypter un message $M$ nous avons besoin de notre clé publique \((e, n)\), notre message crypter $C$ se calcule de la manière suivante: \[C \equiv M^e (mod \phantom{s}n)\]
 La fonction de décryptage est tout aussi simple, à partir de notre message crypter $C$ , et de notre clé privé \((d, n)\), nous calculons: \[M \equiv C^d (mod \phantom{s}n)\]
 La méthode décrite içi est démontrée mathématiquement dans le papier d'origine de R.L. Rivest, A. Shamir, et L. Adleman.
+\newline{}
+\subsubsection{Implémentation}
+Pour implémenter l'algorithme nous avons choisis d'utiliser la bibliothèque libre et open source OpenSSL, et plus particulièrement la bibliothèque \textit{libcrypto} qui fourni les algorithmes de cryptographie. OpenSSL est une bibliothèque largement répandu et utilisé, il est donc plutôt aisé de trouver de la documentation dessus (suivant les fonctionnalités utilisées). 
+\newline{}
+\paragraph{Génération des clés}
+Les clés publique et privés du serveur et du client sont généré préalablement, et stocké les les fichiers des deux programmes.
+\newline{}
+\paragraph{Échange des clés}
+Lors de chaque connexion du client au serveur, les clés publiques les deux parties sont échangé, envoyé sous forme de fichier "\textit{.pem}" et stocké, avec les autres clés pour le client, et dans un dossier nommé par le PID du processus pour le serveur (le serveur étant multi-processus).
+\newline{}
+\paragraph{Cryptage et décryptage}
+Pour le cryptage et le décryptage, les fonctions de OpenSSL sont utilisées après avoir charger les clef dans la mémoire. Le cryptage et le décryptage est opérationnel pour peu que les deux clés issus de la même pair soit utilisées pour crypter et décrypter.
+\newline{}
+\paragraph{État de l'implémentation}
+Le système n'est que partiellement implémenté, en effet, malgré le bon fonctionnement de chacune des briques indépendamment des autres, nous pouvons observer un nombre non négligeable de raté lorsque nous essayons d'utiliser l'ensemble dans le contexte Client/Serveur. En effet, la transmission du message crypté ne se fait pas correctement (contrairement aux messages non crypté), il apparait effectivement que la somme de vérification du message crypté de l'une des partie, n'est pas la même que la somme de vérification du même message mais de l'autre côté. Nous pouvons en déduire que le message s'est mal transmis, cependant nous n'avons pas encore trouvé la raison de ce phénomène.
 
 \bibliographystyle{IEEEtran}
 
