@@ -24,7 +24,7 @@ AccountList addToList(PGresult *result, AccountList list);
 AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
-RSA *keypair;
+RSA *pubkey, *privkey;
 int encrypt_enable = 1;
 char *encrypt_buf;
 char *err;
@@ -93,16 +93,8 @@ int main(){
 			send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
 			recv_data(s_dial, buf);
 			sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
-			keypair = loadKeyPair(path, "server_data/keys/privatekey.pem");
-			if (keypair == NULL){
-				encrypt_enable = 0;
-				printf("No Encryption\n");
-			}
-			else{
-				if (DEBUG)
-					printf("Key Loaded\n");
-				encrypt_buf = malloc(RSA_size(keypair));
-			}
+			privkey = loadKey("server_data/keys/privatekey.pem", PRIVKEY);
+			encrypt_buf = malloc(256);
 
 			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
@@ -112,17 +104,23 @@ int main(){
 				//RSA_DECRYPT_FLAG
 				if (encrypt_enable){
 					sprintf(encrypt_buf, "%s", buf);
+
+					unsigned char digest[MD5_DIGEST_LENGTH];
+					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
+				    char mdString[33];
+				    for(int i = 0; i < 16; i++)
+				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+				     if (DEBUG)
+				     	printf("md5: %s\n", mdString);
+
 					memset(buf, 0, BUF_SIZE);
-					FILE *f = fopen("server_data/keys/privatekey.pem", "r");
-					keypair = RSA_new();
-					keypair = PEM_read_RSAPrivateKey(f, &keypair, NULL, NULL);
-					int len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, keypair, RSA_PKCS1_OAEP_PADDING);
+					int len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
 					printf("Decrypted message: %s\n", buf);
 					unsigned long e = ERR_get_error();
 					printf("Decrypt flag: %d | Err code: %lu\n", len, e);
 					ERR_load_crypto_strings();
 					printf("Error: %s\n", ERR_error_string(e, err));
-					printf("Key correctly loaded ?: %d\n", (keypair != NULL));
+					printf("Private Key correctly loaded ?: %d\n", (privkey != NULL));
 				}
 
 				strcpy(temp_buf, buf);

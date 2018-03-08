@@ -13,7 +13,7 @@ double version = 0;
 char login[100];
 char pssw[100];
 
-RSA *keypair, *testpair;
+RSA *pubkey, *privkey;
 int encrypt_enable = 1;
 char *encrypt_buf;
 
@@ -61,15 +61,15 @@ int main(int argc, char const *argv[]) {
 		send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
 		recv_data(s_cli, buf);
 		receive_file2(s_cli, "client_x/keys");
-		keypair = loadKeyPair("client_x/keys/server_pubkey.pem", "client_x/keys/privatekey.pem");
-		if (keypair == NULL){
+		pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
+		if (pubkey == NULL){
 			encrypt_enable = 0;
 			printf("No Encryption\n");
 		}
 		else{
 			if (DEBUG)
 				printf("Key Loaded\n");
-			encrypt_buf = malloc(RSA_size(keypair));
+			encrypt_buf = malloc(RSA_size(pubkey));
 		}
 
 		if (connect_flag == -1){
@@ -116,18 +116,24 @@ int main(int argc, char const *argv[]) {
 			if (encrypt_enable){
 				int len;
 				printf("Message: %s\n", buf);
-				//keypair = loadKeyPair("client_x/keys/server_pubkey.pem", "client_x/keys/privatekey.pem");
-				FILE *f = fopen("client_x/keys/server_pubkey.pem", "r");
-				keypair = RSA_new();
-				keypair = PEM_read_RSA_PUBKEY(f, &keypair, NULL, NULL);
-				len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, keypair, RSA_PKCS1_OAEP_PADDING);
+				//pubkey = loadKey("client_x/keys/publickey.pem", PUBKEY);
+				len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, pubkey, RSA_PKCS1_OAEP_PADDING);
 				printf("Encrypted message (%d): %s\n", len, encrypt_buf);
-				//printf("%d\n", sizeof(encrypt_buf));
-				/*len = RSA_private_decrypt(len, (unsigned char*)encrypt_buf, (unsigned char*)buf, testpair, RSA_PKCS1_OAEP_PADDING);
-				printf("Decrypt flag: %d\n", len);
+				/*privkey = loadKey("client_x/keys/privatekey.pem", PRIVKEY);
+				len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
 				printf("Decrypted message: %s\n", buf);*/
+
+				unsigned char digest[MD5_DIGEST_LENGTH];
+				MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
+			    char mdString[33];
+			    for(int i = 0; i < 16; i++)
+			         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+			     if (DEBUG)
+			     	printf("md5: %s\n", mdString);
+
 				memset(buf, 0, BUF_SIZE);
 				sprintf(buf, "%s", encrypt_buf);
+
 			}
 
 			if(DEBUG)

@@ -556,16 +556,15 @@ int receive_file2(int s_dial, char *directory){
 	return 0;
 }
 
-RSA* loadKeyPair(char *pubkeypath, char *privkeypath){
+RSA* loadKey(char *path, int keytype){
 	RSA *keypair = RSA_new();
-	FILE *pubkey, *privkey;
-	pubkey = fopen(pubkeypath, "r");
-	if (pubkey == NULL)
+	FILE *f;
+	f = fopen(path, "rb");
+	if (f == NULL)
 		return NULL;
-	privkey = fopen(privkeypath, "r");
-	if (privkey == NULL)
-		return NULL;
-	keypair = PEM_read_RSA_PUBKEY(pubkey, &keypair, NULL, NULL);
-	keypair = PEM_read_RSAPrivateKey(privkey, &keypair, NULL, NULL);
+	if (keytype)
+		keypair = PEM_read_RSA_PUBKEY(f, &keypair, NULL, NULL);
+	else
+		keypair = PEM_read_RSAPrivateKey(f, &keypair, NULL, NULL);
 	return keypair;
 }
