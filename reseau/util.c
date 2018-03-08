@@ -548,9 +548,24 @@ int receive_file2(int s_dial, char *directory){
 	// 	perror("Read file error");
 	// 	return 1;
 	// }
+
 	send_data(s_dial, OK, "OK", buf, BUF_SIZE);
 
 	printf("End of transfer\n");
 	close(file);
 	return 0;
+}
+
+RSA* loadKeyPair(char *pubkeypath, char *privkeypath){
+	RSA *keypair = RSA_new();
+	FILE *pubkey, *privkey;
+	pubkey = fopen(pubkeypath, "r");
+	if (pubkey == NULL)
+		return NULL;
+	privkey = fopen(privkeypath, "r");
+	if (privkey == NULL)
+		return NULL;
+	keypair = PEM_read_RSA_PUBKEY(pubkey, &keypair, NULL, NULL);
+	keypair = PEM_read_RSAPrivateKey(privkey, &keypair, NULL, NULL);
+	return keypair;
 }

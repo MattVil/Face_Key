@@ -13,6 +13,10 @@ double version = 0;
 char login[100];
 char pssw[100];
 
+RSA *keypair, *testpair;
+int encrypt_enable = 1;
+char *encrypt_buf;
+
 int main(int argc, char const *argv[]) {
 
 	/*Socket var*/
@@ -52,6 +56,22 @@ int main(int argc, char const *argv[]) {
 	while (flag_co){
 		s_cli = socket(PF_INET, SOCK_STREAM, 0);
 		connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+
+		//RSA_FLAG
+		send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+		recv_data(s_cli, buf);
+		receive_file2(s_cli, "client_x/keys");
+		keypair = loadKeyPair("client_x/keys/server_pubkey.pem", "client_x/keys/privatekey.pem");
+		if (keypair == NULL){
+			encrypt_enable = 0;
+			printf("No Encryption\n");
+		}
+		else{
+			if (DEBUG)
+				printf("Key Loaded\n");
+			encrypt_buf = malloc(RSA_size(keypair));
+		}
+
 		if (connect_flag == -1){
 			connect_err();
 			printf("An error occurred: you may need to reconfigure the conf file\n");
@@ -68,7 +88,12 @@ int main(int argc, char const *argv[]) {
 			printf("Ce choix n'est pas disponible\n");
 		}
     else if (choice == 2){
-      connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+      /*connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+      //RSA_FLAG
+		send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+		recv_data(s_cli, buf);
+		receive_file2(s_cli, "client_x/keys");*/
+		
       flag = first_conn_routine(s_cli, buf);
       if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
       printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
@@ -86,7 +111,25 @@ int main(int argc, char const *argv[]) {
 			scanf("%s", pssw);
 			memset(buf, 0, BUF_SIZE);
 			sprintf(buf, "%d;%s,%s", 103, login, pssw);
-			printf("%s\n", buf);
+
+			//ENCRYPT_RSA_FLAG
+			if (encrypt_enable){
+				int len;
+				printf("Message: %s\n", buf);
+				//keypair = loadKeyPair("client_x/keys/server_pubkey.pem", "client_x/keys/privatekey.pem");
+				FILE *f = fopen("client_x/keys/server_pubkey.pem", "r");
+				keypair = RSA_new();
+				keypair = PEM_read_RSA_PUBKEY(f, &keypair, NULL, NULL);
+				len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, keypair, RSA_PKCS1_OAEP_PADDING);
+				printf("Encrypted message (%d): %s\n", len, encrypt_buf);
+				//printf("%d\n", sizeof(encrypt_buf));
+				/*len = RSA_private_decrypt(len, (unsigned char*)encrypt_buf, (unsigned char*)buf, testpair, RSA_PKCS1_OAEP_PADDING);
+				printf("Decrypt flag: %d\n", len);
+				printf("Decrypted message: %s\n", buf);*/
+				memset(buf, 0, BUF_SIZE);
+				sprintf(buf, "%s", encrypt_buf);
+			}
+
 			if(DEBUG)
 				printf("\t### Message envoyé : %s\n", buf);
 			if(ONLINE){
@@ -153,6 +196,11 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+					//RSA_FLAG
+					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+					recv_data(s_cli, buf);
+					receive_file2(s_cli, "client_x/keys");
+		
 					flag = first_conn_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
 				close(s_cli);
@@ -162,6 +210,11 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+					//RSA_FLAG
+					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+					recv_data(s_cli, buf);
+					receive_file2(s_cli, "client_x/keys");
+		
 					flag = conn_to_website_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
 		        if (!flag){
@@ -175,6 +228,11 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+					//RSA_FLAG
+					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+					recv_data(s_cli, buf);
+					receive_file2(s_cli, "client_x/keys");
+		
 					flag = weight_update_routine(s_cli, buf);
 				if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
 				if (flag){
@@ -741,7 +799,7 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 		return 1;
 	}
 	send_data(s_cli, UP, "OK", buf, BUF_SIZE);
-	receive_file(s_cli, "client_x");
+	receive_file2(s_cli, "client_x");
 	return 0;
 }
 

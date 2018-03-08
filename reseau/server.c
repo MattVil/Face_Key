@@ -24,6 +24,11 @@ AccountList addToList(PGresult *result, AccountList list);
 AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
+RSA *keypair;
+int encrypt_enable = 1;
+char *encrypt_buf;
+char *err;
+
 int main(){
 
 	/*Socket var*/
@@ -80,10 +85,46 @@ int main(){
 
 		if (fork() == 0){
 			char trace[20];
+			char path[50];
+
+			pid_t pid = getpid();
+			sprintf(path, "face_key_db/keys/%d", pid);
+			receive_file2(s_dial, path);
+			send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
+			recv_data(s_dial, buf);
+			sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
+			keypair = loadKeyPair(path, "server_data/keys/privatekey.pem");
+			if (keypair == NULL){
+				encrypt_enable = 0;
+				printf("No Encryption\n");
+			}
+			else{
+				if (DEBUG)
+					printf("Key Loaded\n");
+				encrypt_buf = malloc(RSA_size(keypair));
+			}
+
 			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
 			if (read_tt != -1){
 				printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+
+				//RSA_DECRYPT_FLAG
+				if (encrypt_enable){
+					sprintf(encrypt_buf, "%s", buf);
+					memset(buf, 0, BUF_SIZE);
+					FILE *f = fopen("server_data/keys/privatekey.pem", "r");
+					keypair = RSA_new();
+					keypair = PEM_read_RSAPrivateKey(f, &keypair, NULL, NULL);
+					int len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, keypair, RSA_PKCS1_OAEP_PADDING);
+					printf("Decrypted message: %s\n", buf);
+					unsigned long e = ERR_get_error();
+					printf("Decrypt flag: %d | Err code: %lu\n", len, e);
+					ERR_load_crypto_strings();
+					printf("Error: %s\n", ERR_error_string(e, err));
+					printf("Key correctly loaded ?: %d\n", (keypair != NULL));
+				}
+
 				strcpy(temp_buf, buf);
 				code = getCode(temp_buf);
 				strcpy(temp_buf, buf);
@@ -274,7 +315,6 @@ int main(){
 						break;
 
 					case CREATION:
-
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
 						//REC MAIL+PSEUDO
@@ -527,6 +567,8 @@ int main(){
 						break;
 
 					case UPDATE:
+						receive_file2(s_dial, path);
+
 						sprintf(query, "%d", version);
 						send_data(s_dial, OK, query, buf, sizeof(buf));
 						timeout_config(s_dial, &readfds, &timeout);
