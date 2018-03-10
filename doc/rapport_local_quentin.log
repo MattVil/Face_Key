@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.16)  10 MAR 2018 15:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.16)  10 MAR 2018 17:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -733,40 +733,67 @@ Package pdftex.def Info: img/da_neuron.png used on input line 219.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 240--243
+[2] <img/hackerman.png, id=26, 963.6pt x 542.47112pt>
+File: img/hackerman.png Graphic file (type png)
+ <use img/hackerman.png>
+Package pdftex.def Info: img/hackerman.png used on input line 240.
+(pdftex.def)             Requested size: 412.80157pt x 232.3889pt.
 
- []
 
-[3 <./img/da_crea.png> <./img/da_conn.png>]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 247--250
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 252--255
+[3 <./img/da_crea.png> <./img/da_conn.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 254--257
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 256--258
+Underfull \hbox (badness 10000) in paragraph at lines 259--262
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--265
 
  []
 
 [4 <./img/da_connsite.png> <./img/da_neuron.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 259--261
+Underfull \hbox (badness 10000) in paragraph at lines 266--268
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--264
+Underfull \hbox (badness 10000) in paragraph at lines 269--271
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 265--267
+Underfull \hbox (badness 10000) in paragraph at lines 272--274
 
  []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--281
+
+ []
+
+<img/hash.png, id=39, 936.83333pt x 195.39667pt>
+File: img/hash.png Graphic file (type png)
+ <use img/hash.png>
+Package pdftex.def Info: img/hash.png used on input line 286.
+(pdftex.def)             Requested size: 412.80157pt x 86.1pt.
+ [5 <./img/hackerman.png>] <img/salthash1.png, id=44, 848.50333pt x 109.74333pt
+>
+File: img/salthash1.png Graphic file (type png)
+
+<use img/salthash1.png>
+Package pdftex.def Info: img/salthash1.png used on input line 295.
+(pdftex.def)             Requested size: 412.80157pt x 53.38954pt.
 
 
 ** Conference Paper **
@@ -779,16 +806,16 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[5] (./rapport_local_quentin.aux)
+[6 <./img/hash.png> <./img/salthash1.png>] (./rapport_local_quentin.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7776 strings out of 493014
- 119644 string characters out of 6133351
- 206364 words of memory out of 5000000
- 11144 multiletter control sequences out of 15000+600000
+ 7796 strings out of 493014
+ 119981 string characters out of 6133351
+ 206388 words of memory out of 5000000
+ 11161 multiletter control sequences out of 15000+600000
  106658 words of font info for 136 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,9n,38p,867b,439s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -804,10 +831,10 @@ ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
 l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on rapport_local_quentin.pdf (5 pages, 296177 bytes).
+Output written on rapport_local_quentin.pdf (6 pages, 389658 bytes).
 PDF statistics:
- 79 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 88 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

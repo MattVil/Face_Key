@@ -235,6 +235,13 @@ Lors de l'utilisation de l'application, beaucoup de données transitent entre les
 Si un utilisateur mal intentionné arriverait à intercepter les messages entre le client et le serveur, en se plaçant entre les deux grâce à un attaque basique de type Man in the Middle (MITM), alors il aurait accès à toutes ces données. De même si la base de donnée arrivait un jour à être compromise, et accessible par un utilisateur mal intentionné, alors il aurait également accès à toutes les données.
 Il nous faut donc trouver une solution qui nous permet à la fois de sécuriser les envoie de données Client/Server, et une solution qui nous permet de rendre illisible les informations dans la base de données à tous les utilisateurs autres que l'utilisateur concerné.
 
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/hackerman.png}
+		\caption{Problème de sécurité}
+	\label{fig:hackerman}
+\end{figure}
+
 \subsection{RSA}
 \subsubsection{Introduction}
 Le RSA est un algorithme de cryptographie dit "asymétrique" (une clé privé et une clé publique, contrairement à la cryptographie symétrique qui utilise la même clé pour crypter et décrypter). Il a été rendu public par R.L. Rivest, A. Shamir, et L. Adleman dans un papier publié en 1977 appelé "\textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}". Il a pour but, à la fois de crypter des messages afin qu'ils puissent être transmis sans risquer d'être lu par une personne tierce, mais aussi de signer les messages. Un des principe du RSA est que la clé privé, permettant de décrypter les messages soit impossible à retrouver à partir de la clé publique, qui elle permet d'encrypter les messages.
@@ -270,13 +277,29 @@ Le système n'est que partiellement implémenté, en effet, malgré le bon fonctionn
 \subsection{Fonctions de Hachages}
 \subsubsection{Introduction}
 Une fonction de hachage cryptographique, est une fonction avec un message (ou fichier ) en entré et une valeur en sortie appelé valeur de hachage, somme de vérification ou encore empreinte numérique. Le principe d'une fonction de hachage est de prendre le fichier en entré et de le transformé en une valeur (une chaine de caractère la plupart du temps) unique qui sera son "empreinte numérique". Une autre propriété importante de la fonction de hachage est qu'elle est très difficilement (voir presque impossible) inversible, c'est à dire qu'à partir de la valeur en sortie il est impossible (dans un temps raisonnable) de retrouver la valeur en entrée. De même une fonction de hachage idéal n'aurais aucune collision, c'est à dire que pour deux messages différents données ne pourrions pas avoir la même valeur en sortie.
-
+\newline
 \subsubsection{Intégration au sein du projet}
 Au sein du projet Face Key, nous utiliserons une fonction de hachage (MD5) pour transformé les valeurs stocké dans la base donnée et régulièrement envoyé par l'utilisateur tel que: son mot de passe. Ainsi à chaque fois que l'utilisateur enverra son mot de passe, nous récupérerons la valeur hacher stocker dans la base, et nous transformerons le mot de passe envoyé et vérifierons les 2 sommes de vérifications. Si les 2 sommes sont les mêmes alors le mot de passe donnée est le même sinon le mot de passe est erroné.
 Cependant nous pouvons remarquer qu'une fonction de hachage n'est pas suffisante afin de garantir une sécurité satisfaisante. En effet, si la base venait à être compromise et lu par une personne tierce, il lui suffirait d'utiliser une liste des mot de passe les plus utiliser préalablement haché, et de seulement comparer les sommes de vérifications à celle dans la base donnée pour révéler plusieurs mot de passe. Sachant que 2 même mot de passe obtienne la même sortie cela diminue grandement le temps nécéssaire à retrouvé plusieurs mot de passe. De plus, il existe certaine méthode pour retrouver des mot de passe haché en clair, comme les attaques par dictionnaires ou Rainbow Table. Nous devons donc trouver une solution pour rendre la tache plus compliqué.
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/hash.png}
+		\caption{Principe du Hachage}
+	\label{fig:hash}
+\end{figure}
 
 \subsubsection{Le Haching salé}
-Le principe du haching salé est simple: ajouter une chaine de caractère que l'on va concatener 
+Le principe du haching salé est simple: ajouter une chaine de caractère que l'on va concaténer au mot de passe avant de hacher la chaine final. Chaque utilisateur a un sel unique stocker sur la base de donnée. Ainsi 2 même mot de passe n'auront pas la même chaine haché. Cela rend les attaques par Brute Force, Dictionnaire et Rainbow Table, bien plus fastidieuse en augmentant le temps nécéssaire pour retrouver les mot de passes.
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/salthash1.png}
+		\caption{Hachage salé}
+	\label{fig:salthash}
+\end{figure}
+
+\subsection{Bilan de la sécurité}
+Pour commencer ce bilan, faisons un point sur ce qui est implémenté ou non. Nous avons vu que le RSA est partiellement implémenté, chaque bloc fonctionne de manière indépendante, mais la transmission du message crypté ne s'effectue pas bien. Pour ce qui est du hachage, seul le hachage classique est implémenté, le hachage salé n'est pas implémenté par manque de temps. En effet trouver d'où venait le problème du RSA nous à pris pas mal de temps, et nous ne pouvons à l'heure actuelle, estimer combien de temps il faudrais pour le résoudre, car nous ne connaissons pas la cause du problème. L'implémentation du Hachage Salé nécessiterait une modification de la base de donnée, pour stocké le "sel" de chaque utilisateur.
+De plus, il resterait d'autres problème de sécurité à régler, même si nous avions pu tout implémenté. En effet les combinaisons Identifiants/Mot de passe pour chaque site web d'un utilisateur ne sont pas protégé ! Il aurait aussi été interessant de crypter l'envoie et la sauvegarde des fichiers (images et réseau de neurones) sur le serveur, afin de préserver l'identité des utilisateurs.
 
 \bibliographystyle{IEEEtran}
 
