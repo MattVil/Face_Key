@@ -267,8 +267,16 @@ Pour le cryptage et le décryptage, les fonctions de OpenSSL sont utilisées après
 \paragraph{État de l'implémentation}
 Le système n'est que partiellement implémenté, en effet, malgré le bon fonctionnement de chacune des briques indépendamment des autres, nous pouvons observer un nombre non négligeable de raté lorsque nous essayons d'utiliser l'ensemble dans le contexte Client/Serveur. En effet, la transmission du message crypté ne se fait pas correctement (contrairement aux messages non crypté), il apparait effectivement que la somme de vérification du message crypté de l'une des partie, n'est pas la même que la somme de vérification du même message mais de l'autre côté. Nous pouvons en déduire que le message s'est mal transmis, cependant nous n'avons pas encore trouvé la raison de ce phénomène.
 
-\subsection{Fonction de Hachage}
+\subsection{Fonctions de Hachages}
+\subsubsection{Introduction}
+Une fonction de hachage cryptographique, est une fonction avec un message (ou fichier ) en entré et une valeur en sortie appelé valeur de hachage, somme de vérification ou encore empreinte numérique. Le principe d'une fonction de hachage est de prendre le fichier en entré et de le transformé en une valeur (une chaine de caractère la plupart du temps) unique qui sera son "empreinte numérique". Une autre propriété importante de la fonction de hachage est qu'elle est très difficilement (voir presque impossible) inversible, c'est à dire qu'à partir de la valeur en sortie il est impossible (dans un temps raisonnable) de retrouver la valeur en entrée. De même une fonction de hachage idéal n'aurais aucune collision, c'est à dire que pour deux messages différents données ne pourrions pas avoir la même valeur en sortie.
 
+\subsubsection{Intégration au sein du projet}
+Au sein du projet Face Key, nous utiliserons une fonction de hachage (MD5) pour transformé les valeurs stocké dans la base donnée et régulièrement envoyé par l'utilisateur tel que: son mot de passe. Ainsi à chaque fois que l'utilisateur enverra son mot de passe, nous récupérerons la valeur hacher stocker dans la base, et nous transformerons le mot de passe envoyé et vérifierons les 2 sommes de vérifications. Si les 2 sommes sont les mêmes alors le mot de passe donnée est le même sinon le mot de passe est erroné.
+Cependant nous pouvons remarquer qu'une fonction de hachage n'est pas suffisante afin de garantir une sécurité satisfaisante. En effet, si la base venait à être compromise et lu par une personne tierce, il lui suffirait d'utiliser une liste des mot de passe les plus utiliser préalablement haché, et de seulement comparer les sommes de vérifications à celle dans la base donnée pour révéler plusieurs mot de passe. Sachant que 2 même mot de passe obtienne la même sortie cela diminue grandement le temps nécéssaire à retrouvé plusieurs mot de passe. De plus, il existe certaine méthode pour retrouver des mot de passe haché en clair, comme les attaques par dictionnaires ou Rainbow Table. Nous devons donc trouver une solution pour rendre la tache plus compliqué.
+
+\subsubsection{Le Haching salé}
+Le principe du haching salé est simple: ajouter une chaine de caractère que l'on va concatener 
 
 \bibliographystyle{IEEEtran}
 
