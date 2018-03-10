@@ -17,6 +17,7 @@
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png,.pdf}
 
 \usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
 \usepackage{empheq}
 \usepackage[tight,footnotesize]{subfigure}
 \usepackage[caption=false,font=footnotesize]{subfig}
@@ -92,8 +93,8 @@
 \title{Face Key}
 
 \author{\IEEEauthorblockN{Quentin GERARD, Louis L'HARIDON et Matthieu VILAIN}
-\IEEEauthorblockA{CMI Systèmes Intelligents et Communicants, Université de Cergy-Pontoise\\
-mail@etu.u-cergy.fr}}
+\IEEEauthorblockA{Licence 3 informatique CMI Systèmes Intelligents et Communicants\\
+Université de Cergy-Pontoise}}
 
 \maketitle
 
@@ -159,13 +160,14 @@ Tout ce qui a été présenté précédemment est la vision idéale du projet. Dans un 
 En revanche si nous arrivons à tout finir en temps et en heure, nous nous laissons libre d'ajouter des fonctionnalités comme analyse de l'émotion de l'utilisateur lorsqu'il déverrouille l'application ou autre.
 L'idéal initial était de pousser le projet à fond en développent un protocole d'installation, une documentation détaillé etc... afin de proposer le logiciel final en open source. Cet objectif ne pourra pas être réalisé au court du projet de L3 par manque de temps.
 
+\newpage
 \section{Gestion de projet}
 \subsection{Répartition des tâches}
 
 Ce projet entre dans le cadre du projet de synthèse de Licence 3, il englobe donc les matières de base de données, réseau, système d'exploitation et de développement Android. 
 Nous avons décidé de travailler en commun sur la partie impliquent un cours que nous avons eu cette années. Nous avons donc tous travaillé sur la partie  réseau, base de données et sur l'application Android. Nous n'avons pas avancé dans notre projet de système d'exploitation, nous n'en parlerons donc pas dans ce rapport.
 
-Pour profiter un maximum de ce projet de fin de licence qui nous offre la possibilité de développer un logiciel complet, nous avons décidé de chacun développer une partie qui nous intéresse et dans lequel nous voudrions apprendre et prendre de l'expérience. Ainsi, en plus des parties reliées à un cours, nous avons :
+Pour profiter un maximum de ce projet de fin de licence qui nous offre la possibilité de développer un logiciel complet, nous avons décidé de chacun développer une partie qui nous intéresse et dans lequel nous voudrions apprendre et prendre de l'expérience. Ainsi, en plus des parties reliées à un cours, nous avons :
 
 \begin{itemize}
 	\item Une partie Interface homme machine qui sera faite par Louis
@@ -179,16 +181,16 @@ Le but est de laisser le plus de liberté possible à chacun dans sa partie, qu'il
 
 \subsection{Les deadlines}
 
-Les dead-lines qui nous ont été fixé pour ce projet sont :
+Les dead-lines qui nous ont été fixé pour ce projet sont :
 
 \begin{itemize}
-	\item 08/12/2017 : Rendu de BDD
+	\item 08/12/2017 : Rendu de BDD
 	\item Le 12/12/2017 : Soutenance de BDD
-	\item	08/01/2018 : Soutenance de Réseau
-	\item	08/01/2018 : Rendu développement Android
-	\item	16/01/2018 : Soutenance développement Android
-	\item	09/03/2018 : Rapport projet de synthèse
-	\item	15/03/2018 : Soutenance projet de synthèse
+	\item	08/01/2018 : Soutenance de Réseau
+	\item	08/01/2018 : Rendu développement Android
+	\item	16/01/2018 : Soutenance développement Android
+	\item	09/03/2018 : Rapport projet de synthèse
+	\item	15/03/2018 : Soutenance projet de synthèse
 \end{itemize}
 
 \subsection{Organisation du travail}
@@ -203,6 +205,7 @@ Pour l'organisation nous avons fait des réunions de travail régulières pour mett
 
 Pour le code, nous nous sommes synchronisé sur GIT.
 
+\newpage
 \section{Base de Données}
 \subsection{Introduction}
 Qui dit gestionnaire de mot de passe dit données à stocker. En effet dans ce genre de projet la Base De Données est un aspect majeur, qu'elle serve à stocker les informations basiques telles que les couples identifiant/mot de passe ou bien tout simplement les informations nécessaires au bon fonctionnement de l'application, il faut lui fournir une architecture robuste et habile. On peut également imaginer vouloir stocker et accéder à tout un tas d'information intéressantes sur les sites visités. Perdre du temps à chercher des informations dans la BDD c'est ralentir tout le fonctionnement de l'application, il faut donc être précautionneux quand à la conception de la BDD. 
@@ -388,6 +391,8 @@ Nous avons représenté le fonctionnement du panel sur le schéma suivant (Fig.~\re
 \end{figure}
 \subsection{Conclusion}
 Nous avons donc développé une BDD  robuste et utilisable ainsi qu'un panel d'administration graphique. Nous devons maintenant penser à la sécurisation des données sur cette BDD qui sont pour la plupart sensibles (couples identifiant/mot de passe, numéro de Carte Bleue, géolocalisation des utilisateurs...). Une amélioration possible à cette BDD serait l'ajout de statistiques plus poussées qui seraient intéressantes à partir d'une masse critique d'utilisateurs.
+
+\newpage
 \section{Réseau}
 \subsection{Spécification}
 Pour le projet Face Key nous avons besoin de developper un serveur qui communique avec un client. Le serveur aura pour mission d'authentifier l'utilisateur et de fournir au client les données dont il a besoin au bon fonctionnement du logiciel, dans la limite de ce qui est accessible à l'utilisateur (un utilisateur ne peut avoir accès qu'à ses données). C'est le serveur qui assurera le lien avec la Base de données.
@@ -448,7 +453,7 @@ Cela donne en pratique "100;toto,facebook.com".
 
 \hline
 
-\multirow{6}*{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site à  l'instant t \\
+\multirow{6}*{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site à  l'instant t \\
 \cline{2-3}
 & 101 &  Demande le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
 \cline{2-3}
@@ -470,7 +475,7 @@ Cela donne en pratique "100;toto,facebook.com".
 
 \hline
 
-\multirow{1}*{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site à  l'instant t \\
+\multirow{1}*{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site à  l'instant t \\
 \cline{2-3}
 & 201 & Envoie le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
 
@@ -543,6 +548,8 @@ Tout comme dans le diagramme de création d'un compte, les poids du réseau de neu
 	\label{fig:da_neuron}
 \end{figure}
 
+
+\newpage
 \section{Application Android}
 \subsection{Introduction}
 Pour le projet FaceKey nous avons besoin d'un grand jeu de données pour entraîner nos modèles de reconnaissance faciale. Pour augmenter ce jeu de données nous eu avons besoin d'un processus plus orienté utilisateur. Nous avons donc décidé de créer une application Android qui va prendre des photos d'un utilisateur et les sauvegarder sur notre Base de Données pour pourvoir entraîner nos modèles. Nous voulons donc donc une application qui propose à l'utilisateur de so connecter à son compte Face Key et lui propose de prendre des photos de lui. Après vérification des photos par l'utilisateur, l'application lui propose de télécharger les photos sur notre Base De Données
@@ -910,6 +917,8 @@ En conclusion, nous avons développé une application robuste qui effectue différe
 Pour améliorer cette application nous aurions pu développer notre propre activité pour prendre des photos, ce qui nous aurait permis de prendre en rafale les photos de l'utilisateur. Nous aurions pu améliorer l'UI de l'activité de tri de photos.
 Le principal défaut de cette application est qu'elle n'est pas connectée aux autres parties de notre projet comme nous n'avons pas la possibilité de télécharger directement les images vers notre base de données. En effet le réseau de l'Université bloque les accès extérieurs aux machines et empêche les machines sur le même réseau de s'accéder. Cette mesure de sécurité nous empêche d'intégrer pleinement notre application android dans notre écosystème et nos  données FaceKey
 
+
+\newpage
 \section{Interface Homme-Machine}
 \subsection{Introduction}
 Dans le cadre d'un gestionnaire de mot de passe comme Face Key l'IHM est une composante primordiale. Discrète, elle doit savoir se faire oublier mais doit rester facilement accessible quand on en besoin. L'expérience utilisateur doit donc être la plus simple possible. Afin de rendre cette expérience optimale nous isolons les besoins d'une telle IHM : 
@@ -1252,6 +1261,7 @@ Un autre point d'amélioration majeur est celui de la suppression du client C. Ch
 
 Une dernière piste d'amélioration serait d'intégrer la prise d'image directement depuis le plug-in. Ce qui nous permettrait d'adopter une UI plus moderne et plus proche des standards du marché.
 
+\newpage
 \section{Reconnaissance Faciale}
 
 \subsection{contexte}
@@ -1260,11 +1270,11 @@ Depuis quelques mois, avec la sortie de l'iPhone X et sa technologique Face ID p
 
 Nous avons donc décidé d'intégrer de la reconnaissance faciale à notre gestionnaire de mots de passe afin de rendre l'expérience utilisateur la plus simple possible. Le but du gestionnaire de mots de passe est de réduire le nombre de mot de passe que nous utilisons quotidiennement à un seul mot de passe sécurisé. Avec la reconnaissance faciale nous pouvons réduire à zéro le nombre de mot de passe et rendre la connexion à un site rapide, facile et fiable. Contrairement à Face ID de Apple qui nécessite un capteur infrarouge spécial, nous voulions que le système puisse tourner sur n'importe quelle machine, ordinateur voir même mobile, et donc n'utilisant qu'un capteur optique. Nous avons donc décidé d'expérimenter différentes techniques de machine learning pour reconnaitre nos utilisateurs.
 
-Le machine learning est un type d'algorithmes nécessitant un apprentissage, supervisé ou non, permettant d'effectuer des tâches de classification d'images par exemple. Cela nous permettrai donc de classifier nos utilisateurs de manière que si on lui présente une photo d'une personne, il puisse nous dire de quel utilisateur il s'agit. Pour nous, le principe est d'entrainer de manière supervisé un modèle avec une base de données de visage de nos utilisateurs afin qui puisse apprendre les reconnaitre et que si on lui présente une nouvelle image d'un utilisateur qu'il a appris il puisse dire de quelle personne il s'agit.
+Le machine learning est un ensemble d'algorithmes nécessitant un apprentissage, supervisé ou non, permettant d'effectuer des tâches de classification d'images par exemple. Cela nous permettrait donc de classifier nos utilisateurs de manière que si on lui présente une photo d'une personne, il puisse nous dire de quel utilisateur il s'agit. Pour nous, le principe est d'entrainer de manière supervisée un modèle avec une base de données de visages de nos utilisateurs afin qu'il puisse apprendre à les reconnaitre et que si on lui présente une nouvelle image d'un utilisateur qu'il a appris, il puisse dire de quelle personne il s'agit.
 
 \subsection{Intégration de la reconnaissance faciale dans le projet}
 
-Le problème de reconnaissance est découpé en 3 parties : 
+Le problème de reconnaissance est découpé en 3 parties : 
 
 \begin{itemize}
 	\item La localisation du visage dans l'image
@@ -1274,7 +1284,7 @@ Le problème de reconnaissance est découpé en 3 parties :
 
 Le problème de certaines techniques de machine learning, en particulier le deeplearning, c'est qu'il demande beaucoup de ressources au moment de l'apprentissage (temps et puissance de calcul). Cette étape ne peut donc pas être réalisée sur la machine de l'utilisateur. Nous allons donc devoir la déporter sur le serveur qui devra avoir une puissance de calcul suffisante.
 
-Pour réaliser ce genre de calcul qui deviennent de plus en plus courant, le département informatique de L'Université en partenariat avec Orange à investit dans un ordinateur pour réaliser des calculs sur carte graphique. En effet les cartes graphiques permettent de paralléliser un maximum de calcul, ce qui est particulièrement efficace pour les calculs de type vectoriel et matriciel utilisé en machine learning. Nous avons donc eu l'honneur et la responsabilité de monter, installer, configurer pour le calcul sur carte graphique et inaugurer cette machine dans le cadre de notre projet. C'est donc cette machine qui nous servira de serveur.
+Pour réaliser ce genre de calcul qui devient de plus en plus courant, le département informatique de L'Université en partenariat avec Orange à investi dans un ordinateur pour réaliser des calculs sur carte graphique. En effet les cartes graphiques permettent de paralléliser un maximum de calculs, ce qui est particulièrement efficace pour les calculs de type vectoriel et matriciel utilisé en machine learning. Nous avons donc eu l'honneur et la responsabilité de monter, installer, configurer pour le calcul sur carte graphique et inaugurer cette machine dans le cadre de notre projet. C'est donc cette machine qui nous servira de serveur.
 
 \begin{figure}[H]
     \centering
@@ -1282,9 +1292,9 @@ Pour réaliser ce genre de calcul qui deviennent de plus en plus courant, le dépa
         \label{fig:brutus}
 \end{figure}
 
-Si la partie d'apprentissage du modèle demande beaucoup de ressources, l'utilisation du modèle entrainé pour reconnaitre les visages peut se faire avec très peu de ressources et peut donc être réalisé sur la machine de l'utilisateur. 
+Si la partie d'apprentissage du modèle demande beaucoup de ressources, l'utilisation du modèle entrainé pour reconnaitre les visages peut se faire avec très peu de ressources et peut donc être réalisée sur la machine de l'utilisateur. 
 
-De plus la détection du visage n'est également pas très couteuse et peut être faite sur la machine de l'utilisateur.
+La détection du visage n'est également pas très couteuse, elle peut aussi être faite sur la machine de l'utilisateur.
 
 \begin{figure}[H]
     \centering
@@ -1293,20 +1303,20 @@ De plus la détection du visage n'est également pas très couteuse et peut être fa
         \label{fig:schefac}
 \end{figure}
 
-Nous avons donc sur notre client le code principal en C qui possède une fonction qui prend une photo, détecte le visage de l'utilisateur et envoi la partie de l'image correspondant au visage au code de reconnaissance. Ce dernier, en python, possède une version entrainée du modèle de reconnaissance et va prédire la classe de l'image qu'il a reçu et la renvoyer au code principal. Le code principal vérifie qu'il s'agit bien de la bonne classes en fonction du numéro de l'utilisateur et si c'est bien le cas il fait la demande de login/mot au serveur. En réalité, pour augmenter la fiabilité, le système va prendre plusieurs images et regarder la moyenne des identifications.  Nous avons fixé le nombre d'images prisent à 5 avec un très léger temps entre les images pour minimiser la possibilité d'erreur. Si la personne est bien identifié les images du visage sont envoyaient au serveur pour l'apprentissage continue.
+Nous avons donc sur notre client le code principal en C qui possède une fonction qui prend une photo, détecte le visage de l'utilisateur et envoi la partie de l'image correspondant au visage au code de reconnaissance. Ce dernier, en python, possède une version entrainée du modèle de reconnaissance et va prédire la classe de l'image qu'il a reçu et la renvoyer au code principal. Le code principal vérifie qu'il s'agit bien de la bonne classe en fonction du numéro de l'utilisateur et si c'est bien le cas il fait la demande de login/mot au serveur. En réalité, pour augmenter la fiabilité, le système va prendre plusieurs images et regarder la moyenne des identifications.  Nous avons fixé le nombre d'images prisent à 5 avec un très léger temps entre les images pour minimiser la possibilité d'erreur. Si la personne est bien identifiée les images du visage sont envoyées au serveur pour l'apprentissage continu.
 
-Sur le serveur se déroule l'apprentissage du modèle de reconnaissance, il est réalisé une fois par jour. Il prend en compte les nouvelles classes créées (nouveaux utilisateurs) et les images utilisateurs courant qu'il a reçus à chaque connexion à un site. Ce système permet un apprentissage continu des classes. Si un utilisateur se laisse pousser la barbe tout en continuant à utiliser notre application alors le modèle apprendra à le reconnaitre avec sa nouvelle barbe. Une fois le nouveau modèle appris, il le transmet à tous les utilisateurs pour que les prochaines reconnaissances sur les machines des utilisateurs prennent bien en compte les nouvelles images apprissent.
+Sur le serveur se déroule l'apprentissage du modèle de reconnaissance, il est réalisé une fois par jour. Il prend en compte les nouvelles classes créées (nouveaux utilisateurs) et les images utilisateur courant qu'il a reçu à chaque connexion à un site. Ce système permet un apprentissage continu des classes. Si un utilisateur se laisse pousser la barbe tout en continuant à utiliser notre application alors le modèle apprendra à le reconnaitre avec sa nouvelle barbe. Une fois le nouveau modèle appris, il le transmet à tous les utilisateurs pour que les prochaines reconnaissances sur les machines des utilisateurs prennent bien en compte les nouvelles images apprises.
 
 \subsection{Construction de la base de données d'images}
 
-La partie commune des différentes méthodes de machine learning que nous allons utiliser est qu'elles nécessitent une base de données pour entrainer le modèle de reconnaissance. Cette base de données doit être labelisé car nous utilisons des méthodes d'apprentissage dites supervisées, c'est-à-dire que lors de l'entrainement, on présente l'image à apprendre au modèle et on lui dit à quelle classe appartient cette image.  Ensuite, selon la technique d'apprentissage, la modèle va se modifier pour faire la corrélation entre l'image et la classe lui ont été donnée. La construction de la base de données est donc une étape primordiale car si les images et les labels qui lui sont présentés ne sont pas coherent alors le modèle apprendra de mauvaises choses.
+La partie commune des différentes méthodes de machine learning que nous allons utiliser est qu'elles nécessitent une base de données pour entrainer le modèle de reconnaissance. Cette base de données doit être labelisée car nous utilisons des méthodes d'apprentissage dites supervisées, c'est-à-dire que lors de l'entrainement, on présente l'image à apprendre au modèle et on lui dit à quelle classe appartient cette image.  Ensuite, selon la technique d'apprentissage, le modèle va se modifier pour faire la corrélation entre l'image et la classe qui lui ont été données. La construction de la base de données est donc une étape primordiale car si les images et les labels qui lui sont présentés ne sont pas cohérents alors le modèle apprendra de mauvaises choses.
 
-Pour notre application il faut donc construire une base d'images des visages de nos utilisateurs, labelisé avec leur nom. Pour des raisons de relatif anonymat nous n'utilisons pas le nom des utilisateurs comme label mais leur ID client que nous sommes les à connaitre. 
+Pour notre application il faut donc construire une base d'images des visages de nos utilisateurs, labelisé avec leur nom. Pour des raisons de relatif anonymat nous n'utilisons pas le nom des utilisateurs comme label mais leur ID client que nous sommes les seuls à connaitre. 
 Le problème est de réunir assez de photos du visage d'un utilisateur sans que ce processus soit trop lourd pour l'utilisateur.
 
-\subsubsection{Comment l'utilisateur entre-t-il dans la base de données Face Key ?}
+\subsubsection{Comment l'utilisateur entre-t-il dans la base de données Face Key ?}
 
-Pour cela, à la création du compte Face Key, nous demandons à l'utilisateur s'il veut que le programme apprenne à reconnaitre son visage. S'il refuse, il ne pourras pas utiliser la reconnaissance faciale mais pourra utiliser Face Key comme un simple gestionnaire de mot de passe. Si il accepte, la fonction d'enregistrement d'images se lance, sa webcam s'allume, on détecte le visage de l'utilisateur dans chaque image du flux vidéo et on les envois au serveur pour entrainement. Le flux vidéo est pris pendant 1 minutes, pendant ce temps nous demandons à l'utilisateur de tourner sa tête sous différents angles et de réaliser différentes expression faciale pour que le modèle apprenne à reconnaitre l'utilisateur dans différents contextes. Les images transmissent au serveur sont des images couleur de 100px/100px.
+Pour cela, à la création du compte Face Key, nous demandons à l'utilisateur s'il veut que le programme apprenne à reconnaitre son visage. S'il refuse, il ne pourra pas utiliser la reconnaissance faciale mais pourra utiliser Face Key comme un simple gestionnaire de mot de passe. Si il accepte, la fonction d'enregistrement d'images se lance, sa webcam s'allume, on détecte le visage de l'utilisateur dans chaque image du flux vidéo et on les envois au serveur pour entrainement. Le flux vidéo est pris pendant 1 minute, pendant ce temps nous demandons à l'utilisateur de tourner sa tête sous différents angles et de réaliser différentes expression faciales pour que le modèle apprenne à reconnaitre l'utilisateur dans différents contextes. Les images transmises au serveur sont des images couleur de 100px/100px.
 
 \begin{figure}[H]
     \centering
@@ -1315,9 +1325,9 @@ Pour cela, à la création du compte Face Key, nous demandons à l'utilisateur s'il
         \label{fig:mat}
 \end{figure}
 
-\subsubsection{Comment détecte-on le visage de l'utilisateur dans une image ?}
+\subsubsection{Comment détecte-on le visage de l'utilisateur dans une image ?}
 
-Pour ce faire nous utilisons un algorithme appelé Haar Cascade qui utilise le principe de détection de features. Un visage est décomposable selon certain nombre de features simple. 
+Pour ce faire, nous utilisons un algorithme appelé Haar Cascade qui utilise le principe de détection de features. Un visage est décomposable selon un certain nombre de features simples. 
 
 \begin{figure}[H]
   \centering
@@ -1330,11 +1340,11 @@ Pour ce faire nous utilisons un algorithme appelé Haar Cascade qui utilise le pr
   \end{minipage}
 \end{figure}
 
-Ensuite on utilise nos features simple comme des convolutions sur notre image et on regarde a quel endroit de la nouvelle image obtenu se trouve le pattern ressemblant le plus à notre modèle de visage simplifié.
+Ensuite on utilise nos features simples comme des convolutions sur notre image et on regarde à quel endroit de la nouvelle image obtenue se trouve le pattern ressemblant le plus à notre modèle de visage simplifié.
 
-Le projet portant plus sur la reconnaissance de visage que la localisation de visage, nous avons fait le choix de ne pas implémenter l'algorithme même si initialement nous voulions implémenter une technique appelé HOG (Histogram Oriented Gradient) permettant également de détecter des visages mais en vue de la charge de travail et du peu de temps impartit nous avons décidé de ne pas prioriser cette partie. Nous avons donc utilisé la fonction HaarCascadeDetection d'OpenCV.
+Le projet portant plus sur la reconnaissance de visage que la localisation de visage, nous avons fait le choix de ne pas implémenter l'algorithme même si initialement nous voulions implémenter une technique appelée HOG\footnote{https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78} (Histogram Oriented Gradient) permettant également de détecter des visages.Cependant en vue de la charge de travail et du peu de temps imparti nous avons décidé de ne pas traiter cette partie. Nous avons donc utilisé la fonction HaarCascadeDetection d'OpenCV.
 
-\subsubsection{Et une fois les photos collectées sur le serveur ?}
+\subsubsection{Et une fois les photos collectées sur le serveur ?}
 
 Une fois les photos des utilisateurs enregistrées sur le serveur, elles sont passées dans un augmenteur de données. En effet certaines technique de machine learning, principalement le deeplearning, nécessite un grand nombre d'exemple d'entrainement pour être performant. Le but de l'augmenteur de données va être d'à partir d'une image de la base, créer de nouvelles images en ajoutant du bruit, flouant l'image, baisser et augmenter la luminosité ?
 
@@ -1344,11 +1354,11 @@ Une fois les photos des utilisateurs enregistrées sur le serveur, elles sont pas
         \label{fig:ms3}
 \end{figure}
 
-Ce système va permettre de créer artificiellement de nouveaux contextes et donc d'aider notre modèle à bien généralisé les classes qu'il apprend. Pour cela nous avons utilisé la librairie imaug dédié au machine learning et nous avons appliqué 13 transformations différentes sur nos images.
+Ce système va permettre de créer artificiellement de nouveaux contextes et donc d'aider notre modèle à bien généraliser les classes qu'il apprend. Pour cela nous avons utilisé la librairie imaug\footnote{github.com/aleju/imgaug} dédiée au machine learning et nous avons appliqué 13 transformations différentes sur nos images.
 
-\subsubsection{Comment avez-vous concrètement construit votre base ?}
+\subsubsection{Comment avez-vous concrètement construit votre base ?}
 
-Pour construire la base de données il nous fallait des utilisateurs à pouvoir identifier. Nous avons donc fait un appel au prêt des étudiants du département informatique et des étudiants de CMI. 13 de ces derniers ainsi que 2 professeurs ont répondu à notre appel et nous avons pu construire une base de données de 17 personnes (en ajoutant nos 3 classes et en retirant la classe de Pierre F. qui a était victime délétion involontaire). Nous les avons fait suivre le protocole d'une création de compte Face Key comme décrit plus haut. Cette collecte nous a permis d'enregistrer 19462 images répartit relativement uniformément sur 17 classes et de construire une base de données de 225306 images après augmentation (soit 1.3Go d'images). Ces chiffres sont relevés après le tri de la base. En effet Haar Cascade (ou du moins son implémentation dans OpenCV) est relativement sensible à l'environnement. Des conditions de luminosité changeante pouvaient générer entre 2\% et 15\% d'images indésirable, des images où Haar Cascade voyait un visage alors qu'il n'y en avait pas. N'ayant pas trouvé de moyen simple pour automatiser la délétion des images indésirables, nous avons dû nettoyer la base de données à la main.
+Pour construire la base de données il nous fallait des utilisateurs à pouvoir identifier. Nous avons donc fait un appel au prêt des étudiants du département informatique et des étudiants de CMI. 13 de ces derniers ainsi que 2 professeurs ont répondu à notre appel et nous avons pu construire une base de données de 17 personnes (en ajoutant nos 3 classes et en retirant la classe de Pierre F. qui a été victime délétion involontaire). Nous les avons fait suivre le protocole d'une création de compte Face Key comme décrit plus haut. Cette collecte nous a permis d'enregistrer 19462 images réparties relativement uniformément sur 17 classes et de construire une base de données de 225306 images après augmentation (soit 1.3Go d'images). Ces chiffres sont relevés après le tri de la base. En effet Haar Cascade (ou du moins son implémentation dans OpenCV) est relativement sensible à l'environnement. Des conditions de luminosité changeante pouvaient générer entre 2\% et 15\% d'images indésirables, des images où Haar Cascade voyait un visage alors qu'il n'y en avait pas. N'ayant pas trouvé de moyen simple pour automatiser la délétion des images indésirables, nous avons dû nettoyer la base de données à la main.
 
 \begin{figure}[H]
     \centering
@@ -1358,46 +1368,54 @@ Pour construire la base de données il nous fallait des utilisateurs à pouvoir id
 
 \subsubsection{Remarques}
 
-La construction de la base de données est une étape extrêmement importante avant d'entrainer un modèle de machine learning. Nous avons passé beaucoup de temps à construire la basse de données cependant, avec le temps, nous remarquons que cette étape à était mal faite. En effet nous nous sommes laissé embarquer dans l'objectif d'avoir une base de données très large car d'après les dires de tout le monde, le deeplearning nécessite un très grand nombre de données. Dans notre cas la base est beaucoup trop redondante. Nous tirons les images d'un flux vidéo donc de l'une à l'autre les images se ressemble beaucoup. De nous avons mal fait l'augmentation de données car trop hésitant à faire de grosse transformation. On se retrouve donc avec des images qui se ressemblent beaucoup les unes aux autres et on les duplique 13 fois sans faire de transformations suffisamment importantes. La base est donc constituée d'énormément de redondance, ce qui n'aidera pas lors de la phase d'apprentissage. Il aurait mieux valu une base beaucoup plus petite mais beaucoup plus diversifiée. 
+La construction de la base de données est une étape extrêmement importante avant d'entrainer un modèle de machine learning. Nous avons passé beaucoup de temps à construire la base de données cependant, avec le temps, nous remarquons que cette étape a été mal faite. En effet nous nous sommes laissé embarquer dans l'idée d'avoir une base de données très large car nous avions entendu dire que le deeplearning nécessite un très grand nombre de données. Dans notre cas la base est beaucoup trop redondante. Nous tirons les images d'un flux vidéo donc de l'une à l'autre les images se ressemblent beaucoup. De plus nous avons mal fait l'augmentation de données car nous étions trop hésitants à faire de grosses transformations. On se retrouve donc avec des images qui, successivement, se ressemblent beaucoup et on les duplique 13 fois sans faire de transformations suffisamment importantes. La base est donc constituée d'énormément de redondances, ce qui n'aidera pas lors de la phase d'apprentissage. Il aurait mieux valu une base beaucoup plus petite mais beaucoup plus diversifiée. 
 
 \subsection{Apprentissage/Reconnaissance des visages}
 
-Maintenant que la base de données des visages des utilisateurs est constituée et le système de captation des visages mit en place, il nous faut entrainer notre modèle pour qu'il soit capable par la suite d'identifier les utilisateurs.
+Maintenant que la base de données des visages des utilisateurs est constituée et le système de captation des visages mis en place, il nous faut entrainer notre modèle pour qu'il soit capable par la suite d'identifier les utilisateurs.
 Nos travaux de références sont ceux de DeepFace et FaceNet qui obtiennent respectivement 97.35\% et 99.63\% de reconnaissance, c'est-à-dire que dans plus de 97\% des cas ils arrivent à bien classifier le visage qui leur est présenté. Notre objectif est de se rapprocher le plus possible de ces scores.
 Nous allons donc essayer différentes méthodes d'apprentissage.
 
 \subsubsection{Découpe de la base de données}
 
 Avant de commencer à entrainer nos modèles il nous faut, encore un peu, travailler sur notre base de données. 
-L'un des problèmes en machine learning est le sur-apprentissage (overfitting). En effet quand on entraine notre modèle sur notre base de données, si on le fait trop apprendre alors il se peut qu'il apprenne par c½ur la base de données. Il aura alors de très bonne performance sur les éléments de la base mais lorsque l'on déploie l'application dans le monde réel alors le modèle ne sera plus capable de correctement généraliser et aura de très mauvaises performances. Pour ne pas se faire surprendre au moment du déploiement, la solution est de découper notre base en 3 sous-ensembles : le training set, le validation set et le test set. On entraine le modèle avec le training set, à chaque époque (chaque fois que l'on passe le training set tout entier) on fait un suivi des performance du modèle en regardant son taux de réussite sur le validation set sans entrainer le modèle sur ces images. A la toute fin de l'apprentissage on regarde les performances finale sur le test set, sans apprentissage, et on peut voir directement si l'on a sur-appris ou pas. Mais pourquoi utiliser un test set et un validation set ? Un des deux ne suffit pas ? Même si il n'y a pas d'apprentissage sur le validation set le modèle peu l'apprendre indirectement. En effet on va continuer à apprendre si l'on remarque que le taux de performance sur le validation set ne suffit pas, on va donc apprendre implicitement à s'adapter au validation set.  Le test set est donc là pour tester le modèle sur des images qu'il n'a jamais vu, même pas implicitement. On pourra donc se fier aux chiffres de performance du test set.
+L'un des problèmes en machine learning est le sur-apprentissage (overfitting). En effet, quand on entraine notre modèle sur notre base de données, si on le fait trop apprendre alors il se peut qu'il apprenne par coeur la base de données. Il aura alors de très bonne performances sur les éléments de la base mais lorsque l'on déploie l'application dans le monde réel alors le modèle ne sera plus capable de correctement généraliser et aura de très mauvaises performances. Pour ne pas se faire surprendre au moment du déploiement, la solution est de découper notre base en 3 sous-ensembles : le training set, le validation set et le test set. On entraine le modèle avec le training set, à chaque époque (chaque fois que l'on passe le training set tout entier) on fait un suivi des performances du modèle en regardant son taux de réussite sur le validation set sans entrainer le modèle sur ces images. A la toute fin de l'apprentissage on regarde les performances finales sur le test set, sans apprentissage, et on peut voir directement si l'on a sur-appris ou pas. Mais pourquoi utiliser un test set et un validation set ? Un des deux ne suffirait-il pas ? Même si il n'y a pas d'apprentissage sur le validation set, le modèle peut l'apprendre indirectement. En effet on va continuer à apprendre si l'on remarque que le taux de performance sur le validation set ne suffit pas, on va donc apprendre implicitement à s'adapter au validation set.  Le test set est donc là pour tester le modèle sur des images qu'il n'a jamais vu, même pas implicitement. On pourra donc se fier aux chiffres de performance du test set.
 
 \subsubsection{Méthode par régression logistique}
 
 \paragraph{Thérorie}
 
-La régression logistique est un modèle de classification linéaire probabiliste. C'est un outil simple de classification en machine learning, que l'on utilise souvent en premier pour tester son la complexité de son problème. Il est initialement fait pour faire de la classification binaire, classification en 2 classes. 
+La régression logistique est un modèle de classification linéaire probabiliste. C'est un outil simple de classification en machine learning, que l'on utilise souvent en premier pour tester la complexité de son problème. Il est initialement fait pour faire de la classification binaire, classification en 2 classes. 
 
 
-Il est composé d'une fonction de coût S :
+Il est composé d'une fonction de coût $S$ :
 
-INSERER IMAGE ICI
+\[
+S(X^i) = \theta_0 + \theta_1x_1 + \theta_2x_2 + ... + \theta_nx_n
+\]
+Avec :\\
+\(X^i\) : une observation de la base de données\\
+\(x_i\) : un element de X\\
+\(\theta_i\) : un poids de la fonction hypothèse, ce qu'on cherche à apprendre\\
+\(\theta_0\) : un biais\\
 
-Cette fonction est ensuite passée dans une fonction sigmoid qui donnera un résultat y entre 0 et 1. Ce résultat peut être interprété comme la probabilité que le vecteur d'entré X soit de la classe 1. On a donc :
 
-Sigmoid(S(X)) = P(y>=0,5 | X ; ?) et donc P(y<0,5 | X ; ?) = 1 - P(y>=0,5 | X ; ?)
+Cette fonction est ensuite passée dans une fonction sigmoide qui donnera un résultat y entre 0 et 1. Ce résultat peut être interprété comme la probabilité que le vecteur d'entré $X$ soit de la classe 1. On a donc :\\
 
-Pour faire de la classification multi-classes on peut utiliser la technique du One-vs-Rest, c'est-à-dire que de la même manière, on calcul la probabilité 1 sorte par rapport au reste des classes. On obtient donc un ensemble de poids ? pour chaque classe.
+\(Sigmoid(S(X)) = P(y>=0,5 | X ; \theta)\) et donc \(P(y<0,5 | X ; \theta) = 1 - P(y>=0,5 | X ; \theta)\)\\
 
-Pour qu'il y ait adaptation il faut que les poids ?i soient appris. On va donc les mettre à jour en fonction de l'erreur faite par le modèle.
+Pour faire de la classification multi-classes on peut utiliser la technique du One-vs-Rest, c'est-à-dire que de la même manière, on calcul la probabilité que 1 sorte par rapport au reste des classes. On obtient donc un ensemble de poids \(\theta\) pour chaque classe.
 
-Tout d'abord on calcul l'erreur faites par la fonction Sigmoid par rapport au résultat attendu yd : err = yd ? y
-Ensuite on calcul de combien on va mettre à jour le poids ?i : ??i = ? . err . xi     avec ? un coefficient d'apprentissage.
+Pour qu'il y ait adaptation il faut que les poids \(\theta_i\) soient appris. On va donc les mettre à jour en fonction de l'erreur faite par le modèle.
 
-Enfin on met à jour le poids : ?i(t+1) = ?i(t) + ??i
+Tout d'abord on calcul l'erreur faites par la fonction Sigmoid par rapport au résultat attendu \(y_d : err = y_d - y\)\\
+Ensuite on calcul de combien on va mettre à jour le poids \(\theta_i : \Delta\theta_i = \lambda . err . x_i\)     avec \(\lambda\) un coefficient d'apprentissage.\\
+
+Enfin on met à jour le poids : \(\theta_i(t+1) = \theta_i(t) + \Delta\theta_i\)\\
 
 On met ainsi à jour tous les poids du modèle de façon à ce qu'ils s'adaptent en fonction de l'erreur qu'ils ont provoqués.
 
-La régression logistique peut aussi se représenter sous forme de réseau de neurones (perceptron simple) où les neurones prennent un vecteur d'entré qu'il passe dans une fonction sigmoid et renvoi le résultat en sortie. Le réseau sera donc défini comme suit :
+La régression logistique peut aussi se représenter sous forme de réseau de neurones (perceptron simple). Les neurones prennent un vecteur d'entrée qu'ils passent dans une fonction sigmoide et renvoi le résultat en sortie. Le réseau sera donc défini comme suit :
 
 \begin{figure}[H]
     \centering
@@ -1407,16 +1425,16 @@ La régression logistique peut aussi se représenter sous forme de réseau de neuro
 
 \paragraph{Implémentation}
 
-On utilise donc les images de visages de nos utilisateurs (en échelle de gris) sous forme de vecteur, c'est-à-dire avec les colonnes mise les unes à la suite des autres, pour alimenter ce modèle. L'implémentation de l'algorithme est faite « from scratch » en C. 
+On utilise donc les images de visages de nos utilisateurs (en échelle de gris) sous forme de vecteur, c'est-à-dire avec les colonnes mises les unes à la suite des autres, pour alimenter ce modèle. L'implémentation de l'algorithme est faite « from scratch » en C. 
 
 
 \paragraph{Résultats}
 
-Après avoir passé l'entièreté du training set on obtient 53,2\% de reconnaissance sur le test set. 
+Après avoir passé la totalité du training set on obtient 53,2\% de reconnaissance sur le test set. 
 Ce résultat très faible, mais au-dessus de l'aléatoire qui est à 6\%, n'est pas étonnant car la régression logistique est une méthode de classification linéaire et notre problème semble être non linéaire.
 Nous ne retiendrons pas cette méthode pour le système d'identification de Face Key.
-Nous avons également essayé avec la bibliothèque sklearn qui utilise une version amélioré avec une fonction softmax à la place de la sigmoïde et offre un affichage facile des résultats. Nous obtenons un score plus élevé  de 62.3\% de reconnaissance sur 5000 exemple d'apprentissage. 
-Si l'on s'amuse à afficher les ensembles ? de chaque classe on peut voir quels pixels ont de l'importance dans la reconnaissance de chaque classe et on voit se dessiner des ébauches des visages.
+Nous avons également essayé avec la bibliothèque sklearn qui utilise une version améliorée avec une fonction softmax à la place de la sigmoïde et offre un affichage facile des résultats. Nous obtenons un score plus élevé  de 62.3\% de reconnaissance sur 5000 exemples d'apprentissage. 
+Si l'on s'amuse à afficher les ensembles \(\theta\) de chaque classe, on peut voir quels pixels ont de l'importance dans la reconnaissance de chaque classe et on voit se dessiner des ébauches des visages.
 
 \begin{figure}[H]
     \centering
@@ -1428,9 +1446,9 @@ Si l'on s'amuse à afficher les ensembles ? de chaque classe on peut voir quels p
 
 \paragraph{Thérorie}
 
-Le perceptron multicouche (Hinton 1986) est basé sur le principe de la régression logistique sous forme de réseau de neurones. Cependant contrairement au perceptron simple qui est une méthode de classification linéaire, le perceptron multicouche pourra résoudre des problèmes non linéaires.
+Le perceptron multicouches (Hinton 1986) est basé sur le principe de la régression logistique sous forme de réseau de neurones. Cependant contrairement au perceptron simple qui est une méthode de classification linéaire, le perceptron multicouches pourra résoudre des problèmes non linéaires.
 
- Le principe est d'ajouter des couches, dites cachées, entre le couche d'entré et la couche de sortie.
+ Le principe est d'ajouter des couches, dites cachées, entre la couche d'entrée et la couche de sortie.
 
 \begin{figure}[H]
     \centering
@@ -1438,32 +1456,32 @@ Le perceptron multicouche (Hinton 1986) est basé sur le principe de la régressio
         \label{fig:ms7}
 \end{figure}
 
-Les neurones on le même comportement que dans le perceptron simple (somme des poids d'entrées et sigmoïde). La différence et dans la manière de mettre à jour les poids du réseau. L'idée est de minimiser la fonction d'erreur par le calcul du gradient et la mise à jour des poids en conséquence.
+Les neurones ont le même comportement que dans le perceptron simple (somme des poids d'entrées et sigmoïde). La différence est dans la manière de mettre à jour les poids du réseau. L'idée est de minimiser la fonction d'erreur par le calcul du gradient et la mise à jour des poids en conséquence.
 
-Sous la forme matricielle on suit les étapes suivantes : 
+Sous la forme matricielle on suit les étapes suivantes : 
 
-Calcul de l'erreur des neurones de sortie : EQ
+Calcul de l'erreur des neurones de sortie : \[E_{i} = y^{d}_{i} - y_i\]
 
-Calcul du signal d'erreur des neurones : EQ
+Calcul du signal d'erreur des neurones : \[\delta_i = y_i \circledast (1 - y_i) \circledast E_i\]
 
-Calcul du signal d'erreur de la couche précédente : EQ
+Calcul de l'erreur de la couche précédente : \[E^{n}_{j} = \sum_{j} W_{ij} \times \delta^{n+1}_{j}\]
 
-Mise à jour des poids : EQ
+Mise à jour des poids : \[W^{t+1}_{ij} = W^{t}_{ij} + \eta \times y^{n}_{i} \times \delta^{n+1}_{j}\]
 
-Calcul du signal d'erreur : EQ
+Calcul du signal d'erreur : \[\delta^n = y^n \circledast (1 - y^n) \circledast E^n\]
 
 Et on répète ces étapes pour mettre à jour tous les poids du réseau.
 Ainsi, de la même manière qu'avec la régression logistique, on peut modifier nos poids en fonction de l'erreur commise par le modèle et donc le faire apprendre. Cet algorithme s'appelle la backpropagation ou gradient-descent.
 
-Pour aider à la généralisation, nous utilisons sur ce genre de réseau une technique de régularisation appelé dropout. Le principe est simple, on désactive aléatoirement un certain pourcentage de neurones sur chaque couche à chaque tour d'apprentissage. Cette technique va permettre un renforcement plus rapide des poids des neurones en fonction de leur importance et prévient également de l'overfitting.
+Pour aider à la généralisation, nous utilisons sur ce genre de réseau une technique de régularisation appelée dropout. Le principe est simple, on désactive aléatoirement un certain pourcentage de neurones sur chaque couche à chaque tour d'apprentissage. Cette technique va permettre un renforcement plus rapide des poids des neurones en fonction de leur importance et prévient également de l'overfitting.
 
 \paragraph{Implémentation}
 
-Cette technique à également été programmé from scratch mais nous n'avons pas pu tester sa performance sur notre base de données car celle-ci est trop grande et trop complexe. Elle nécessite un réseau avec beaucoup de neurones en couche caché et le nombre d'images à entrainer ont rendu l'apprentissage trop long pour un être calculé sur CPU sur un seul thread.
+Cette technique à également été programmée from scratch mais nous n'avons pas pu tester sa performance sur notre base de données car celle-ci est trop grande et trop complexe. Elle nécessite un réseau avec beaucoup de neurones en couches cachées et le nombre d'images à entrainer a rendu l'apprentissage trop long pour un être calculé sur CPU sur un seul thread.
 
-Nous avons donc utilisé la librarie de machine learning Tensorflow qui propose du calcule sur carte graphique. 
+Nous avons donc utilisé la librarie de machine learning Tensorflow qui propose du calcul sur carte graphique. 
 
-Modèle choisi :
+Modèle choisi :
 
 \begin{table}[H]
 	\centering
@@ -1490,14 +1508,14 @@ Modèle choisi :
 \paragraph{Résultats}
 
 Avec le modèle décrit ci-dessus on obtient 67,1\% de reconnaissance sur notre base de données. Ce résultat n'est pas significativement supérieur au résultat obtenu avec la régression softmax de sklearn. Le problème vient peut-être donc du type de réseau de neurones utilisé. 
-Avec 67,1\% de reconnaissance nous sommes encore loin des 99\% de FaceNet, nous ne gardons donc pas le perceptron multicouche comme solution de reconnaissance faciale.
+Avec 67,1\% de reconnaissance nous sommes encore loin des 99\% de FaceNet, nous ne gardons donc pas le perceptron multicouches comme solution de reconnaissance faciale.
 
 \subsubsection{Méthode par réseau de neurones convolutif}
 
 \paragraph{Théorie}
 
-Le problème avec le perceptron multicouche c'est qu'il est long à entrainer quand on augmente son nombre de neurones car tous les neurones des couches successives sont connectés entre eux. Il y a aussi une perte d'informations lorsque l'on aplatit notre image en un vecteur car la continuité qu'il a entre les différentes lignes d'une image n'est pas prise en compte.
-C'est ce qu'apporte l'arrivé des réseaux de neurones convolutif (CNN, Y.Lecun 1998) et le développement du deeplearning. Le principe des CNN est d'ajouter des couches dites de convolutions avant un perceptron multicouche.
+Le problème avec le perceptron multicouches est qu'il est long à entrainer quand on augmente son nombre de neurones car tous les neurones des couches successives sont connectés entre eux. Il y a aussi une perte d'informations lorsque l'on aplatit notre image en un vecteur car la continuité qu'il y a entre les différentes lignes d'une image n'est pas prise en compte.
+C'est ce qu'apporte l'arriveé des réseaux de neurones convolutif (CNN, Y.Lecun 1998) et le développement du deeplearning. Le principe des CNN est d'ajouter des couches dites de convolutions avant un perceptron multicouches.
 
 Le principe de la convolution est d'utiliser des noyaux, initialisé aléatoirement puis appris, que l'on la convoluer sur l'image d'entrée pour obtenir des filtres. Dans un filtre obtenu, chaque valeur sera le taux de correspondance entre le noyau et la partie de l'image centré en ce point.
 
@@ -1522,11 +1540,11 @@ Le principe de la convolution est d'utiliser des noyaux, initialisé aléatoiremen
   \end{minipage}
 \end{figure}
 
-On peut utiliser plusieurs paramètres pour customiser l'opération de convolution :
+On peut utiliser plusieurs paramètres pour customiser l'opération de convolution :
 
 \begin{itemize}
-	\item Le padding : Si l'on effectue une convolution simple sur l'image (avec un ?same padding') on aura une réduction de dimension des filtres obtenu par rapport à l'image d'entrée. On peut donc entouré notre image d'entré de 0 pour obtenir la même dimension en sortie (?zero padding', utilisé dans l'exemple ci-dessus)
-	\item Le stride : Le décalage en pixel du noyau lorsqu'on le ?glisse' pendant l'opération de convolution. Le stride à un impact sur la taille des filtres de sortie.
+	\item Le padding : Si l'on effectue une convolution simple sur l'image (avec un ?same padding') on aura une réduction de dimension des filtres obtenu par rapport à l'image d'entrée. On peut donc entouré notre image d'entré de 0 pour obtenir la même dimension en sortie (?zero padding', utilisé dans l'exemple ci-dessus)
+	\item Le stride : Le décalage en pixel du noyau lorsqu'on le ?glisse' pendant l'opération de convolution. Le stride à un impact sur la taille des filtres de sortie.
 \end{itemize}
 
 On peut par la suite enchainer les couches de convolution en utilisant les filtres comme image d'entrée pour la couche suivante. Les couches de convolution vont permettre de décrire l'image en différents pattern. On va donc avoir des filtres qui permettront de décrire de plus en plus précisément notre image originale. 
@@ -1576,7 +1594,7 @@ Cette fois ci nous n'avons pas implémenté ce modèle from scratch mais nous avons
 
 Nous voulions initialement implémenter les mêmes architectures que DeepFace et FaceNet mais au moment de la création de la base de données nous avons sauvegarder les images en 100x100 alors que Deepface utilise des images de 152x152 et FaceNet.
 
-Nous avons donc décidé de designer notre propre architecture. Nous décidons également de rester sur des images en noir et blanc, en pensant que l'humain ne nécessite pas la couleur pour identifier des gens sur une photo et nous voulions que notre réseau ?se focalise ? sur les formes des visages. Nous sommes conscients que c'est un partie-prit osé de par la quantité d'informations que l'on retire. Les résultats présenté si dessous sont donc réalisé sur des images noir et blanc, de nouveaux résultats seront peut être présenté en couleur pour la présentation.
+Nous avons donc décidé de designer notre propre architecture. Nous décidons également de rester sur des images en noir et blanc, en pensant que l'humain ne nécessite pas la couleur pour identifier des gens sur une photo et nous voulions que notre réseau ?se focalise ? sur les formes des visages. Nous sommes conscients que c'est un partie-prit osé de par la quantité d'informations que l'on retire. Les résultats présenté si dessous sont donc réalisé sur des images noir et blanc, de nouveaux résultats seront peut être présenté en couleur pour la présentation.
 
 Architecture choisie :
 
@@ -1601,7 +1619,7 @@ Architecture choisie :
 		\hline
 		ReLU & {} \\	
 		\hline
-		MaxPooling + Dropout 0.5 & Noyau (2x2) \\
+		MaxPooling + Dropout 0.5 & Noyau (2x2) \\
 		\hline
 		Flatten & Mise en vecteur des filtres \\
 		\hline
@@ -1609,7 +1627,7 @@ Architecture choisie :
 		\hline
 		ReLU + dropout 0.5 & \\
 		\hline
-		Fully connected & 17 neurones \\
+		Fully connected & 17 neurones \\
 		\hline
 		SoftMax & {} \\
 		\hline
@@ -1636,7 +1654,7 @@ On peut observer l'évolution du loss (erreur que fait le réseau) et de l'accurac
 
 L'entrainement à était fait sur 50 époques mais on constate que le l'accuracy n'augmente plus significativement à partir de la 7emes époque, les poids enregistrés sont donc ceux de la 7eme époque pour éviter l'overfitting. 
 
-On peut également afficher la matrice de confusion entre les classes : 
+On peut également afficher la matrice de confusion entre les classes : 
 
 \begin{figure}[H]
     \centering
@@ -1644,7 +1662,7 @@ On peut également afficher la matrice de confusion entre les classes :
         \label{fig:ms17}
 \end{figure}
 
-On remarque qu'il y à très peu de confusion entre les classes. De plus certaines confusion sont explicable, par exemple il y a eu 255+12=267 erreur entre la classe c et la classe k :
+On remarque qu'il y à très peu de confusion entre les classes. De plus certaines confusion sont explicable, par exemple il y a eu 255+12=267 erreur entre la classe c et la classe k :
 
 \begin{figure}[H]
   \centering
@@ -1673,7 +1691,7 @@ Nous prenons donc une nouvelle photo de l'individu de la 3eme classe dans d'autr
 
 Nous n'avons malheureusement pas pu faire de réel test chiffré pour l'utilisation du modèle dans le monde réel. Nous n'avons donc aucun moyen de savoir de manière fiable la performance de notre solution de reconnaissance faciale. Nous espérons pouvoir faire ces tests avant la soutenance.
 
-\subsection{Conclusion : remarques, avancement et améliorations possibles}
+\subsection{Conclusion : remarques, avancement et améliorations possibles}
 
 Nous remarquons que la plupart de nos problèmes viennent de la mal formation de la base de données. Nous avons passé beaucoup de temps pour la constitué mais il a sans doute manqué un temps de recherche sur comment bien constituer une base de données. 
 
@@ -1681,9 +1699,10 @@ La finition de cette partie n'est pas parfaite, nous avons passé beaucoup de tem
 
 Au niveau des améliorations possible nous pensons bien évidement à la refonte totale de la base de données (nombre, d'images, taille, augmentation différentes ?). Nous pensons également à la recherche d'un modèle réellement efficace, voir sir FaceNet marche aussi bien sur une base de données maison (99,63\% ont été obtenu sur la base de données Labeled Faces in the Wild LFW). Et enfin une nouvelle méthode de localisation des visages, implémentation de HOG pour test ou utiliser un réseau qui localise également le visage (Object detector, exemple réseau YOLO).
 
-D'un point de vue pratique, mais qui soulève un problème théorique, comment allons-nous gérer l'ajout d'un nouvel utilisateur ? Il faut rajouter une classe de sortie mais doit-on ré entrainer le réseau avec uniquement les photos de l'utilisateur ? A priori ce poserais des problèmes de généralisation de cette classe, mais doit-on alors réapprendre toute la base ? Ce qui est difficile pour une application qui possède plusieurs milliers d'utilisateurs. Ce genre de problème est pour nous sans réponse pour le moment mais ils vaudraient la peine de se pencher dessus.
+D'un point de vue pratique, mais qui soulève un problème théorique, comment allons-nous gérer l'ajout d'un nouvel utilisateur ? Il faut rajouter une classe de sortie mais doit-on ré entrainer le réseau avec uniquement les photos de l'utilisateur ? A priori ce poserais des problèmes de généralisation de cette classe, mais doit-on alors réapprendre toute la base ? Ce qui est difficile pour une application qui possède plusieurs milliers d'utilisateurs. Ce genre de problème est pour nous sans réponse pour le moment mais ils vaudraient la peine de se pencher dessus.
 
 
+\newpage
 \section{Securité}
 
 \subsection{Introduction au problème}
@@ -1766,6 +1785,7 @@ Pour commencer ce bilan, faisons un point sur ce qui est implémenté ou non. Nous
 De plus, il resterait d'autres problème de sécurité à régler, même si nous avions pu tout implémenté. En effet les combinaisons Identifiants/Mot de passe pour chaque site web d'un utilisateur ne sont pas protégé ! Il aurait aussi été interessant de crypter l'envoie et la sauvegarde des fichiers (images et réseau de neurones) sur le serveur, afin de préserver l'identité des utilisateurs.
 
 
+\newpage
 \section{Conclusion}
 \subsection{point d'avancement par rapport au cdc}
 \subsection{problème rencontrés + discussion}
