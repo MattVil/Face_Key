@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.5.20)  8 MAR 2018 20:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.5.20)  10 MAR 2018 16:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -442,68 +442,71 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(./rapport_local_louis_avant_que_quentin_me_nique.aux)
+(./rapport_local_louis_avant_que_quentin_me_nique.aux
+
+LaTeX Warning: Label `fig:EXT' multiply defined.
+
+)
 \openout1 = `rapport_local_louis_avant_que_quentin_me_nique.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OT2/cmr/m/n on input line 54.
-LaTeX Font Info:    Try loading font information for OT2+cmr on input line 54.
-
-(/usr/local/texlive/2016/texmf-dist/tex/latex/cyrillic/ot2cmr.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OT2/cmr/m/n on input line 90.
+LaTeX Font Info:    Try loading font information for OT2+cmr on input line 90.
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/cyrillic/ot2cmr.fd
 File: ot2cmr.fd 2001/08/11 v3.2c Computer Modern Cyrillic font definitions
 )
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Try loading font information for T1+aess on input line 54.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Try loading font information for T1+aess on input line 90.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 )
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <5> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 
 
 LaTeX Font Warning: Font shape `T1/aess/bx/it' undefined
-(Font)              using `T1/aess/bx/n' instead on input line 54.
+(Font)              using `T1/aess/bx/n' instead on input line 90.
 
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <7> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <8> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <9> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <10> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <11> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <12> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <17> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <20> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 LaTeX Font Info:    Font shape `T1/aess/m/it' in size <24> not available
-(Font)              Font shape `T1/aess/m/sl' tried instead on input line 54.
+(Font)              Font shape `T1/aess/m/sl' tried instead on input line 90.
 -- Lines per column: 56 (exact).
-LaTeX Info: Redefining \degres on input line 54.
+LaTeX Info: Redefining \degres on input line 90.
 
 Package frenchb.ldf Warning: Figures' and tables' captions might look like
 (frenchb.ldf)                `Figure 1:' which is wrong in French.
 (frenchb.ldf)                Check your class or packages to change this;
-(frenchb.ldf)                reported on input line 54.
+(frenchb.ldf)                reported on input line 90.
 
-LaTeX Info: Redefining \dots on input line 54.
-LaTeX Info: Redefining \up on input line 54.
+LaTeX Info: Redefining \dots on input line 90.
+LaTeX Info: Redefining \up on input line 90.
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count134
@@ -565,19 +568,19 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count141
-LaTeX Font Info:    Try loading font information for U+msa on input line 68.
+LaTeX Font Info:    Try loading font information for U+msa on input line 104.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 68.
+LaTeX Font Info:    Try loading font information for U+msb on input line 104.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
 LaTeX Font Warning: Font shape `T1/aess/m/sc' undefined
-(Font)              using `T1/aess/m/n' instead on input line 70.
+(Font)              using `T1/aess/m/n' instead on input line 106.
 
 [1
 
@@ -586,93 +589,94 @@ LaTeX Font Warning: Font shape `T1/aess/m/sc' undefined
 Underfull \vbox (badness 1292) has occurred while \output is active []
 
  [2]
-<img/MCD.jpg, id=15, 1009.7725pt x 562.1pt>
+<img/ABDD.png, id=15, 634.37pt x 339.2675pt>
+File: img/ABDD.png Graphic file (type png)
+ <use img/ABDD.png>
+Package pdftex.def Info: img/ABDD.png used on input line 165.
+(pdftex.def)             Requested size: 412.80157pt x 220.77492pt.
+ [3 <./img/ABDD.png>] <img/MCD.jpg, id=22, 1009.7725pt x 562.1pt>
 File: img/MCD.jpg Graphic file (type jpg)
  <use img/MCD.jpg>
-Package pdftex.def Info: img/MCD.jpg used on input line 157.
+Package pdftex.def Info: img/MCD.jpg used on input line 202.
 (pdftex.def)             Requested size: 412.80157pt x 229.79349pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3]
-<img/MLD.jpg, id=19, 1009.7725pt x 562.1pt>
+<img/MLD.jpg, id=23, 1009.7725pt x 562.1pt>
 File: img/MLD.jpg Graphic file (type jpg)
  <use img/MLD.jpg>
-Package pdftex.def Info: img/MLD.jpg used on input line 166.
+Package pdftex.def Info: img/MLD.jpg used on input line 211.
 (pdftex.def)             Requested size: 412.80157pt x 229.79349pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [4 <./img/MCD.jpg> <./img/MLD.jpg>] <img/req1.png, id=24, 438.63875pt x 103.38
-625pt>
+ [4 <./img/MCD.jpg>] <img/req1.png, id=27, 438.63875pt x 103.38625pt>
 File: img/req1.png Graphic file (type png)
-
-<use img/req1.png>
-Package pdftex.def Info: img/req1.png used on input line 187.
+ <use img/req1.png>
+Package pdftex.def Info: img/req1.png used on input line 232.
 (pdftex.def)             Requested size: 206.39685pt x 48.64833pt.
- <img/req3.png, id=25, 310.15875pt x 63.23625pt>
+
+[5 <./img/MLD.jpg> <./img/req1.png (PNG copy)>]
+<img/req3.png, id=31, 310.15875pt x 63.23625pt>
 File: img/req3.png Graphic file (type png)
-
-<use img/req3.png>
-Package pdftex.def Info: img/req3.png used on input line 206.
+ <use img/req3.png>
+Package pdftex.def Info: img/req3.png used on input line 251.
 (pdftex.def)             Requested size: 206.39685pt x 42.0805pt.
- <img/req7.png, id=26, 157.58875pt x 62.2325pt>
-File: img/req7.png Graphic file (type png)
 
-<use img/req7.png>
-Package pdftex.def Info: img/req7.png used on input line 223.
+<img/req7.png, id=32, 157.58875pt x 62.2325pt>
+File: img/req7.png Graphic file (type png)
+ <use img/req7.png>
+Package pdftex.def Info: img/req7.png used on input line 268.
 (pdftex.def)             Requested size: 103.19843pt x 40.75356pt.
- [5 <./img/req1.png (PNG copy)> <./img/req3.png (PNG copy)>]
-<img/req11.png, id=30, 214.8828pt x 205.2468pt>
+
+<img/req11.png, id=33, 214.8828pt x 205.2468pt>
 File: img/req11.png Graphic file (type png)
  <use img/req11.png>
-Package pdftex.def Info: img/req11.png used on input line 241.
+Package pdftex.def Info: img/req11.png used on input line 286.
 (pdftex.def)             Requested size: 206.39685pt x 197.14742pt.
 
-<img/req12.png, id=32, 271.2534pt x 43.8438pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6 <./img/req3.png (PNG copy)> <./img/req7.png (PNG copy)>]
+<img/req12.png, id=37, 271.2534pt x 43.8438pt>
 File: img/req12.png Graphic file (type png)
  <use img/req12.png>
-Package pdftex.def Info: img/req12.png used on input line 259.
+Package pdftex.def Info: img/req12.png used on input line 304.
 (pdftex.def)             Requested size: 206.39685pt x 33.36108pt.
- [6 <./img/req7.png (PNG copy)> <./img/req11.png> <./img/req12.png>]
+
 <img/req13.png, id=38, 572.3784pt x 61.6704pt>
 File: img/req13.png Graphic file (type png)
  <use img/req13.png>
-Package pdftex.def Info: img/req13.png used on input line 278.
+Package pdftex.def Info: img/req13.png used on input line 323.
 (pdftex.def)             Requested size: 412.80157pt x 44.47697pt.
-
-<img/panel.png, id=39, 715.67375pt x 431.6125pt>
+ [7 <./img/req11.png> <./img/req12.png> <./img/req13.png>]
+<img/panel.png, id=46, 715.67375pt x 431.6125pt>
 File: img/panel.png Graphic file (type png)
  <use img/panel.png>
-Package pdftex.def Info: img/panel.png used on input line 291.
+Package pdftex.def Info: img/panel.png used on input line 336.
 (pdftex.def)             Requested size: 412.80157pt x 248.95897pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7 <./img/req13.png>] <img/android_shema.png, id=45, 710.655pt x 209.78375pt>
+ [8 <./img/panel.png>] <img/android_shema.png, id=51, 710.655pt x 209.78375pt>
 File: img/android_shema.png Graphic file (type png)
 
 <use img/android_shema.png>
-Package pdftex.def Info: img/android_shema.png used on input line 312.
+Package pdftex.def Info: img/android_shema.png used on input line 357.
 (pdftex.def)             Requested size: 412.80157pt x 121.8603pt.
- [8 <./img/panel.png>]
+
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-<img/mainscreen.png, id=50, 260.975pt x 434.62375pt>
+) [9 <./img/android_shema.png>] <img/mainscreen.png, id=57, 260.975pt x 434.623
+75pt>
 File: img/mainscreen.png Graphic file (type png)
- <use img/mainscreen.png>
-Package pdftex.def Info: img/mainscreen.png used on input line 353.
-(pdftex.def)             Requested size: 206.39685pt x 343.73364pt.
 
-[9 <./img/android_shema.png>] <img/sort.png, id=56, 256.96pt x 432.61626pt>
+<use img/mainscreen.png>
+Package pdftex.def Info: img/mainscreen.png used on input line 398.
+(pdftex.def)             Requested size: 206.39685pt x 343.73364pt.
+ <img/sort.png, id=58, 256.96pt x 432.61626pt>
 File: img/sort.png Graphic file (type png)
 
 <use img/sort.png>
-Package pdftex.def Info: img/sort.png used on input line 362.
+Package pdftex.def Info: img/sort.png used on input line 407.
 (pdftex.def)             Requested size: 206.39685pt x 347.49292pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--363
+Underfull \hbox (badness 10000) in paragraph at lines 403--408
 
  []
 
@@ -692,58 +696,69 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang2.sty
 File: lstlang2.sty 2015/06/04 1.6 listings language file
 ) [16]
-<img/send.png, id=82, 258.9675pt x 426.59375pt>
+<img/send.png, id=84, 258.9675pt x 426.59375pt>
 File: img/send.png Graphic file (type png)
  <use img/send.png>
-Package pdftex.def Info: img/send.png used on input line 650.
+Package pdftex.def Info: img/send.png used on input line 695.
 (pdftex.def)             Requested size: 206.39685pt x 340.01265pt.
 
-<img/blob.png, id=83, 618.31pt x 171.64125pt>
+<img/blob.png, id=85, 618.31pt x 171.64125pt>
 File: img/blob.png Graphic file (type png)
  <use img/blob.png>
-Package pdftex.def Info: img/blob.png used on input line 655.
+Package pdftex.def Info: img/blob.png used on input line 700.
 (pdftex.def)             Requested size: 206.39685pt x 57.29391pt.
- [17 <./img/send.png> <./img/blob.png>] [18]
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang2.sty
-File: lstlang2.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang3.sty
-File: lstlang3.sty 2015/06/04 1.6 listings language file
-)
+ [17 <./img/send.png> <./img/blob.png>]
+<img/archi_client.png, id=91, 649.42625pt x 357.335pt>
+File: img/archi_client.png Graphic file (type png)
 
-./rapport_local_louis_avant_que_quentin_me_nique.tex:761: Package Listings Erro
-r: Couldn't load requested language.
+<use img/archi_client.png>
+Package pdftex.def Info: img/archi_client.png used on input line 728.
+(pdftex.def)             Requested size: 412.80157pt x 227.13965pt.
+ [18 <./img/archi_client.png>]
+<img/app_chrome.png, id=96, 575.14874pt x 363.3575pt>
+File: img/app_chrome.png Graphic file (type png)
+ <use img/app_chrome.png>
+Package pdftex.def Info: img/app_chrome.png used on input line 815.
+(pdftex.def)             Requested size: 206.39685pt x 130.39276pt.
 
-See the Listings package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.761 \begin{lstlisting}[language=js]
-                                     
-? 
+[19] <img/extension_fonctionnement.png, id=102, 408.52625pt x 399.4925pt>
+File: img/extension_fonctionnement.png Graphic file (type png)
 
-./rapport_local_louis_avant_que_quentin_me_nique.tex:761: Package Listings Erro
-r: language js undefined.
+<use img/extension_fonctionnement.png>
+Package pdftex.def Info: img/extension_fonctionnement.png used on input line 83
+6.
+(pdftex.def)             Requested size: 206.39685pt x 201.8366pt.
 
-See the Listings package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.761 \begin{lstlisting}[language=js]
-                                     
-? 
-LaTeX Font Info:    Try loading font information for OMS+aess on input line 777
-.
-LaTeX Font Info:    No file OMSaess.fd. on input line 777.
+Underfull \vbox (badness 4846) has occurred while \output is active []
 
-LaTeX Font Warning: Font shape `OMS/aess/m/n' undefined
-(Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textasteriskcentered' on input line 777.
+ [20 <./img/app_chrome.png> <./img/extension_fonctionnement.png>]
+LaTeX Font Info:    Try loading font information for T1+aett on input line 866.
 
-[19]
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ae/t1aett.fd
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+) [21]
+<img/extens.png, id=112, 1284.8pt x 215.80624pt>
+File: img/extens.png Graphic file (type png)
+ <use img/extens.png>
+Package pdftex.def Info: img/extens.png used on input line 931.
+(pdftex.def)             Requested size: 412.80157pt x 69.33601pt.
+ [22 <./img/extens.png>] <img/extension.png, id=117, 821.0675pt x 351.3125pt>
+File: img/extension.png Graphic file (type png)
+
+<use img/extension.png>
+Package pdftex.def Info: img/extension.png used on input line 1009.
+(pdftex.def)             Requested size: 412.80157pt x 176.62607pt.
+ [23]
+<img/newarchi.png, id=121, 714.67pt x 366.36874pt>
+File: img/newarchi.png Graphic file (type png)
+ <use img/newarchi.png>
+Package pdftex.def Info: img/newarchi.png used on input line 1047.
+(pdftex.def)             Requested size: 412.80157pt x 211.62192pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24 <./img/extension.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -755,19 +770,23 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[20] (./rapport_local_louis_avant_que_quentin_me_nique.aux)
+[25 <./img/newarchi.png>] (./rapport_local_louis_avant_que_quentin_me_nique.aux
+)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 10725 strings out of 493014
- 166074 string characters out of 6133351
- 632225 words of memory out of 5000000
- 14053 multiletter control sequences out of 15000+600000
- 92838 words of font info for 136 fonts, out of 8000000 for 9000
+ 10819 strings out of 493014
+ 167218 string characters out of 6133351
+ 633297 words of memory out of 5000000
+ 14139 multiletter control sequences out of 15000+600000
+ 94951 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,10n,51p,747b,2949s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,10n,51p,747b,2955s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></u
 sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></us
@@ -777,12 +796,13 @@ ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/loc
 al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/lo
 cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/lo
 cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loca
-l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on rapport_local_louis_avant_que_quentin_me_nique.pdf (20 pages,
- 689235 bytes).
+l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/
+texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on rapport_local_louis_avant_que_quentin_me_nique.pdf (25 pages,
+ 1129848 bytes).
 PDF statistics:
- 133 PDF objects out of 1000 (max. 8388607)
- 77 compressed objects within 1 object stream
+ 167 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 106 words of extra memory for PDF output out of 10000 (max. 10000000)
 
