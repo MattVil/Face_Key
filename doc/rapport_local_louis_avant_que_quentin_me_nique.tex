@@ -30,6 +30,42 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+
+
+
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color
   basicstyle=\footnotesize,        % size of fonts used for the code
@@ -120,9 +156,18 @@ test
 
 \section{Base de Données}
 \subsection{Introduction}
-Qui dit gestionnaire de mot de passe dit données à stocker. En effet dans ce genre de projet la Base De Données est un aspect majeur, qu'elle serve à stocker les informations basiques telles que les couples identifiant/mot de passe ou bien tout simplement les informations nécessaires au bon fonctionnement de l'application, il faut lui fournir une architecture robuste et habile. On peut également imaginer vouloir stocker et accéder à tout un tas d'information intéressantes sur les sites visités. Perdre du temps à chercher des informations dans la BDD c'est ralentir tout le fonctionnement de l'application, il faut donc être précautionneux quand à la conception de la BDD.
+Qui dit gestionnaire de mot de passe dit données à stocker. En effet dans ce genre de projet la Base De Données est un aspect majeur, qu'elle serve à stocker les informations basiques telles que les couples identifiant/mot de passe ou bien tout simplement les informations nécessaires au bon fonctionnement de l'application, il faut lui fournir une architecture robuste et habile. On peut également imaginer vouloir stocker et accéder à tout un tas d'information intéressantes sur les sites visités. Perdre du temps à chercher des informations dans la BDD c'est ralentir tout le fonctionnement de l'application, il faut donc être précautionneux quand à la conception de la BDD. 
+
+La BDD de Face Key est située sur le serveur comme  le rappelle sur le schéma suivant (Fig.~\ref{fig:ABDD}) :
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/ABDD.png} 
+        \caption{Architecture}
+        \label{fig:ABDD}
+\end{figure}
 \subsection{Analyse du besoin}
-Pour cela nous avons donc évalué les besoins d'une telle Base de Données. Au delà du simple aspect nécessaire de certaines données, nous avons eu la volonté d'étoffer notre BDD avec des statistiques sur les sites et les utilisateurs qui nous semblent pertinentes à la compréhension de l'usage fait de FaceKey. Il nous semble aussi important d'utiliser certaines données pour détecter les activités anormales sur les comptes et ainsi, augmenter la sécurité de notre application. Nous avons retenu qu'elle devait contenir les informations suivantes : 
+Pour répondre aux attendus du projet nous avons donc évalué les besoins d'une telle Base de Données. Au delà du simple aspect nécessaire de certaines données, nous avons eu la volonté d'étoffer notre BDD avec des statistiques sur les sites et les utilisateurs qui nous semblent pertinentes à la compréhension de l'usage fait de FaceKey. Il nous semble aussi important d'utiliser certaines données pour détecter les activités anormales sur les comptes et ainsi, augmenter la sécurité de notre application. Nous avons retenu qu'elle devait contenir les informations suivantes : 
 \begin{itemize}
 \item Les  informations concernant un utilisateur
 	\begin{itemize}
@@ -664,16 +709,40 @@ En conclusion, nous avons développé une application robuste qui effectue différe
 Pour améliorer cette application nous aurions pu développer notre propre activité pour prendre des photos, ce qui nous aurait permis de prendre en rafale les photos de l'utilisateur. Nous aurions pu améliorer l'UI de l'activité de tri de photos.
 Le principal défaut de cette application est qu'elle n'est pas connectée aux autres parties de notre projet comme nous n'avons pas la possibilité de télécharger directement les images vers notre base de données. En effet le réseau de l'Université bloque les accès extérieurs aux machines et empêche les machines sur le même réseau de s'accéder. Cette mesure de sécurité nous empêche d'intégrer pleinement notre application android dans notre écosystème et nos  données FaceKey
 
-\section{IHM}
+\section{Interface Homme-Machine}
 \subsection{Introduction}
-Pour l'IHM nous avons fait le choix de développer un plug-in permettant de se connecter aux sites depuis le navigateur de l'utilisateur. Nous avons donc établi le cahier des charges suivant pour la réalisation de ce plug-in : 
+Dans le cadre d'un gestionnaire de mot de passe comme Face Key l'IHM est une composante primordiale. Discrète, elle doit savoir se faire oublier mais doit rester facilement accessible quand on en besoin. L'expérience utilisateur doit donc être la plus simple possible. Afin de rendre cette expérience optimale nous isolons les besoins d'une telle IHM : 
+
+\begin{itemize}
+	\item Accessibilité au plus grand public
+	\item Facilité d'utilisation
+	\item Se connecter à Face Key (via la reconnaissance faciale)
+	\item Se connecter à un site via Face Key
+	\item Ajouter un compte à Face Key
+\end{itemize}
+
+Notre IHM touche donc deux composantes de notre architecture : la partie navigateur et la partie client C comme on peut le voir sur le schéma suivant (Fig.~\ref{fig:AC}).
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/archi_client.png} 
+        \caption{Architecture}
+        \label{fig:AC}
+\end{figure}
+
+La connexion à Face Key, l'ajout de compte et la récupération des informations de connexions sont déjà implémentés dans notre client. Il nous faut donc une IHM capable d'interagir avec un navigateur.
+
+ Nous faisons donc logiquement le choix de développer un plug-in pour navigateur permettant de se connecter aux sites depuis le ce dernier. Nous avons donc établi le cahier des charges suivant pour la réalisation de ce plug-in : 
+
 \begin{itemize}
 	\item Il doit être accessible depuis un navigateur grand public
 	\item Il pouvoir communiquer avec le client présent sur l'ordinateur
 	\item Il doit pouvoir interagir avec le contenu d'une page web affiché dans un navigateur. 
 \end{itemize}
+
 \subsection{Analyse du Marché}
 Pour répondre au premier besoin : " Il doit être accessible depuis un navigateur grand public " nous avons analysé les parts de marchés des navigateurs web (Table.~\ref{Table:PDMN}). De cette analyse nous tirons la conclusion qu'il faut nous concentrer sur les 2 principaux navigateurs ayant assez de part de marché : Google Chrome et Apple Safari.
+
 \begin{table}[H]
 	\centering
 	\caption{Les parts de marché des navigateurs Web dans le monde, toutes plates-formes confondues (février 2018 - W3Counter)}
@@ -687,7 +756,8 @@ Pour répondre au premier besoin : " Il doit être accessible depuis un navigateur
 	 \label{Table:PDMN}
 \end{table}
 
-Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux navigateurs pour le développement d'un plug-in. Nous savons que les deux offrent cette possibilité mais nous devons étudier si les API des deux permettent de répondre aux deux besoin techniques suivants "pouvoir communiquer avec le client présent sur l'ordinateur" et "pouvoir interagir avec le contenu d'une page web affiché dans un navigateur". Pour cela nous isolons 3 fonctionnalité indisensables à implémenter 
+Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux navigateurs pour le développement d'un plug-in. Nous savons que les deux offrent cette possibilité mais nous devons étudier si les API des deux permettent de répondre aux deux besoin techniques suivants "pouvoir communiquer avec le client présent sur l'ordinateur" et "pouvoir interagir avec le contenu d'une page web affiché dans un navigateur". Pour cela nous isolons 3 fonctionnalité indispensables à implémenter  :
+
 \begin{itemize}
 	\item Interaction avec le contenu d'une page web.
 	\begin{itemize}
@@ -697,6 +767,7 @@ Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux nav
 	\item Interaction avec le client : ici on choisira l'UDP pour sa facilité d'utilisation et la rapidité de la transmission des messages.
 \end{itemize}
 
+En comparant les possibilités offertes par les interfaces de programmation (API) des extensions de ces deux navigateurs nous voyons que seul un des deux répond à nos besoins (Table.~\ref{Table:CTEW}).
 
 \begin{table}[H]
 	\centering
@@ -715,58 +786,202 @@ Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux nav
 	\label{Table:CTEW}
 \end{table}
 
-Nous choisissons donc logiquement de développer notre plug-in sous chrome.
+Nous choisissons donc logiquement de développer notre plug-in sur Google Chrome. Avant de passer au développement intrinsèque du plug-in nous devons étudier les possibilités de développement offertes par Google Chrome. 
 
 \subsection{Les technologies Chrome}
-Avant de passer au développement intrinsèque du plug-in nous devons étudier les possibilités de développement offertes par Google Chrome. Sous ce navigateur il existe deux types de web applications :
+Le navigateur Google Chrome permet, via des API riches, de développer des plug-in sous différentes formes. Il propose notamment deux types de web applications :
+
 \begin{itemize}
 	\item Les Applications
 	\item Les Extensions
 \end{itemize}
+
+C'est en analysant ces deux types de web-application que nous choisirons sur lequel implémenter notre IHM.
+
 \subsubsection{Application chrome}
-Les application chrome sont des web-applications développées en HTML5, CSS et javascript et dont l'objectif est de se rapprocher de l'expérience d'une application native.
 
-L'avantage majeur des application Chrome, en comparaison avec des application natives ou avec des web-applications, est qu'elles sont multi-plateformes. En effet, une fois développée, une application chrome fonctionnera aussi bien sur un navigateur tournant sur n'importe quel système d'exploitation d'ordinateur que sur tablette ou même téléphone.
+Les application chrome sont des web-applications développées en HTML5, CSS et javascript et dont l'objectif est de se créer une l'expérience d'une application native.
 
-Elles n'ont pas de barre d'adresses, contrairement à chrome, mais ont une fenêtre classiques comme toutes les application traditionnelles. Leur fonctionnement est externe à celui de Chrome. 
+L'avantage majeur des application Chrome, en comparaison avec des application natives ou avec des web-applications, est qu'elles sont multi-plateformes. En effet, une fois développée, une application chrome fonctionnera aussi bien sur n'importe quel système d'exploitation équipé d'un navigateur chrome (Windows, OSX, Linux, Chromium et même IOS et Android via une pré-compilation).
 
-Le plus important est qu'elles ont accès à toutes les composantes matérel de l'ordinateur hôte. Nous pouvons donc utiliser le bluetooth, les ports USB et, ce qui nous intéresse ici, la carte réseau pour l'UDP.
+Les application Chrome, bien que démarrées depuis lanceur d'application Chrome (ou le terminal) fonctionnent indépendamment de chrome. Elles ont un processus propre. Ces applications peuvent fonctionner en arrière plan ou en mode fenêtré. En mode fenêtré, elles n'ont pas de barre d'adresses, contrairement au navigateur chrome, et leur fonctionnement en terme d'interface est le même que celui d'une application native. 
+
+Le plus important est qu'elles ont accès à toutes les composantes matériel de l'ordinateur hôte. Nous pouvons donc utiliser le bluetooth, les ports USB et, ce qui nous intéresse ici, la carte réseau pour l'UDP. 
+
+On peut résumer leur fonctionnement sur le schéma suivant (Fig.~\ref{fig:APPC}). Ici on crée une application chrome qui contient un fichier main.html et un fichier app.js. L'application ne peut pas interagir avec le contenu de chrome, elle fonctionne de manière indépendante, mais peut accéder aux composantes matériel du système hôte comme le bluetooth ou l'USB.
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.4\textwidth]{img/app_chrome.png} 
+        \caption{Architecture}
+        \label{fig:APPC}
+\end{figure}
+
+Nous devons donc utiliser une application Chrome pour la communication entre l'IHM et le client C, mais, en raison de leur fonctionnement indépendant du navigateur nous ne pouvons pas interagir avec les sites visités par l'utilisateur.
 
 \subsubsection{Extension chrome}
 
-Les extensions chromes sont des petits logiciels qui permettent de customiser l'experience utilisateur du navigateur Chrome. Elles permettent aux utilisateurs d'accéder de modeler leur expérience personnelle du navigateur. Elles sont basées sur les technologies web HTML, JavaScript et CSS.
+Les extensions chromes sont, quand à elles, des petits logiciels qui permettent de personnaliser l'experience utilisateur du navigateur Chrome.
 
-Une extension doit servir à un seul objectif bien défini et facile  à comprendre. Une extension peut inclure de multiples composants et avoir une série de fonctionnalités, tant qu'elle sert cet objectif clairement défini.\\
-Les extensions Chrome sont accessibles depuis une icône la barre d'utilisateur en haut à droite de la fenêtre chrome.
+Basées sur les technologies web HTML, JavaScript et CSS les extensions doivent servir à un seul objectif bien défini et facile à comprendre. Elles peuvent inclure de multiples composants et avoir une série de fonctionnalités, tant qu'elles servent que objectif clairement défini.
 
-Les extensions chrome, contrairement aux applications Chrome, ne permettent pas d'accéder aux composantes matériel du système hôte.
+A l'instar des applications Chrome, les extensions fonctionnent à l'intérieur du navigateur Chrome. Elles sont accessibles depuis une icône la barre d'utilisateur en haut à droite de la fenêtre chrome.Tout comme les application Chrome, les extensions ne sont pas dépendantes du contenu du navigateur et ne nécessitent pas une connexion internet.
 
-Tout comme les application Chrome, les extensions ne sont pas dépendantes du contenu du navigateur et ne nécessitent pas une connexion internet. Cependant elles fonctionnent à l'intérieur du navigateur.\\
-Les extensions possèdent un système de communication facilité avec les applications Chrome.
+Les extensions chrome, contrairement aux applications Chrome, ne permettent pas d'accéder aux composantes matériel du système hôte. Elles ont cependant un accès complet au contenu des pages visitées par l'utilisateur sur le navigateur.
+
+Le fonctionnement de ces extensions peut être résumé par le schéma suivant (Fig.~\ref{fig:EXT}). Ici on a une extension composée d'un fichier popup.html, d'un fichier contentscript.js et d'un fichier extension.js et une page web composée de fichier html,  js et css par exemple. Notre extension fonctionne de manière isolée via les fichiers popup et extension et peuvent interagir avec la page web via un troisième fichier contentscript qui agira sur le contenu de cette dernière.
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.4\textwidth]{img/extension_fonctionnement.png} 
+        \caption{Architecture}
+        \label{fig:EXT}
+\end{figure}
+
+Nous devons donc utiliser une extension chrome pour l'interaction avec les sites visités par l'utilisateur de Face Key. 
+
+Nous venons d'identifier que nous avons besoin des deux types de web-application proposées par l'API de Chrome. Ce qui soulève le problème de la communication entre ces composantes. Il existe dans l'API des outils pour établir un système de communication entre les extensions les applications Chrome.
 
 \subsection{Développement}
-Après analyse des deux options offertes par le navigateur Chrome nous choisissons de décomposer notre IHM en deux parties : 
+Après analyse des deux technologies offertes par chrome nous avons donc choisi de décomposer notre IHM en deux parties : 
+
 \begin{itemize}
 	\item Une extension pour interagir avec le contenu des pages web
 	\item Une application pour interagir avec le client
 \end{itemize}
-Nous relions les deux composantes via une des fonctionnalités proposées via l'API de développement Google Chrome qui s'appelle Native Messaging.
+
+Nous relions les deux composantes via une des fonctionnalités proposées via l'API de développement Google Chrome qui s'appelle Messaging.
+
 \subsubsection{Application}
-Dans un premier temps nous avons donc développé la première partie de notre IHM qui sera l'application. Cette application aura pour objectif d'être le relai entre le client C et l'extension qui interrigea 
-\subsubsection{Extension}
+
+Dans un premier temps nous développons la première partie de notre IHM qui sera l'application. Cette application aura pour objectif d'être le relai entre le client C et l'extension qui interagira avec le contenu des sites visité. 
+
+Une interface n'est pas nécessaire pour cette application puisque l'utilisateur n'aura jamais besoin de la manipuler, nous créons donc cette application pour un fonctionnement en arrière plan.
+
+La réelle difficulté technique du développement de cet IHM se situe à ce niveau, comment établir une connexion UDP depuis une web-application? Il existe deux méthodes qui demandent différents niveaux d'implémentation de notre part : la première demande d'utiliser Chromium, la version Open Source de Google Chrome et de créer des exceptions dans le code de Chromium pour nous ouvrir l'accès direct du navigateur, la deuxième méthode est plus simple. L'API suffisamment riche de chrome fournit la possibilité d' ouvrir des sockets udp et, à partir de ces derniers, envoyer et recevoir des messages.
+
+Tout comme sur Android, nous devons déclarer que nous utilisons l'udp dans les permissions de l'application. Ici on autorisera toutes les connexions depuis toutes les connexions, même s'il est possible de limiter celles ci en remplaçant * par une liste dans le manifeste de l'application.
+
+\begin{lstlisting}[language=JavaScript]
+"sockets": {
+    "udp": {
+      "send": ["*"],
+      "bind": ["*"]
+    }
+}
+\end{lstlisting}    
+
+Sur le code suivant on observe un exemple de création de socket udp et d'envoi de données : 
+
+\begin{lstlisting}[language=JavaScript]
+// Creation of the socket
+chrome.sockets.udp.create({}, function(socketInfo) {
+  // Socket created, sending some data
+  var socketudp = socketInfo.socketudp;
+  chrome.sockets.udp.send(socketudp, arrayBuffer,
+    '127.0.0.1', 3001, function(sendInfo) {
+      console.log("sent " + sendInfo.bytesSent);
+  });
+});
+\end{lstlisting}
+
+Sur le code suivant on peut observer un exemple de d'écoute de données via un socket udp : 
+
+\begin{lstlisting}[language=JavaScript]
+var socketudp;
+// Handle the "onReceive" event to wait for data on the socket
+var onReceive = function(info) {
+  if (info.socketudp !== socketudp)
+    return;
+    //display data
+  console.log(info.data);
+};
+
+// Creation of the socket
+chrome.sockets.udp.create({}, function(socketInfo) {
+  socketudp = socketInfo.socketudp;
+  // Setup event handler and bind socket.
+  chrome.sockets.udp.onReceive.addListener(onReceive);
+  chrome.sockets.udp.bind(socketudp,
+    "0.0.0.0", 0, function(result) {
+      if (result < 0) {
+        console.log("Error binding socket.");
+        return;
+      }
+      chrome.sockets.udp.send(socketudp, arrayBuffer,
+        '127.0.0.1', 3001, function(sendInfo) {
+          console.log("sent " + sendInfo.bytesSent);
+      });
+  });
+});
+\end{lstlisting}
+
+Ces bouts de codes d'example nous permettent d'établir la connexion de manière efficace et sure vers notre client en C. Chrome étant assez peu permissif il est ardu pour nous d'implémenter notre propre protocole udp sans utiliser leurs sockets.  
+
+C'est à partir de ces blocs que nous développons notre application qui tournera en arrière plan et effectuera le lien avec le client C.
+
+\subsubsection{Extension} 
+
+Nous développons ensuite l'extension qui est la partie visible de l'IHM. 
+
+Elle est simplement composée d'une icône qui permet d'afficher fenêtre pop-up (Fig.~\ref{fig:extens}). Cette fenêtre pop-up contient un bouton log qui, à son déclenchement va appeler l'application Chrome pour qu'il demande au client C une authentification, si l'authentification est valide, il retourne le couple identifiant/mot de passe pour le site, sinon un message d'erreur. Une fois le couple d'identifiant/mot de passe récupéré il faut l'injecter dans le site.
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/extens.png} 
+        \caption{Architecture}
+        \label{fig:extens}
+\end{figure}
+
+Nous devons donc ajouter un click listener sur le bouton connexion qui lancera cette procédure : 
+
+\begin{lstlisting}[language=JavaScript]
+document.addEventListener('DOMContentLoaded', () => {
+  getCurrentTabUrl((url) => {
+    link = document.getElementById('log');
+    link.addEventListener('click', () => {
+    	//ask identification
+    	$true = askid();
+	// access granted
+	if($true){
+       	 	injecttext($login,$loginfield);
+       		 injecttext($password,$passwordfield);
+	}
+	// access denied
+	else{
+		warn("authentification failed");
+	}
+    });
+  });
+});
+\end{lstlisting}
+
+Pour cela nous utilisons une fonction injecttext qui va injecter dans une textedit d'id id du texte. C'est la fonction utilisée pour injecter le couple identifient/mot de passe dans le site visité  en cas d'authentification réussie.
+
+\begin{lstlisting}[language=JavaScript]
+function injecttext(string, id) {
+  var script = 'document.getElementById("' + id + '").value = "' + string + '";';
+  chrome.tabs.executeScript({
+    code: script
+  });
+}
+\end{lstlisting}
+
+Nous concevons donc notre extension qui, sur ce principe, permet la connexions aux sites gérés par Face Key.
 
 \subsubsection{Communication Application-Extension}
-Pour relier les deux parties de notre plug-in nous utilisons une des fonctionnalités offertes par l'API de Google Chrome. Cette fonctionnalité, appelée Messaging, permet qui permet la communication inter-extensions (fonctionne aussi avec les applications).
 
-\begin{lstlisting}[language=js]
+Pour relier les deux parties de notre plug-in nous utilisons une des fonctionnalités offertes par l'API de Google Chrome. Cette fonctionnalité, appelée Messaging, permet qui permet la communication inter-extensions (et également avec les applications dans notre cas).
+
+Pour établir cette connexion nous utilisons les id de l'application et de l'extension qui nous permettent, comme elles sont toutes deux reliées à chrome, une communication facilitée. On établit ensuite une connexion qui permet d'envoyer des messages et d'attendre des réponses. Sur le code suivant on montre un example simplifié de communication entre deux applications via l'API Messaging.
+
+\begin{lstlisting}[language=JavaScript]
 // App 1
 var app2id = "abcdefghijklmnoabcdefhijklmnoab2";
 chrome.runtime.onMessageExternal.addListener(
-  // This should fire even if the app is not running, as long as it is
-  //   included in the event page (background script)
   function(request, sender, sendResponse) {
     if(sender.id == app2id && request.data) {
-      // Use data passed
+      // Data sent
       // Pass an answer with sendResponse() if needed
     }
   }
@@ -777,23 +992,64 @@ var app1id = "abcdefghijklmnoabcdefhijklmnoab1";
 chrome.runtime.sendMessage(app1id, {data: /* some data */},
   function(response) {
     if(response) {
-      // Installed and responded
+      // Connexion established
     } else {
-      // Could not connect; not installed
-      // Maybe inspect chrome.runtime.lastError
+      // Could not connect; or App 1 not installed
     }
   }
 );
 \end{lstlisting}
 
-
-
-En résumant on obtient donc l'architecture suivante pour le plug-in web : 
-
-INSERER ARCHITECTURE
 \subsection{Intégration au reste du projet}
+
+En résumant on obtient donc l'architecture suivante pour notre IHM (Fig.~\ref{fig:EXT}). 
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/extension.png} 
+        \caption{Architecture}
+        \label{fig:EXT}
+\end{figure}
+
+Nous avons une extensions chrome qui interagit avec le contenu des sites, c'est elle que l'utilisateur utilise pour se connecter à ses sites via Face Key. Cette extension communique avec une application Chrome via Messaging. Cette Application Chrome est le relai via le client C qui est relié au reste de l'architecture de Face Key. Cette connexion est établie en udp.
+
 \subsection{Conclusion}
 
+Nous avons donc choisi un plug-in pour IHM nous nous devons de valider si il correspond bien aux attendus de l'IHM de Face Key et comment nous pourrions l'améliorer. 
+
+\subsubsection{Validation}
+
+Notre plug-in répond aux  attendus de l'IHM de Face Key.
+
+\begin{itemize}
+	\item Accessibilité au plus grand public : 
+En effet le plug-in étant développe sur chrome il couvre plus de la moitié des navigateurs web.
+	\item Facilité d'utilisation : 
+L'extension chrome est simple, il suffit de cliquer sur une icône en haut de son navigateur puis sur un bouton connect pour lancer l'authentification.
+	\item Se connecter à Face Key (via la reconnaissance faciale) : 
+Le plug-in permet bien, via le client C et l'application, une authentification via le système Face Key
+	\item Se connecter à un site via Face Key :
+Le plug-in permet bien, via le client C et l'extension, une authentification à un site via le système Face Key
+	\item Ajouter un compte à Face Key :
+Le plug-in permet bien, via le client C et l'application, un ajout de compte au système Face Key
+\end{itemize}
+
+Le plug-in répond donc au cahier des charges de notre projet.
+
+\subsubsection{Perspectives}
+
+Bien qu'il réponde aux attendus, notre plug-in peut être amélioré. Un des pivots majeurs d'amélioration serait l'administration de son compte Face Key. 
+
+Un autre point d'amélioration majeur est celui de la suppression du client C. Chrome permet d'établir des connexions TCP et UDP pour ses applications. A moyen terme, une amélioration possible du projet serait donc que le client soit intégralement intégré au plug-in. On obtiendrait l'architecture suivante (Fig.~\ref{fig:newarc}). 
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/newarchi.png} 
+        \caption{Architecture}
+        \label{fig:newarc}
+\end{figure}
+
+Une dernière piste d'amélioration serait d'intégrer la prise d'image directement depuis le plug-in. Ce qui nous permettrait d'adopter une UI plus moderne et plus proche des standards du marché.
 
 \section{Reconnaissance Faciale}
 
