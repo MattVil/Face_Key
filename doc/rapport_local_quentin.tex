@@ -9,7 +9,9 @@
 \usepackage{ifpdf}
 \usepackage{cite}
 \usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
 \usepackage{epsfig}
+\usepackage{multirow}
 
 \graphicspath{{./data/}}
 
@@ -23,6 +25,7 @@
 
 \usepackage{listings}
 \usepackage{color}
+\usepackage{array}
 
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -62,6 +65,161 @@ mail@etu.u-cergy.fr}}
 \begin{abstract}
 \boldmath abstract of the project
 \end{abstract}
+
+\section{Réseau}
+\subsection{Spécification}
+Pour le projet Face Key nous avons besoin de developper un serveur qui communique avec un client. Le serveur aura pour mission d'authentifier l'utilisateur et de fournir au client les données dont il a besoin au bon fonctionnement du logiciel, dans la limite de ce qui est accessible à l'utilisateur (un utilisateur ne peut avoir accès qu'à ses données). C'est le serveur qui assurera le lien avec la Base de données.
+
+Le serveur devra:
+\begin{itemize}
+\item Authentifier l'utilisateur
+\item Creer un compte
+\item Fournir la combinaison Identifiant/Mot de passe pour un site donnée à l'utilisateur
+\item Recevoir les photos de l'utilisateur pour mise a jour du réseau de neurone
+\item Envoyer les poids du réseau de neurones à l'utilisateur
+\end{itemize}
+
+\subsection{Fonctionnement global}
+Pour réaliser le Client/Server, nous avons choisi d'utilisé le protocole TCP, qui nous permet de nous assurer que chaque message à bien été transmis à l'utilisateur, et ne pouvant pas être utilisé en diffusion. Le serveur est également multi-client: un processus est créé, à partir du processus père, à chaque connexion au serveur.
+Voici le fonctionnement globale du Client/Serveur de Face Key:
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/da_rel.png}
+		\caption{Fonctionnement globale de Face Key}
+	\label{fig:da_rel}
+\end{figure}
+
+\subsection{Les requêtes}
+Une requête est constitué de 2 parties:
+\begin{itemize}
+\item  Le code de la requête (voir tableau ci-dessous)
+\item Les informations
+\end{itemize}
+Dans la requête, les informations sont séparées du code de la requête par un ";". Ainsi la requête est composé de la manière suivante:
+\begin{tabular}{|c|c|}
+\hline
+CODE & INFORMATIONS \\
+\hline
+\end{tabular}
+Les informations sont quant à elles séparé par une virgule, nous avons donc par exemple:
+\begin{tabular}{|c|c|}
+\hline
+100 & toto,facebook.com \\
+\hline
+\end{tabular}
+Cela donne en pratique "100;toto,facebook.com".
+\newline
+\newline
+\textbf{Liste des codes}:
+\newline
+
+\begin{tabular}{|p{4.5cm}|p{0.5cm}|p{12.5cm}|}
+\hline
+
+\multirow{3}*{Code Diagramme (000-099)} & 000 & OK \\
+\cline{2-3}
+& 001 & Code pour démarrer le diagramme de connexion à un site web \\
+\cline{2-3}
+& 002 & Code pour démarrer le diagramme de création d'un compte \\
+\cline{2-3}
+& 003 & Code pour démarrer le diagramme de mise a jour du réseau de neurones \\
+
+\hline
+
+\multirow{6}*{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site à  l'instant t \\
+\cline{2-3}
+& 101 &  Demande le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
+\cline{2-3}
+& 102 & Envoie d'une photo de l'utilisateur ainsi que ses coordonnées GPS \\
+\cline{2-3}
+& 103 & Envoie de l'identifiant et du mot de passe Face Key pour authentification \\
+\cline{2-3}
+& 110 & Envoie de l'email et du pseudo pour création du compte Face Key \\
+\cline{2-3}
+& 111 &  Envoie du mot de passe pour création du compte Face Key \\
+\cline{2-3}
+& 112 & Envoie des informations de l'utilisateur pour création du compte Face Key (Genre, Nom, Prénom et Langue) \\
+\cline{2-3}
+& 113 & Signal le serveur de l'envoie d'une photo \\
+\cline{2-3}
+& 114 & Signal le serveur de l'envoie de la dernière photo \\
+\cline{2-3}
+& 136 & Demande l'envoie du fichier des poids du réseau de neurones aux serveur \\
+
+\hline
+
+\multirow{1}*{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site à  l'instant t \\
+\cline{2-3}
+& 201 & Envoie le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
+
+\hline
+
+\multirow{2}*{Erreurs côté serveur (400-499)} & 400 & Requête inconnue \\
+\cline{2-3}
+& 401 & Il manque des informations dans la requête reçu \\
+\cline{2-3}
+& 402 & Utilisateur introuvable lors de la phase d'authentification: Mauvais Identifiants \\
+\cline{2-3}
+& 403 & Utilisateur introuvable lors de la phase d'authentification: Mauvais mot de passe \\
+\cline{2-3}
+& 405 & Timeout Reached: l'utilisateur (ou le serveur) a mis trop de temps à répondre \\
+\cline{2-3}
+& 406 & La requête reçu n'est pas pris en charge à ce point de l'application \\
+\cline{2-3}
+& 407 & Aucun compte n'a été trouvé sur le domaine envoyé par l'utilisateur \\
+\cline{2-3}
+& 408 & Le compte demandé pour le domaine n'est pas dans la liste des compte accessible par l'utilisateur \\
+\cline{2-3}
+& 409 & Création du compte: l'email est déjà utilisé \\
+\cline{2-3}
+& 410 & Création du compte: le pseudo est déjà utilisé \\
+
+\hline
+\end{tabular}
+
+\subsection{Diagrammes applicatifs}
+Dans cette partie nous allons présenter les différents diagrammes applicatifs du Client/Server de Face Key.
+
+
+\subsubsection{Création d'un compte}
+\textit{Pour démarrer ce diagramme il faut préalablement envoyer au serveur le code diagramme correspondant (code 002 pour la création de compte).}
+\newline
+Ici les photo et les poids du réseau de neurone sont envoyer sous forme de fichier. Les fichiers sont ouvert par les deux programmes (client et serveur) et envoyer (et reçu) octet par octet sans code en entête. Le transfère d'un fichier est donc décomposé en plusieurs parties: tout d'abord les deux premiers message envoie le nom du fichier ainsi que le nombre d'octet qui va être envoyé (la taille du fichier), ensuite les octet sont envoyés un par un. Le receveur compte le nombre d'octet reçu et s'arrête une fois que l'intégralité des octet ont bien été reçu.
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/da_crea.png}
+		\caption{Création d'un compte}
+	\label{fig:da_rel}
+\end{figure}
+
+\subsubsection{Phase d'authentification}
+Ici, le client envoie son identifiant et mot de passe Face Key, le serveur lui répondra par un code "OK" si la combinaison est correct, ou par une erreur spécifiant quel partie de la combinaison est erroné. 
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/da_conn.png}
+		\caption{Authentification au compte Face Key}
+	\label{fig:da_conn}
+\end{figure}
+
+\subsubsection{Connexion à un site}
+\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 001 pour la connexion à un site) au serveur \textbf{et} effectué une phase d'authentification (code 103).}
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.8\textwidth]{img/da_connsite.png}
+		\caption{Connexion à un site web}
+	\label{fig:da_connsite}
+\end{figure}
+
+\subsubsection{Mise à jour des poids du réseau de neurones}
+\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 003) au serveur \textbf{et} effectué une phase d'authentification (code 103).}
+\newline
+Tout comme dans le diagramme de création d'un compte, les poids du réseau de neurones sont envoyés de la même manière: sous forme de fichier avec une transmission octet par octet.
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.6\textwidth]{img/da_neuron.png}
+		\caption{Mise à jour des poids du réseau de neurones}
+	\label{fig:da_neuron}
+\end{figure}
 
 \section{Sécurité}
 \subsection{Introduction au problème}
@@ -108,6 +266,9 @@ Pour le cryptage et le décryptage, les fonctions de OpenSSL sont utilisées après
 \newline{}
 \paragraph{État de l'implémentation}
 Le système n'est que partiellement implémenté, en effet, malgré le bon fonctionnement de chacune des briques indépendamment des autres, nous pouvons observer un nombre non négligeable de raté lorsque nous essayons d'utiliser l'ensemble dans le contexte Client/Serveur. En effet, la transmission du message crypté ne se fait pas correctement (contrairement aux messages non crypté), il apparait effectivement que la somme de vérification du message crypté de l'une des partie, n'est pas la même que la somme de vérification du même message mais de l'autre côté. Nous pouvons en déduire que le message s'est mal transmis, cependant nous n'avons pas encore trouvé la raison de ce phénomène.
+
+\subsection{Fonction de Hachage}
+
 
 \bibliographystyle{IEEEtran}
 
