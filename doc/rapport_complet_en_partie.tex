@@ -1526,7 +1526,7 @@ Avec 67,1\% de reconnaissance nous sommes encore loin des 99\% de FaceNet, nous 
 Le problème avec le perceptron multicouches est qu'il est long à entrainer quand on augmente son nombre de neurones car tous les neurones des couches successives sont connectés entre eux. Il y a aussi une perte d'informations lorsque l'on aplatit notre image en un vecteur car la continuité qu'il y a entre les différentes lignes d'une image n'est pas prise en compte.
 C'est ce qu'apporte l'arrivée des réseaux de neurones convolutif (CNN, Y.Lecun 1998) et le développement du deeplearning. Le principe des CNN est d'ajouter des couches dites de convolutions avant un perceptron multicouches.
 
-Le principe de la convolution est d'utiliser des noyaux, initialisés aléatoirement puis appris, que l'on va convoluer sur l'image d'entrée pour obtenir des filtres. Dans un filtre obtenu, chaque valeur sera le taux de correspondance entre le noyau et la partie de l'image centré en ce point.
+Le principe de la convolution est d'utiliser des noyaux que l'on va convoluer sur l'image d'entrée pour obtenir des filtres. Dans un filtre obtenu, chaque valeur sera le taux de correspondance entre le noyau et la partie de l'image centré en ce point.
 
 
 \begin{figure}[H]
