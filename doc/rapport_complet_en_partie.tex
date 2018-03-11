@@ -117,24 +117,23 @@ Université de Cergy-Pontoise}}
 \label{sec:introduction}
 \subsection{Situation initiale}
 \subsubsection{Problème des mots de passe}
-De nos jours on observe une augmentation du nombre de sites qui nécessite la création d'un compte : réseaux sociaux, diffèrent compte mail, opérateur téléphonique, journaux en ligne ... Il devient difficile d'avoir un mot de passe différent par site, qu'il soit assez complexe pour être sécurisé et qu'on n'ait pas besoin de la noter quelque part. La plupart des utilisateurs utilisent donc un seul mot de passe, souvent très simple, en dépit des problèmes de sécurité que cela pose. Leurs comptes et les informations qu'ils contiennent deviennent donc facilement hackable et comme les comptes sont souvent liés, on risque un hacking en chaine de beaucoup de ses comptes.
-Une solution développée pour pallier ce problème est celle du gestionnaire de mot de passe (GMDP). Le principe est simple : l'utilisateur n'a qu'un seul mot de passe maître (plus élaboré) à connaitre et c'est le GMDP qui s'occupe des combinaisons identifiant/mot de passe sécurisé pour chaque site. L'un des problèmes de cette solution est qu'il faut toujours retenir un mot de passe maître élaboré pour déverrouiller le GMDP ; ce déverrouillage pouvant prendre plus de temps. Avec cette méthode il peut aussi être fastidieux, contre intuitif et peu sécurisé de partager l'accès à un compte (partager son compteur d'opérateur téléphonique avec son conjoint par exemple).
+De nos jours on observe une augmentation du nombre de sites qui nécessite la création d'un compte : réseaux sociaux, différents comptes mail, opérateur téléphonique, journaux en ligne ... Il devient difficile d'avoir un mot de passe différent pour chaque site, qu'il soit assez complexe pour être sécurisé et qu'on n'ait pas besoin de le noter quelque part. La plupart des utilisateurs utilisent donc un seul mot de passe, souvent très simple, en dépit des problèmes de sécurité que cela pose. Leurs comptes et les informations qu'ils contiennent deviennent donc facilement hackable et comme les comptes sont souvent liés, on risque un hacking en chaine de beaucoup de ses comptes.
+Une solution développée pour pallier ce problème est celle du gestionnaire de mot de passe (GMDP). Le principe est simple : l'utilisateur n'a qu'un seul mot de passe maître (plus élaboré) à connaitre et c'est le GMDP qui s'occupe des combinaisons identifiant/mot de passe sécurisées pour chaque site. L'un des problèmes de cette solution est qu'il faut toujours retenir un mot de passe maître élaboré pour déverrouiller le GMDP ; ce déverrouillage pouvant prendre plus de temps. Avec cette méthode il peut aussi être fastidieux, contre intuitif et peu sécurisé de partager l'accès à un compte (partager son compte d'opérateur téléphonique avec son conjoint par exemple).
 \subsubsection{Maturation de la technologie}
-Avec l'émergence du deeplearning et d'autres technique de traitement d'image et de machine learning, les techniques de reconnaissance faciale deviennent de plus en plus performante. Certain algorithme arrive même à battre l'humain dans certaines conditions (Chaochao Lu et Xiaou Tang 2014). De plus beaucoup de grands acteurs économiques s'attaquent au problème, obtiennent d'excellents résultats et en sortent des applications, par exemple Facebook avec deepFace en 2014, Microsoft avec Hello en 2015 et enfin très récemment Apple avec FaceID (en 2017).
-Il a également été prouvé que la reconnaissance faciale pouvait être plus difficilement hackable que des mots de passe de par la complexité et l'unicité du visage humain.
+Avec l'émergence du deeplearning et d'autres techniques de traitement d'image et du machine learning, les techniques de reconnaissance faciale deviennent de plus en plus performantes. Certain algorithme arrive même à battre l'humain dans certaines conditions (Chaochao Lu et Xiaou Tang 2014). De plus beaucoup de grands acteurs économiques s'attaquent au problème, obtiennent d'excellents résultats et en sortent des applications, par exemple Facebook avec deepFace en 2014, Microsoft avec Hello en 2015 et enfin très récemment Apple avec FaceID (en 2017).
+Il à également été prouvé que la reconnaissance faciale pouvait être plus difficilement hackable que des mots de passe de par la complexité et l'unicité du visage humain.
 \subsection{Notre solution : Face Key}
 \subsubsection{Présentation}
-Notre idée est de combiner les technologies émergentes avec un gestionnaire de mot de passe traditionnel afin de supprimer le mot de passe maître afin de rendre instantanée et sécurisée la connexion à nos sites préférés.
+Notre idée est de combiner les technologies émergentes avec un gestionnaire de mot de passe traditionnel afin de supprimer le mot de passe maître et de rendre instantanée et sécurisée la connexion à nos sites préférés.
 \subsubsection{Fonctionnement}
-Notre application se présentera sous forme d'un plug-in web, il suffira de se présenter sur la page du site où l'on veut se connecter et cliquer sur le plug-in en haut à droite du navigateur. L'application va alors prendre une photo avec la webcam du l'ordinateur, l'envoyer sur l'application Face Key qui tourne sur l'ordinateur de l'utilisateur ; un algorithme va trouver le visage présent d'en l'image et l'identifier. Si il s'agit bien du visage de l'utilisateur une requête sera faite aux bases de données des serveurs Face Key afin d'obtenir les identifiants pour la page visitée. La page s'actualise avec les identifiants du compte et d'un coup d'½il vous êtes connecté.
+Notre application se présentera sous forme d'un plug-in web, il suffira de se présenter sur la page du site où l'on veut se connecter et cliquer sur le plug-in en haut à droite du navigateur. L'application web va alors demander au programme faceKey qui tourne sur la machine de l'utilisateur de prendre une photo  ; un algorithme va trouver le visage présent d'en l'image et l'identifier. Si il s'agit bien du visage de l'utilisateur une requête sera faite aux bases de données des serveurs Face Key afin d'obtenir les identifiants pour la page visitée. La page s'actualise avec les identifiants du compte et d'un coup d'oeil vous êtes connecté.
 Nous proposons également un système de partage de compte. L'utilisateur peut choisir de partager certains de ses comptes avec d'autres utilisateurs Face Key. Il choisira alors quel personne est autorisé à utiliser quel compte et de la même manière l'autre utilisateur pourra accéder uniquement avec son visage au compte du premier.
 \subsection{Organisation des différents projets}
 Le projet Face Key s'intègre dans le projet d'intégration et recoupe donc les projets de base de données, de réseau, de développement d'application mobile et potentiellement celle de système d'exploitation.
 \subsubsection{Base de données}
-Nous utiliserons une base de données pour stocker différentes informations et paramètres de nos utilisateurs. Par exemple les informations de connexion à la plateforme, les couples identifiant/password pour se connecter aux différents sites, différents paramètre de préférence de l'utilisateur, des données utilisateur collecter sur chaque site (heure moyenne de connexion, fréquence de connexion ...), des données sur l'utilisation de notre application(date de création, fréquence d'utilisation ...).
-Un des objectif est de rendre la base de données "anonyme", c'est-à-dire qu'on ne demande pas de nom, prénom à notre utilisateur, uniquement une adresse mail, afin que si quelqu'un à accès aux données que nous collectons il ne puisse pas remonter à l'identité de nos utilisateurs.
+Nous utiliserons une base de données pour stocker différentes informations et paramètres de nos utilisateurs. Par exemple les informations de connexion à la plateforme, les couples identifiant/password pour se connecter aux différents sites, différents paramètres de préférences de l'utilisateur, des données utilisateur collectées sur chaque site (heure moyenne de connexion, fréquence de connexion ...), des données sur l'utilisation de notre application(date de création, fréquence d'utilisation ...).
+Un des objectifs est de rendre la base de données "anonyme", c'est-à-dire qu'on ne demande pas de nom, prénom à nos utilisateurs, uniquement une adresse mail, afin que si quelqu'un à accès aux données que nous collectons il ne puisse pas remonter à l'identité de nos utilisateurs.
 Les images nécessaires pour l'apprentissage des visages ne seront pas stockées dans une base de données sql, après quelques recherche nous pensons que cet outil n'est pas adapté.
-Pour plus d'informations sur la partie base de données, consultez le schéma relationnel ci joint.
 \subsubsection{Réseau}
 La partie réseau de l'application est décomposée en 3 parties :
 \begin{itemize}	
@@ -143,30 +142,31 @@ La partie réseau de l'application est décomposée en 3 parties :
 	\item Un Serveur Distant relié à une Base de Donnée
 \end{itemize}
 Le Plugin Web communiquera avec le serveur local et lui transmettra toutes les entrées de l'utilisateur. Le client local lui s'occupera de traiter toutes les demandes de l'utilisateur en effectuant les taches nécessaires quant à la résolution du problème donné par l'utilisateur. Le client local communiquera avec le serveur distant (lui-même relié à une base de données) pour obtenir les données nécessaires à la résolution du problème.
-La connexion entre le client et le serveur sera assuré par le protocole TCP permettant un transport des informations fiable et en mode connecté.
+La connexion entre le client et le serveur sera assurée par le protocole TCP permettant un transport des informations fiable et en mode connecté.
 Les informations transitant sur le réseau seront de plusieurs natures : Images, textes, fichiers, etc ...
 \subsubsection{Développement d'application mobile}
-L'application Face Key est une application qui sera utilise à la production du projet. Elle servira en effet à collecter les données pour l'apprentissage de nos modèles en recueillant des photos d'utilisateurs.
+L'application Face Key est une application qui sera utile à la production du projet. Elle servira en effet à collecter les données pour l'apprentissage de nos modèles de reconnaissance faciale en recueillant des photos d'utilisateurs.
 \subsubsection{Système d'exploitation}
-A DEFININIR
+Nous n'avons pas encore défini exactement comment se fera l'intégration du projet de système d'exploitation dans Face Key.
 \subsubsection{Projet de synthèse}
-Pour la partie projet de synthèse, nous apportons chacun un plus au projet en y incorporant des domaines qui nous ont intéressés cette année :
+Pour la partie projet de synthèse, nous faisons le choix de ne pas juste apporter une interface au résultat des projets de réseau et BDD mais nous apportons allons chacun incorporer des domaines qui nous intéresse :
 \begin{itemize}
 	\item Louis L'Haridon : plug-in web/interface utilisateur
-	\item Quentin Gerard : cryptographie/sécurité réseau
+	\item Quentin Gerard : sécurité réseau/cryptographie
 	\item Matthieu Vilain : machine learning/reconnaissance faciale
 \end{itemize}
+Ce choix est une prise de risque car il apporte une plus grosse charge de travail et nous force à apprendre par nous même des sujets que nous n'avons pas forcement vu en cours. Mais nous trouvons ça plus enrichissant et nous voulons en découvrir d'avantage dans des sujets qui nous intéressent pour notre avenir. 
 \subsection{Nos ambitions, nos limites}
 Tout ce qui a été présenté précédemment est la vision idéale du projet. Dans un premier temps nous nous concentrerons sur le gestionnaire de mot de passe avec reconnaissance faciale sans implémenter le partage de compte mais en concevant l'architecture du logiciel pour que le partage soit possible.
-En revanche si nous arrivons à tout finir en temps et en heure, nous nous laissons libre d'ajouter des fonctionnalités comme analyse de l'émotion de l'utilisateur lorsqu'il déverrouille l'application ou autre.
-L'idéal initial était de pousser le projet à fond en développent un protocole d'installation, une documentation détaillé etc... afin de proposer le logiciel final en open source. Cet objectif ne pourra pas être réalisé au court du projet de L3 par manque de temps.
+En revanche si nous arrivons à tout finir en temps et en heure, nous nous laissons libre d'ajouter des fonctionnalités comme analyse de l'émotion de l'utilisateur lorsqu'il déverrouille l'application, l'ajout des statistiques ou autre.
+L'idée initial était de pousser le projet à fond en développent un protocole d'installation, une documentation détaillé etc... afin de proposer le logiciel final en open source. Cet objectif ne pourra pas être réalisé au court du projet de L3 par manque de temps mais nous espérons pouvoir continuer à travailler dessus par la suite.
 
 \newpage
 \section{Gestion de projet}
 \subsection{Répartition des tâches}
 
-Ce projet entre dans le cadre du projet de synthèse de Licence 3, il englobe donc les matières de base de données, réseau, système d'exploitation et de développement Android. 
-Nous avons décidé de travailler en commun sur la partie impliquent un cours que nous avons eu cette années. Nous avons donc tous travaillé sur la partie  réseau, base de données et sur l'application Android. Nous n'avons pas avancé dans notre projet de système d'exploitation, nous n'en parlerons donc pas dans ce rapport.
+Comme dit plus haut, le projet entre dans le cadre du projet de synthèse de Licence 3, il englobe donc les matières de base de données, réseau, système d'exploitation et de développement Android. 
+Nous avons décidé de travailler en commun sur les parties impliquent un cours que nous avons eu cette années. Nous avons donc tous travaillé sur la partie  réseau, base de données et sur l'application Android. Nous n'avons pas avancé dans notre projet de système d'exploitation, nous n'en parlerons donc pas dans ce rapport.
 
 Pour profiter un maximum de ce projet de fin de licence qui nous offre la possibilité de développer un logiciel complet, nous avons décidé de chacun développer une partie qui nous intéresse et dans lequel nous voudrions apprendre et prendre de l'expérience. Ainsi, en plus des parties reliées à un cours, nous avons :
 
@@ -176,9 +176,9 @@ Pour profiter un maximum de ce projet de fin de licence qui nous offre la possib
 	\item Une partie Sécurité/cryptographie qui sera faite par Quentin
 \end{itemize}
 
-Cela nous permet d'ajouter à notre projet des domaines que nous n'avons pour l'instant pas vu en cours mais qui nous passionne.
+Cela nous permet d'ajouter à notre projet des domaines que nous n'avons pour l'instant pas vu en cours mais qui nous passionnent.
 
-Le but est de laisser le plus de liberté possible à chacun dans sa partie, qu'il puisse expérimenter et tourner son problème de la manière qu'il veut. La seule contrainte étant que le travail reste puisse être intégrée dans un gestionnaire de mot de passe.
+Le but est de laisser le plus de liberté possible à chacun dans sa partie, qu'il puisse expérimenter et tourner son problème de la manière qu'il veut. La seule contrainte étant que le travail puisse être intégrée dans un gestionnaire de mot de passe de quelconque façon.
 
 \subsection{Les deadlines}
 
@@ -204,7 +204,7 @@ Pour l'organisation nous avons fait des réunions de travail régulières pour mett
         \label{fig:ms0}
 \end{figure}
 
-Pour le code, nous nous sommes synchronisé sur GIT.
+Pour le code, nous nous sommes synchronisé sur GIT, et l'avancement du travail sur Trello.
 
 \newpage
 \section{Base de Données}
@@ -1524,9 +1524,9 @@ Avec 67,1\% de reconnaissance nous sommes encore loin des 99\% de FaceNet, nous 
 \paragraph{Théorie}
 
 Le problème avec le perceptron multicouches est qu'il est long à entrainer quand on augmente son nombre de neurones car tous les neurones des couches successives sont connectés entre eux. Il y a aussi une perte d'informations lorsque l'on aplatit notre image en un vecteur car la continuité qu'il y a entre les différentes lignes d'une image n'est pas prise en compte.
-C'est ce qu'apporte l'arriveé des réseaux de neurones convolutif (CNN, Y.Lecun 1998) et le développement du deeplearning. Le principe des CNN est d'ajouter des couches dites de convolutions avant un perceptron multicouches.
+C'est ce qu'apporte l'arrivée des réseaux de neurones convolutif (CNN, Y.Lecun 1998) et le développement du deeplearning. Le principe des CNN est d'ajouter des couches dites de convolutions avant un perceptron multicouches.
 
-Le principe de la convolution est d'utiliser des noyaux, initialisé aléatoirement puis appris, que l'on la convoluer sur l'image d'entrée pour obtenir des filtres. Dans un filtre obtenu, chaque valeur sera le taux de correspondance entre le noyau et la partie de l'image centré en ce point.
+Le principe de la convolution est d'utiliser des noyaux, initialisés aléatoirement puis appris, que l'on va convoluer sur l'image d'entrée pour obtenir des filtres. Dans un filtre obtenu, chaque valeur sera le taux de correspondance entre le noyau et la partie de l'image centré en ce point.
 
 
 \begin{figure}[H]
@@ -1552,11 +1552,11 @@ Le principe de la convolution est d'utiliser des noyaux, initialisé aléatoiremen
 On peut utiliser plusieurs paramètres pour customiser l'opération de convolution :
 
 \begin{itemize}
-	\item Le padding : Si l'on effectue une convolution simple sur l'image (avec un ?same padding') on aura une réduction de dimension des filtres obtenu par rapport à l'image d'entrée. On peut donc entouré notre image d'entré de 0 pour obtenir la même dimension en sortie (?zero padding', utilisé dans l'exemple ci-dessus)
-	\item Le stride : Le décalage en pixel du noyau lorsqu'on le ?glisse' pendant l'opération de convolution. Le stride à un impact sur la taille des filtres de sortie.
+	\item Le padding : Si l'on effectue une convolution simple sur l'image (avec un 'same padding') on aura une réduction de dimension des filtres obtenu par rapport à l'image d'entrée. On peut donc entourer notre image d'entrée de 0 pour obtenir la même dimension en sortie ('zero padding', utilisé dans l'exemple ci-dessus)
+	\item Le stride : Le décalage en pixel du noyau lorsqu'on le 'glisse' pendant l'opération de convolution. Le stride a un impact sur la taille des filtres de sortie.
 \end{itemize}
 
-On peut par la suite enchainer les couches de convolution en utilisant les filtres comme image d'entrée pour la couche suivante. Les couches de convolution vont permettre de décrire l'image en différents pattern. On va donc avoir des filtres qui permettront de décrire de plus en plus précisément notre image originale. 
+On peut par la suite enchainer les couches de convolution en utilisant les filtres comme image d'entrée pour la couche suivante. Les couches de convolution vont permettre de décrire l'image en différents pattern. On va donc avoir des filtres qui permettent de décrire de plus en plus précisément notre image originale. 
 
 Une autre opération que l'on introduit avec le CNN est le pooling, en particulier le max polling. C'est une couche qui va permettre de réduire la dimension de nos filtres en gardant l'information importante. On prend un noyau d'une certaine taille, en fonction de la façon dont on veut diminuer la dimension, et on ne garde que la valeur maximale de l'image dans le noyau.
 
@@ -1573,9 +1573,9 @@ Une autre opération que l'on introduit avec le CNN est le pooling, en particulie
   \end{minipage}
 \end{figure}
 
-On peut de la même manière joué sur le stride du pooling.
+On peut de la même manière jouer sur le stride du pooling.
 
-Enfin on change notre fonction d'activation sigmoïde par une fonction ReLU (Rectify Linear Unit) car la fonction sigmoïde à pour désavantage d'être ?aspirante' à ses extrémité.
+Enfin on change notre fonction d'activation sigmoïde par une fonction ReLU (Rectify Linear Unit) car la fonction sigmoïde à pour désavantage d'être 'aspirante' à ses extrémités.
 
 \begin{figure}[H]
     \centering
@@ -1603,11 +1603,11 @@ Pour l'apprentissage on utilise le même principe de minimisation par descente du
 
 \paragraph{Implémentation}
 
-Cette fois ci nous n'avons pas implémenté ce modèle from scratch mais nous avons utilisé la librarie Keras qui tourne avec Tensorflow pour un entrainement rapide sur carte graphique.
+Cette fois ci nous n'avons pas implémenté ce modèle from scratch mais nous avons utilisé la libraire Keras qui tourne avec Tensorflow pour un entrainement rapide sur carte graphique.
 
-Nous voulions initialement implémenter les mêmes architectures que DeepFace et FaceNet mais au moment de la création de la base de données nous avons sauvegarder les images en 100x100 alors que Deepface utilise des images de 152x152 et FaceNet.
+Nous voulions initialement implémenter les mêmes architectures que DeepFace et FaceNet mais au moment de la création de la base de données nous avons sauvegarder les images en 100x100 alors que Deepface utilise des images de 152x152 et FaceNet 220x220.
 
-Nous avons donc décidé de designer notre propre architecture. Nous décidons également de rester sur des images en noir et blanc, en pensant que l'humain ne nécessite pas la couleur pour identifier des gens sur une photo et nous voulions que notre réseau ?se focalise ? sur les formes des visages. Nous sommes conscients que c'est un partie-prit osé de par la quantité d'informations que l'on retire. Les résultats présenté si dessous sont donc réalisé sur des images noir et blanc, de nouveaux résultats seront peut être présenté en couleur pour la présentation.
+Nous avons donc décidé de concevoir notre propre architecture. Nous décidons également de rester sur des images en noir et blanc, en pensant que l'humain ne nécessite pas la couleur pour identifier des gens sur une photo. Nous voulions que notre réseau 'se focalise' sur les formes des visages. Nous sommes conscients que c'est un partie-prit osé de par la quantité d'informations que l'on retire. Les résultats des expériences présentées si dessous sont donc réalisées sur des images noir et blanc, de nouveaux résultats seront peut être présentés en couleur pour la présentation.
 
 Architecture choisie :
 
@@ -1650,18 +1650,19 @@ Architecture choisie :
 	\label{Table:CTEW}
 \end{table}
 
-Avec le modèle décrit ci-dessus on obtient 97,1\% de reconnaissance sur notre base de données. Avec ce niveau de reconnaissance on se rapproche des résultats de DeepFace et FaceNet, ce qui est logique comme on utilise le même type de réseau qu'eux.
+\paragraph{Résultats}
+Avec le modèle décrit ci-dessus on obtient 97,1\% de reconnaissance sur notre base de données. Avec ce niveau de reconnaissance on se rapproche des résultats de DeepFace(97,3\%) et FaceNet(99,6\%), ce qui est logique car on utilise le même type de réseau qu'eux.
 
 On peut observer l'évolution du loss (erreur que fait le réseau) et de l'accuracy (taux de réussite) sur la base de training et de validation pendant l'apprentissage.
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}[b]{0.5\textwidth}
+  \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{img/ms15.png}
     \caption{Évolution de l'accuracy pendant l'entrainement}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.5\textwidth}
+  \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{img/ms16.png}
     \caption{Évolution du loss pendant l'entrainement}
   \end{minipage}
@@ -1678,7 +1679,7 @@ On peut également afficher la matrice de confusion entre les classes :
         \label{fig:ms17}
 \end{figure}
 
-On remarque qu'il y à très peu de confusion entre les classes. De plus certaines confusion sont explicable, par exemple il y a eu 255+12=267 erreur entre la classe c et la classe k :
+On remarque qu'il y à très peu de confusion entre les classes. De plus certaines confusion sont explicable, par exemple il y a eu 155+12=167 erreur entre la classe c et la classe k :
 
 \begin{figure}[H]
   \centering
@@ -1693,7 +1694,7 @@ On remarque qu'il y à très peu de confusion entre les classes. De plus certaines
   \end{minipage}
 \end{figure}
 
-Les deux individus ont une forme de visage assez ronde, des yeux qui se ressemblent, des cheveux longs ? Les erreurs commise entre ces deux classes sont donc compréhensible (ce nombre d'erreur reste très faible par rapport au nombre d'images total)
+Les deux individus ont une forme de visage assez ronde, des yeux qui se ressemblent, des cheveux longs ... Les erreurs commise entre ces deux classes sont donc compréhensible (ce nombre d'erreur reste très faible par rapport au nombre d'images total, <1%)
 
 On remarque que l'on obtient de meilleures performances sur la validation que sur le training ce qui s'explique par le fait que comme notre base est très, trop, beaucoup trop, redondante. Lors de la division en 3 sous bases, une grande partie, voir la totalité, de nos validation set et test set sont composés d'images du training set. Nous n'avons donc aucun moyen de prévenir l'overfitting de notre modèle.
 
@@ -1712,11 +1713,11 @@ Nous n'avons malheureusement pas pu faire de réels tests chiffrés pour l'utilisa
 
 \subsection{Conclusion : remarques, avancement et améliorations possibles}
 
-Nous remarquons que la plupart de nos problèmes viennent de la mal formation de la base de données. Nous avons passé beaucoup de temps pour la constitué mais il a sans doute manqué un temps de recherche sur comment bien constituer une base de données. 
+Nous remarquons que la plupart de nos problèmes viennent de la mal formation de la base de données. Nous avons passé beaucoup de temps pour la constituer mais nous avons sans doute manqué un temps de recherche sur comment bien constituer une base de données. 
 
-La finition de cette partie n'est pas parfaite, nous avons passé beaucoup de temps à nous documenter, constituer la base, choisir les modèle, prendre en mains les outils et implémenter tous les algorithmes (y compris ceux qui ne se voient pas sur la manipulation de données pour la construction de la base). Il ne nous restait donc plus beaucoup de temps pour faire le lien entre tout ce qui a était développé.
+La finition de cette partie n'est pas parfaite, nous avons passé beaucoup de temps à nous documenter sur les modèles, constituer la base, choisir les modèles, prendre en mains les outils et implémenter tous les algorithmes (y compris ceux qui ne se voient pas sur la manipulation de données pour la construction de la base). Il ne nous restait donc plus beaucoup de temps pour incorporer proprement la solution dans l'application et chiffrer nos résultats.
 
-Au niveau des améliorations possible nous pensons bien évidement à la refonte totale de la base de données (nombre, d'images, taille, augmentation différentes ?). Nous pensons également à la recherche d'un modèle réellement efficace, voir sir FaceNet marche aussi bien sur une base de données maison (99,63\% ont été obtenu sur la base de données Labeled Faces in the Wild LFW). Et enfin une nouvelle méthode de localisation des visages, implémentation de HOG pour test ou utiliser un réseau qui localise également le visage (Object detector, exemple réseau YOLO).
+Au niveau des améliorations possible nous pensons bien évidement à la refonte totale de la base de données (nombre d'images, taille, augmentation différentes). Nous pensons également à la recherche d'un modèle réellement efficace, voir si FaceNet marche aussi bien sur une base de données maison (99,63\% ont été obtenu sur la base de données Labeled Faces in the Wild LFW). Et enfin une nouvelle méthode de localisation des visages, implémentation de HOG pour tester ou utiliser un réseau qui localise également le visage (Object detector, exemple réseau YOLO). Il serait également intéressante d'analyser l'expression faciale de l'utilisateur.
 
 D'un point de vue pratique, mais qui soulève un problème théorique, comment allons-nous gérer l'ajout d'un nouvel utilisateur ? Il faut rajouter une classe de sortie mais doit-on ré entrainer le réseau avec uniquement les photos de l'utilisateur ? A priori ce poserais des problèmes de généralisation de cette classe, mais doit-on alors réapprendre toute la base ? Ce qui est difficile pour une application qui possède plusieurs milliers d'utilisateurs. Ce genre de problème est pour nous sans réponse pour le moment mais ils vaudraient la peine de se pencher dessus.
 
