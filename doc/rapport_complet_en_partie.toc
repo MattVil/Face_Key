@@ -89,7 +89,8 @@
 \contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}4}M\'ethode par r\'eseau de neurones convolutif}{41}
 \contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4a}Th\'eorie}{41}
 \contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4b}Impl\'ementation}{44}
-\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-E}}Conclusion : remarques, avancement et am\'eliorations possibles}{47}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4c}R\'esultats}{44}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-E}}Conclusion : remarques, avancement et am\'eliorations possibles}{46}
 \contentsline {section}{\numberline {VIII}Securit\'e}{48}
 \contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-A}}Introduction au probl\`eme}{48}
 \contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}}RSA}{48}
