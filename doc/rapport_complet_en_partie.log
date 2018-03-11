@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.5.20)  11 MAR 2018 01:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.5.20)  11 MAR 2018 01:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -904,7 +904,7 @@ File: img/app_chrome.png Graphic file (type png)
 
 <use img/app_chrome.png>
 Package pdftex.def Info: img/app_chrome.png used on input line 1026.
-(pdftex.def)             Requested size: 309.60315pt x 195.60023pt.
+(pdftex.def)             Requested size: 206.39685pt x 130.39276pt.
 
 <img/extension_fonctionnement.png, id=141, 408.52625pt x 399.4925pt>
 File: img/extension_fonctionnement.png Graphic file (type png)
@@ -955,75 +955,78 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: img/SHEMA_faciale.png Graphic file (type png)
 
 <use img/SHEMA_faciale.png>
-Package pdftex.def Info: img/SHEMA_faciale.png used on input line 1302.
+Package pdftex.def Info: img/SHEMA_faciale.png used on input line 1303.
 (pdftex.def)             Requested size: 412.80157pt x 197.53792pt.
  [34 <./img/brutus.png> <./img/SHEMA_faciale.png>]
 <img/mattlemoche.png, id=180, 286.671pt x 215.8464pt>
 File: img/mattlemoche.png Graphic file (type png)
 
 <use img/mattlemoche.png>
-Package pdftex.def Info: img/mattlemoche.png used on input line 1324.
+Package pdftex.def Info: img/mattlemoche.png used on input line 1325.
 (pdftex.def)             Requested size: 258.0pt x 194.26654pt.
- <img/ms1.png, id=181, 164.2938pt x 139.2402pt>
+
+Underfull \vbox (badness 2726) has occurred while \output is active []
+
+ [35 <./img/mattlemoche.png>] <img/ms1.png, id=185, 164.2938pt x 139.2402pt>
 File: img/ms1.png Graphic file (type png)
 
 <use img/ms1.png>
-Package pdftex.def Info: img/ms1.png used on input line 1336.
+Package pdftex.def Info: img/ms1.png used on input line 1337.
 (pdftex.def)             Requested size: 154.80157pt x 131.20448pt.
- <img/ms2.png, id=182, 279.444pt x 180.675pt>
+ <img/ms2.png, id=186, 279.444pt x 180.675pt>
 File: img/ms2.png Graphic file (type png)
 
 <use img/ms2.png>
-Package pdftex.def Info: img/ms2.png used on input line 1340.
+Package pdftex.def Info: img/ms2.png used on input line 1342.
 (pdftex.def)             Requested size: 206.39685pt x 133.44652pt.
- [35 <./img/mattlemoche.png>]
-<img/ms3.png, id=187, 494.84875pt x 279.0425pt>
+ <img/ms3.png, id=187, 494.84875pt x 279.0425pt>
 File: img/ms3.png Graphic file (type png)
- <use img/ms3.png>
-Package pdftex.def Info: img/ms3.png used on input line 1354.
-(pdftex.def)             Requested size: 412.80157pt x 232.77611pt.
- [36 <./img/ms1.png> <./img/ms2.png> <./img/ms3.png>]
-<img/ms4.png, id=194, 448.67625pt x 88.33pt>
-File: img/ms4.png Graphic file (type png)
- <use img/ms4.png>
-Package pdftex.def Info: img/ms4.png used on input line 1366.
-(pdftex.def)             Requested size: 412.80157pt x 81.26996pt.
- [37 <./img/ms4.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1396--1402
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1404--1405
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1406--1407
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1412--1414
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1415--1416
-
- []
-
-<img/ms5.png, id=200, 468.75125pt x 190.7125pt>
-File: img/ms5.png Graphic file (type png)
- <use img/ms5.png>
-Package pdftex.def Info: img/ms5.png used on input line 1423.
-(pdftex.def)             Requested size: 412.80157pt x 167.94681pt.
+<use img/ms3.png>
+Package pdftex.def Info: img/ms3.png used on input line 1357.
+(pdftex.def)             Requested size: 438.60315pt x 247.32515pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [38]
+ [36 <./img/ms1.png> <./img/ms2.png>] <img/ms4.png, id=193, 448.67625pt x 88.33
+pt>
+File: img/ms4.png Graphic file (type png)
+
+<use img/ms4.png>
+Package pdftex.def Info: img/ms4.png used on input line 1370.
+(pdftex.def)             Requested size: 412.80157pt x 81.26996pt.
+ [37 <./img/ms3.png> <./img/ms4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1401--1407
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1409--1410
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1411--1412
+
+ []
+
+[38]
+Underfull \hbox (badness 10000) in paragraph at lines 1417--1419
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1420--1421
+
+ []
+
+<img/ms5.png, id=205, 468.75125pt x 190.7125pt>
+File: img/ms5.png Graphic file (type png)
+ <use img/ms5.png>
+Package pdftex.def Info: img/ms5.png used on input line 1428.
+(pdftex.def)             Requested size: 412.80157pt x 167.94681pt.
 LaTeX Font Info:    Try loading font information for OT2+wncyr on input line 14
-29.
+35.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/cyrillic/ot2wncyr.fd
 File: ot2wncyr.fd 1999/12/17 v3.2a Computer Modern Cyrillic font definitions
@@ -1031,179 +1034,189 @@ File: ot2wncyr.fd 1999/12/17 v3.2a Computer Modern Cyrillic font definitions
 <img/ms6.png, id=206, 457.71pt x 53.9616pt>
 File: img/ms6.png Graphic file (type png)
  <use img/ms6.png>
-Package pdftex.def Info: img/ms6.png used on input line 1442.
+Package pdftex.def Info: img/ms6.png used on input line 1448.
 (pdftex.def)             Requested size: 516.0pt x 60.8359pt.
-
-<img/ms7.png, id=207, 469.755pt x 262.9825pt>
-File: img/ms7.png Graphic file (type png)
- <use img/ms7.png>
-Package pdftex.def Info: img/ms7.png used on input line 1456.
-(pdftex.def)             Requested size: 412.80157pt x 231.09625pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [39 <./img/ms5.png> <./img/ms6.png>] [40 <./img/ms7.png>]
+ [39 <./img/ms5.png>] <img/ms7.png, id=212, 469.755pt x 262.9825pt>
+File: img/ms7.png Graphic file (type png)
+ <use img/ms7.png>
+Package pdftex.def Info: img/ms7.png used on input line 1463.
+(pdftex.def)             Requested size: 412.80157pt x 231.09625pt.
+
+[40 <./img/ms6.png> <./img/ms7.png>]
 <img/ms8.png, id=219, 185.0112pt x 56.3706pt>
 File: img/ms8.png Graphic file (type png)
  <use img/ms8.png>
-Package pdftex.def Info: img/ms8.png used on input line 1526.
-(pdftex.def)             Requested size: 412.80157pt x 125.78241pt.
+Package pdftex.def Info: img/ms8.png used on input line 1534.
+(pdftex.def)             Requested size: 309.60315pt x 94.33723pt.
 
-<img/ms9.png, id=220, 375.3222pt x 172.9662pt>
+Underfull \vbox (badness 6284) has occurred while \output is active []
+
+ [41]
+<img/ms9.png, id=223, 375.3222pt x 172.9662pt>
 File: img/ms9.png Graphic file (type png)
  <use img/ms9.png>
-Package pdftex.def Info: img/ms9.png used on input line 1534.
-(pdftex.def)             Requested size: 309.60315pt x 142.68303pt.
+Package pdftex.def Info: img/ms9.png used on input line 1542.
+(pdftex.def)             Requested size: 361.19843pt x 166.46002pt.
 
-<img/ms10.png, id=221, 106.4778pt x 104.0688pt>
+<img/ms10.png, id=224, 106.4778pt x 104.0688pt>
 File: img/ms10.png Graphic file (type png)
  <use img/ms10.png>
-Package pdftex.def Info: img/ms10.png used on input line 1539.
-(pdftex.def)             Requested size: 154.80157pt x 151.31035pt.
+Package pdftex.def Info: img/ms10.png used on input line 1547.
+(pdftex.def)             Requested size: 103.19843pt x 100.86403pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [41 <./img/ms8.png>] <img/ms11.png, id=226, 397.485pt x 186.9384pt>
+<img/ms11.png, id=225, 397.485pt x 186.9384pt>
 File: img/ms11.png Graphic file (type png)
  <use img/ms11.png>
-Package pdftex.def Info: img/ms11.png used on input line 1558.
+Package pdftex.def Info: img/ms11.png used on input line 1566.
 (pdftex.def)             Requested size: 309.60315pt x 145.6117pt.
 
-<img/ms12.png, id=227, 101.6598pt x 100.6962pt>
+<img/ms12.png, id=226, 101.6598pt x 100.6962pt>
 File: img/ms12.png Graphic file (type png)
  <use img/ms12.png>
-Package pdftex.def Info: img/ms12.png used on input line 1563.
+Package pdftex.def Info: img/ms12.png used on input line 1571.
 (pdftex.def)             Requested size: 154.80157pt x 153.33789pt.
-
-<img/ms13.png, id=228, 694.595pt x 343.2825pt>
-File: img/ms13.png Graphic file (type png)
- <use img/ms13.png>
-Package pdftex.def Info: img/ms13.png used on input line 1574.
-(pdftex.def)             Requested size: 516.0pt x 255.02553pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [42 <./img/ms9.png> <./img/ms10.png> <./img/ms11.png> <./img/ms12.png>]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 1581
+ [42 <./img/ms8.png> <./img/ms9.png> <./img/ms10.png>]
+<img/ms13.png, id=233, 694.595pt x 343.2825pt>
+File: img/ms13.png Graphic file (type png)
+ <use img/ms13.png>
+Package pdftex.def Info: img/ms13.png used on input line 1582.
+(pdftex.def)             Requested size: 516.0pt x 255.02553pt.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 1590
 .
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/ae/omsaer.fd
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1581.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1590.
 
-
-<img/ms14.png, id=236, 453.3738pt x 195.6108pt>
+ [43 <./img/ms11.png> <./img/ms12.png> <./img/ms13.png>]
+<img/ms14.png, id=241, 453.3738pt x 195.6108pt>
 File: img/ms14.png Graphic file (type png)
  <use img/ms14.png>
-Package pdftex.def Info: img/ms14.png used on input line 1590.
+Package pdftex.def Info: img/ms14.png used on input line 1599.
 (pdftex.def)             Requested size: 412.80157pt x 178.11652pt.
- [43 <./img/ms13.png> <./img/ms14.png>] <img/ms15.png, id=243, 255.354pt x 182.
-1204pt>
+
+<img/ms15.png, id=242, 255.354pt x 182.1204pt>
 File: img/ms15.png Graphic file (type png)
+ <use img/ms15.png>
+Package pdftex.def Info: img/ms15.png used on input line 1660.
+(pdftex.def)             Requested size: 258.0pt x 184.01239pt.
 
-<use img/ms15.png>
-Package pdftex.def Info: img/ms15.png used on input line 1650.
-(pdftex.def)             Requested size: 206.39685pt x 147.20825pt.
- <img/ms16.png, id=244, 260.172pt x 185.493pt>
+<img/ms16.png, id=243, 260.172pt x 185.493pt>
 File: img/ms16.png Graphic file (type png)
+ <use img/ms16.png>
+Package pdftex.def Info: img/ms16.png used on input line 1665.
+(pdftex.def)             Requested size: 258.0pt x 183.9528pt.
 
-<use img/ms16.png>
-Package pdftex.def Info: img/ms16.png used on input line 1654.
-(pdftex.def)             Requested size: 206.39685pt x 147.16054pt.
- <img/ms17.png, id=245, 455.301pt x 308.8338pt>
+Underfull \vbox (badness 1478) has occurred while \output is active []
+
+ [44 <./img/ms14.png>] <img/ms17.png, id=248, 455.301pt x 308.8338pt>
 File: img/ms17.png Graphic file (type png)
-
-<use img/ms17.png>
-Package pdftex.def Info: img/ms17.png used on input line 1664.
+ <use img/ms17.png>
+Package pdftex.def Info: img/ms17.png used on input line 1676.
 (pdftex.def)             Requested size: 412.80157pt x 280.01659pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [44 <./img/ms15.png> <./img/ms16.png>] <img/ms18.png, id=251, 75.1608pt x 75.1
+ [45 <./img/ms15.png> <./img/ms16.png>] <img/ms18.png, id=254, 75.1608pt x 75.1
 608pt>
 File: img/ms18.png Graphic file (type png)
 
 <use img/ms18.png>
-Package pdftex.def Info: img/ms18.png used on input line 1673.
+Package pdftex.def Info: img/ms18.png used on input line 1686.
 (pdftex.def)             Requested size: 103.19843pt x 103.2036pt.
- <img/ms19.png, id=252, 75.1608pt x 75.6426pt>
+ <img/ms19.png, id=255, 75.1608pt x 75.6426pt>
 File: img/ms19.png Graphic file (type png)
 
 <use img/ms19.png>
-Package pdftex.def Info: img/ms19.png used on input line 1677.
+Package pdftex.def Info: img/ms19.png used on input line 1691.
 (pdftex.def)             Requested size: 103.19843pt x 103.86516pt.
- <img/ms20.png, id=253, 455.301pt x 168.1482pt>
+ <img/ms20.png, id=256, 455.301pt x 168.1482pt>
 File: img/ms20.png Graphic file (type png)
 
 <use img/ms20.png>
-Package pdftex.def Info: img/ms20.png used on input line 1689.
+Package pdftex.def Info: img/ms20.png used on input line 1704.
 (pdftex.def)             Requested size: 412.80157pt x 152.45831pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1515) has occurred while \output is active []
 
- [45 <./img/ms17.png> <./img/ms18.png> <./img/ms19.png>] [46 <./img/ms20.png>]
-<img/hackerman.png, id=264, 963.6pt x 542.47112pt>
+ [46 <./img/ms17.png> <./img/ms18.png> <./img/ms19.png>] [47 <./img/ms20.png>]
+<img/hackerman.png, id=267, 963.6pt x 542.47112pt>
 File: img/hackerman.png Graphic file (type png)
  <use img/hackerman.png>
-Package pdftex.def Info: img/hackerman.png used on input line 1726.
+Package pdftex.def Info: img/hackerman.png used on input line 1742.
 (pdftex.def)             Requested size: 412.80157pt x 232.3889pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1733--1736
+Underfull \hbox (badness 10000) in paragraph at lines 1749--1752
 
  []
 
-[47 <./img/hackerman.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1740--1743
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1745--1748
+[48 <./img/hackerman.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1756--1759
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1749--1751
+Underfull \hbox (badness 10000) in paragraph at lines 1761--1764
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1752--1754
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1755--1757
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1758--1760
-
- []
-
-[48]
 Underfull \hbox (badness 10000) in paragraph at lines 1765--1767
 
  []
 
-<img/hash.png, id=272, 936.83333pt x 195.39667pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 1768--1770
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1771--1773
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1774--1776
+
+ []
+
+[49]
+Underfull \hbox (badness 10000) in paragraph at lines 1781--1783
+
+ []
+
+<img/hash.png, id=276, 936.83333pt x 195.39667pt>
 File: img/hash.png Graphic file (type png)
  <use img/hash.png>
-Package pdftex.def Info: img/hash.png used on input line 1772.
+Package pdftex.def Info: img/hash.png used on input line 1788.
 (pdftex.def)             Requested size: 412.80157pt x 86.1pt.
 
-<img/salthash1.png, id=273, 848.50333pt x 109.74333pt>
+<img/salthash1.png, id=277, 848.50333pt x 109.74333pt>
 File: img/salthash1.png Graphic file (type png)
  <use img/salthash1.png>
-Package pdftex.def Info: img/salthash1.png used on input line 1781.
+Package pdftex.def Info: img/salthash1.png used on input line 1797.
 (pdftex.def)             Requested size: 412.80157pt x 53.38954pt.
 
 Underfull \vbox (badness 1400) has occurred while \output is active []
 
- [49 <./img/hash.png> <./img/salthash1.png>] [50]
+ [50 <./img/hash.png> <./img/salthash1.png>] [51]
+Underfull \hbox (badness 10000) in paragraph at lines 1810--1815
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1810--1815
+
+ []
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1215,7 +1228,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[51] (./rapport_complet_en_partie.aux)
+[52] (./rapport_complet_en_partie.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -1223,7 +1236,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  11032 strings out of 493014
  170205 string characters out of 6133351
- 633979 words of memory out of 5000000
+ 633892 words of memory out of 5000000
  14291 multiletter control sequences out of 15000+600000
  113336 words of font info for 162 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1248,10 +1261,10 @@ e/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2
 texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2016/te
 xmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/201
 6/texmf-dist/fonts/type1/public/amsfonts/cyrillic/wncyr10.pfb>
-Output written on rapport_complet_en_partie.pdf (51 pages, 5709308 bytes).
+Output written on rapport_complet_en_partie.pdf (52 pages, 5715220 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 176 compressed objects within 2 object streams
+ 355 PDF objects out of 1000 (max. 8388607)
+ 178 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  266 words of extra memory for PDF output out of 10000 (max. 10000000)
 
