@@ -14,7 +14,7 @@ char login[100];
 char pssw[100];
 
 RSA *pubkey, *privkey;
-int encrypt_enable = 1;
+int encrypt_enable = 0;
 char *encrypt_buf;
 
 int main(int argc, char const *argv[]) {

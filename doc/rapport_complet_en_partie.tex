@@ -408,7 +408,7 @@ Le serveur devra:
 \end{itemize}
 
 \subsection{Fonctionnement global}
-Pour réaliser le Client/Server, nous avons choisi d'utilisé le protocole TCP, qui nous permet de nous assurer que chaque message à bien été transmis à l'utilisateur, et ne pouvant pas être utilisé en diffusion. Le serveur est également multi-client: un processus est créé, à partir du processus père, à chaque connexion au serveur.
+Pour réaliser le Client/Server, nous avons choisi d'utiliser le protocole TCP, qui nous permet de nous assurer que chaque message a bien été transmis à l'utilisateur, et ne pouvant pas être utilisé en diffusion. Le serveur est également multi-client: un processus est créé, à partir du processus père, à chaque connexion au serveur.
 Voici le fonctionnement globale du Client/Serveur de Face Key:
 \begin{figure}[h]
 	\centering
@@ -429,7 +429,7 @@ Dans la requête, les informations sont séparées du code de la requête par un ";"
 CODE & INFORMATIONS \\
 \hline
 \end{tabular}
-Les informations sont quant à elles séparé par une virgule, nous avons donc par exemple:
+Les informations sont quant à elles séparées par une virgule, nous avons donc par exemple:
 \begin{tabular}{|c|c|}
 \hline
 100 & toto,facebook.com \\
@@ -512,7 +512,7 @@ Dans cette partie nous allons présenter les différents diagrammes applicatifs du
 \subsubsection{Création d'un compte}
 \textit{Pour démarrer ce diagramme il faut préalablement envoyer au serveur le code diagramme correspondant (code 002 pour la création de compte).}
 \newline
-Ici les photo et les poids du réseau de neurone sont envoyer sous forme de fichier. Les fichiers sont ouvert par les deux programmes (client et serveur) et envoyer (et reçu) octet par octet sans code en entête. Le transfère d'un fichier est donc décomposé en plusieurs parties: tout d'abord les deux premiers message envoie le nom du fichier ainsi que le nombre d'octet qui va être envoyé (la taille du fichier), ensuite les octet sont envoyés un par un. Le receveur compte le nombre d'octet reçu et s'arrête une fois que l'intégralité des octet ont bien été reçu.
+Ici les photos et les poids du réseau de neurones sont envoyés sous forme de fichier. Les fichiers sont ouverts par les deux programmes (client et serveur) et envoyés (et reçu) octet par octet sans code en entête. Le transfère d'un fichier est donc décomposé en plusieurs parties: tout d'abord les deux premiers messages envoie le nom du fichier ainsi que le nombre d'octet qui va être envoyé (la taille du fichier), ensuite les octet sont envoyés un par un. Le receveur compte le nombre d'octet reçu et s'arrête une fois que l'intégralité des octet ont bien été reçu.
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=0.8\textwidth]{img/da_crea.png}
@@ -530,7 +530,7 @@ Ici, le client envoie son identifiant et mot de passe Face Key, le serveur lui r
 \end{figure}
 
 \subsubsection{Connexion à un site}
-\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 001 pour la connexion à un site) au serveur \textbf{et} effectué une phase d'authentification (code 103).}
+\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 001 pour la connexion à un site) au serveur \textbf{et} effectuer une phase d'authentification (code 103).}
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=0.8\textwidth]{img/da_connsite.png}
@@ -539,7 +539,7 @@ Ici, le client envoie son identifiant et mot de passe Face Key, le serveur lui r
 \end{figure}
 
 \subsubsection{Mise à jour des poids du réseau de neurones}
-\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 003) au serveur \textbf{et} effectué une phase d'authentification (code 103).}
+\textit{Pour démarrer ce diagramme il faut préalablement envoyer le code diagramme (code 003) au serveur \textbf{et} effectuer une phase d'authentification (code 103).}
 \newline
 Tout comme dans le diagramme de création d'un compte, les poids du réseau de neurones sont envoyés de la même manière: sous forme de fichier avec une transmission octet par octet.
 \begin{figure}[h]
@@ -1747,7 +1747,7 @@ Il nous faut donc trouver une solution qui nous permet à la fois de sécuriser le
 
 \subsection{RSA}
 \subsubsection{Introduction}
-Le RSA est un algorithme de cryptographie dit "asymétrique" (une clé privé et une clé publique, contrairement à la cryptographie symétrique qui utilise la même clé pour crypter et décrypter). Il a été rendu public par R.L. Rivest, A. Shamir, et L. Adleman dans un papier publié en 1977 appelé "\textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}". Il a pour but, à la fois de crypter des messages afin qu'ils puissent être transmis sans risquer d'être lu par une personne tierce, mais aussi de signer les messages. Un des principe du RSA est que la clé privé, permettant de décrypter les messages soit impossible à retrouver à partir de la clé publique, qui elle permet d'encrypter les messages.
+Le RSA est un algorithme de cryptographie dit "asymétrique" (une clé privé et une clé publique, contrairement à la cryptographie symétrique qui utilise la même clé pour crypter et décrypter). Il a été rendu public par R.L. Rivest, A. Shamir, et L. Adleman dans un papier publié en 1977 appelé "\textit{A Method for Obtaining Digital Signatures and Public-Key Cryptosystems}". Il a pour but, à la fois de crypter des messages afin qu'ils puissent être transmis sans risquer d'être lu par une personne tierce, mais aussi de signer les messages. Un des principe du RSA est que la clé privée, permettant de décrypter les messages soit impossible à retrouver à partir de la clé publique, qui elle permet d'encrypter les messages.
 Nous avons donc décidé d'utiliser cette méthode afin de crypter les messages entre le Client et le Server.
 \newline{}
 \subsubsection{Génération des clés}
@@ -1759,17 +1759,17 @@ Notre clé publique est donc le couple \((e, n)\).
 \newline{}
 \subsubsection{Cryptage et Décryptage des messages}
 Pour crypter un message $M$ nous avons besoin de notre clé publique \((e, n)\), notre message crypter $C$ se calcule de la manière suivante: \[C \equiv M^e (mod \phantom{s}n)\]
-La fonction de décryptage est tout aussi simple, à partir de notre message crypter $C$ , et de notre clé privé \((d, n)\), nous calculons: \[M \equiv C^d (mod \phantom{s}n)\]
+La fonction de décryptage est tout aussi simple, à partir de notre message crypter $C$ , et de notre clé privée \((d, n)\), nous calculons: \[M \equiv C^d (mod \phantom{s}n)\]
 La méthode décrite içi est démontrée mathématiquement dans le papier d'origine de R.L. Rivest, A. Shamir, et L. Adleman.
 \newline{}
 \subsubsection{Implémentation}
 Pour implémenter l'algorithme nous avons choisis d'utiliser la bibliothèque libre et open source OpenSSL, et plus particulièrement la bibliothèque \textit{libcrypto} qui fourni les algorithmes de cryptographie. OpenSSL est une bibliothèque largement répandu et utilisé, il est donc plutôt aisé de trouver de la documentation dessus (suivant les fonctionnalités utilisées). 
 \newline{}
 \paragraph{Génération des clés}
-Les clés publique et privés du serveur et du client sont généré préalablement, et stocké les les fichiers des deux programmes.
+Les clés publique et privées du serveur et du client sont généré préalablement, et stocké dans les fichiers des deux programmes.
 \newline{}
 \paragraph{Échange des clés}
-Lors de chaque connexion du client au serveur, les clés publiques les deux parties sont échangé, envoyé sous forme de fichier "\textit{.pem}" et stocké, avec les autres clés pour le client, et dans un dossier nommé par le PID du processus pour le serveur (le serveur étant multi-processus).
+Lors de chaque connexion du client au serveur, les clés publiques des deux parties sont échangées, envoyé sous forme de fichier "\textit{.pem}" et stocké, avec les autres clés pour le client, et dans un dossier nommé par le PID du processus pour le serveur (le serveur étant multi-processus).
 \newline{}
 \paragraph{Cryptage et décryptage}
 Pour le cryptage et le décryptage, les fonctions de OpenSSL sont utilisées après avoir charger les clef dans la mémoire. Le cryptage et le décryptage est opérationnel pour peu que les deux clés issus de la même pair soit utilisées pour crypter et décrypter.
@@ -1779,11 +1779,11 @@ Le système n'est que partiellement implémenté, en effet, malgré le bon fonctionn
 
 \subsection{Fonctions de Hachages}
 \subsubsection{Introduction}
-Une fonction de hachage cryptographique, est une fonction avec un message (ou fichier ) en entré et une valeur en sortie appelé valeur de hachage, somme de vérification ou encore empreinte numérique. Le principe d'une fonction de hachage est de prendre le fichier en entré et de le transformé en une valeur (une chaine de caractère la plupart du temps) unique qui sera son "empreinte numérique". Une autre propriété importante de la fonction de hachage est qu'elle est très difficilement (voir presque impossible) inversible, c'est à dire qu'à partir de la valeur en sortie il est impossible (dans un temps raisonnable) de retrouver la valeur en entrée. De même une fonction de hachage idéal n'aurais aucune collision, c'est à dire que pour deux messages différents données ne pourrions pas avoir la même valeur en sortie.
+Une fonction de hachage cryptographique, est une fonction avec un message (ou fichier ) en entré et une valeur en sortie appelé valeur de hachage, somme de vérification ou encore empreinte numérique. Le principe d'une fonction de hachage est de prendre le fichier en entrée et de le transformer en une valeur (une chaine de caractère la plupart du temps) unique qui sera son "empreinte numérique". Une autre propriété importante de la fonction de hachage est qu'elle est très difficilement (voir presque impossible) inversible, c'est à dire qu'à partir de la valeur en sortie il est impossible (dans un temps raisonnable) de retrouver la valeur en entrée. De même une fonction de hachage idéal n'aurais aucune collision, c'est à dire que pour deux messages différents données ne pourrions pas avoir la même valeur en sortie.
 \newline
 \subsubsection{Intégration au sein du projet}
-Au sein du projet Face Key, nous utiliserons une fonction de hachage (MD5) pour transformé les valeurs stocké dans la base donnée et régulièrement envoyé par l'utilisateur tel que: son mot de passe. Ainsi à chaque fois que l'utilisateur enverra son mot de passe, nous récupérerons la valeur hacher stocker dans la base, et nous transformerons le mot de passe envoyé et vérifierons les 2 sommes de vérifications. Si les 2 sommes sont les mêmes alors le mot de passe donnée est le même sinon le mot de passe est erroné.
-Cependant nous pouvons remarquer qu'une fonction de hachage n'est pas suffisante afin de garantir une sécurité satisfaisante. En effet, si la base venait à être compromise et lu par une personne tierce, il lui suffirait d'utiliser une liste des mot de passe les plus utiliser préalablement haché, et de seulement comparer les sommes de vérifications à celle dans la base donnée pour révéler plusieurs mot de passe. Sachant que 2 même mot de passe obtienne la même sortie cela diminue grandement le temps nécéssaire à retrouvé plusieurs mot de passe. De plus, il existe certaine méthode pour retrouver des mot de passe haché en clair, comme les attaques par dictionnaires ou Rainbow Table. Nous devons donc trouver une solution pour rendre la tache plus compliqué.
+Au sein du projet Face Key, nous utiliserons une fonction de hachage (MD5) pour transformer les valeurs stockées dans la base donnée et régulièrement envoyé par l'utilisateur tel que: son mot de passe. Ainsi à chaque fois que l'utilisateur enverra son mot de passe, nous récupérerons la valeur hachée stockée dans la base, et nous transformerons le mot de passe envoyé et vérifierons les 2 sommes de vérifications. Si les 2 sommes sont les mêmes alors le mot de passe donnée est le même sinon le mot de passe est erroné.
+Cependant nous pouvons remarquer qu'une fonction de hachage n'est pas suffisante afin de garantir une sécurité satisfaisante. En effet, si la base venait à être compromise et lu par une personne tierce, il lui suffirait d'utiliser une liste des mot de passe les plus utiliser préalablement hachés, et de seulement comparer les sommes de vérifications à celle dans la base donnée pour révéler plusieurs mot de passe. Sachant que 2 même mot de passe obtiennent la même sortie cela diminue grandement le temps nécéssaire à retrouver plusieurs mot de passes. De plus, il existe certaines méthodes pour retrouver des mot de passes hachés en clair, comme les attaques par dictionnaires ou Rainbow Table. Nous devons donc trouver une solution pour rendre la tache plus compliqué.
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=0.8\textwidth]{img/hash.png}
@@ -1792,7 +1792,7 @@ Cependant nous pouvons remarquer qu'une fonction de hachage n'est pas suffisante
 \end{figure}
 
 \subsubsection{Le Haching salé}
-Le principe du haching salé est simple: ajouter une chaine de caractère que l'on va concaténer au mot de passe avant de hacher la chaine final. Chaque utilisateur a un sel unique stocker sur la base de donnée. Ainsi 2 même mot de passe n'auront pas la même chaine haché. Cela rend les attaques par Brute Force, Dictionnaire et Rainbow Table, bien plus fastidieuse en augmentant le temps nécéssaire pour retrouver les mot de passes.
+Le principe du haching salé est simple: ajouter une chaine de caractère que l'on va concaténer au mot de passe avant de hacher la chaine final. Chaque utilisateur a un sel unique stocker sur la base de donnée. Ainsi 2 même mot de passes n'auront pas la même chaine hachée. Cela rend les attaques par Brute Force, Dictionnaire et Rainbow Table, bien plus fastidieuse en augmentant le temps nécéssaire pour retrouver les mot de passes.
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=0.8\textwidth]{img/salthash1.png}
@@ -1801,8 +1801,8 @@ Le principe du haching salé est simple: ajouter une chaine de caractère que l'on
 \end{figure}
 
 \subsection{Bilan de la sécurité}
-Pour commencer ce bilan, faisons un point sur ce qui est implémenté ou non. Nous avons vu que le RSA est partiellement implémenté, chaque bloc fonctionne de manière indépendante, mais la transmission du message crypté ne s'effectue pas bien. Pour ce qui est du hachage, seul le hachage classique est implémenté, le hachage salé n'est pas implémenté par manque de temps. En effet trouver d'où venait le problème du RSA nous à pris pas mal de temps, et nous ne pouvons à l'heure actuelle, estimer combien de temps il faudrais pour le résoudre, car nous ne connaissons pas la cause du problème. L'implémentation du Hachage Salé nécessiterait une modification de la base de donnée, pour stocké le "sel" de chaque utilisateur.
-De plus, il resterait d'autres problème de sécurité à régler, même si nous avions pu tout implémenté. En effet les combinaisons Identifiants/Mot de passe pour chaque site web d'un utilisateur ne sont pas protégé ! Il aurait aussi été interessant de crypter l'envoie et la sauvegarde des fichiers (images et réseau de neurones) sur le serveur, afin de préserver l'identité des utilisateurs.
+Pour commencer ce bilan, faisons un point sur ce qui est implémenté ou non. Nous avons vu que le RSA est partiellement implémenté, chaque bloc fonctionne de manière indépendante, mais la transmission du message crypté ne s'effectue pas bien. Pour ce qui est du hachage, seul le hachage classique est implémenté, le hachage salé n'est pas implémenté par manque de temps. En effet trouver d'où venait le problème du RSA nous à pris pas mal de temps, et nous ne pouvons à l'heure actuelle, estimer combien de temps il faudrais pour le résoudre, car nous ne connaissons pas la cause du problème. L'implémentation du Hachage Salé nécessiterait une modification de la base de donnée, pour stocker le "sel" de chaque utilisateur.
+De plus, il resterait d'autres problèmes de sécurité à régler, même si nous avions pu tout implémenté. En effet les combinaisons Identifiants/Mot de passes pour chaque site web d'un utilisateur ne sont pas protégés ! Il aurait aussi été interessant de crypter l'envoie et la sauvegarde des fichiers (images et réseau de neurones) sur le serveur, afin de préserver l'identité des utilisateurs.
 
 
 \newpage

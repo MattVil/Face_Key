@@ -25,7 +25,7 @@ AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
 RSA *pubkey, *privkey;
-int encrypt_enable = 1;
+int encrypt_enable = 0;
 char *encrypt_buf;
 char *err;
 
