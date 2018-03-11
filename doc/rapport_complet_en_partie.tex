@@ -216,7 +216,7 @@ La BDD de Face Key est située sur le serveur comme  le rappelle sur le schéma su
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/ABDD.png} 
-        \caption{Localisation des blocs de BDD dans l'architecture de Face Key}
+        \caption{Architecture}
         \label{fig:ABDD}
 \end{figure}
 \subsection{Analyse du besoin}
@@ -902,12 +902,12 @@ Après avoir téléchargé toutes les images sur la BDD, le service s'arrête.
   \centering
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{img/send.png}
-    \caption{Envoi de photos au serveur}
+    \caption{Flower one.}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{img/blob.png}
-    \caption{Réception des photos sur la BDD}
+    \caption{Flower two.}
   \end{minipage}
 \end{figure}
 
@@ -937,7 +937,7 @@ Notre IHM touche donc deux composantes de notre architecture : la partie navigat
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/archi_client.png} 
-        \caption{Localisation des blocs du plug-in dans l'architecture de Face Key}
+        \caption{Architecture}
         \label{fig:AC}
 \end{figure}
 
@@ -1023,8 +1023,8 @@ On peut résumer leur fonctionnement sur le schéma suivant (Fig.~\ref{fig:APPC}).
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.6\textwidth]{img/app_chrome.png} 
-        \caption{Schématisation du fonctionnement d'une application Chrome}
+        \includegraphics[width=0.4\textwidth]{img/app_chrome.png} 
+        \caption{Architecture}
         \label{fig:APPC}
 \end{figure}
 
@@ -1045,7 +1045,7 @@ Le fonctionnement de ces extensions peut être résumé par le schéma suivant (Fig.
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.4\textwidth]{img/extension_fonctionnement.png} 
-        \caption{Schématisation du fonctionnement d'une extension Chrome}
+        \caption{Architecture}
         \label{fig:EXT}
 \end{figure}
 
@@ -1140,7 +1140,7 @@ Elle est simplement composée d'une icône qui permet d'afficher fenêtre pop-up (F
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/extens.png} 
-        \caption{Capture d'écran du plug-in utilisé sur une page de connexion Facebook}
+        \caption{Architecture}
         \label{fig:extens}
 \end{figure}
 
@@ -1218,7 +1218,7 @@ En résumant on obtient donc l'architecture suivante pour notre IHM (Fig.~\ref{fi
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/extension.png} 
-        \caption{Architecture de notre plug-in}
+        \caption{Architecture}
         \label{fig:EXT}
 \end{figure}
 
@@ -1256,7 +1256,7 @@ Un autre point d'amélioration majeur est celui de la suppression du client C. Ch
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/newarchi.png} 
-        \caption{Architecture possible de Face Key avec une extension à la place du client C}
+        \caption{Architecture}
         \label{fig:newarc}
 \end{figure}
 
@@ -1289,7 +1289,8 @@ Pour réaliser ce genre de calcul qui devient de plus en plus courant, le départe
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.5\textwidth]{img/brutus.png} 
+        \includegraphics[width=0.5\textwidth]{img/brutus.png}
+        \caption{Calculateur graphique appelé "Brutus" pour sa puissance de calcul} 
         \label{fig:brutus}
 \end{figure}
 
@@ -1322,7 +1323,7 @@ Pour cela, à la création du compte Face Key, nous demandons à l'utilisateur s'il
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.5\textwidth]{img/mattlemoche.png} 
-        \caption{Localisation des blocs de reconnaissance dans l'architecture de Face Key}
+        \caption{Système de localisation du visage utilisant Haar Cascade}
         \label{fig:mat}
 \end{figure}
 
@@ -1334,10 +1335,12 @@ Pour ce faire, nous utilisons un algorithme appelé Haar Cascade qui utilise le p
   \centering
   \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{img/ms1.png}
+    \caption{Features simples}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{img/ms2.png}
+    \caption{Description d'un visage à partir des features simples}
   \end{minipage}
 \end{figure}
 
@@ -1351,7 +1354,8 @@ Une fois les photos des utilisateurs enregistrées sur le serveur, elles sont pas
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.8\textwidth]{img/ms3.png} 
+        \includegraphics[width=0.85\textwidth]{img/ms3.png} 
+        \caption{Exemple de transformations utilisées pour l'augmentation de données}
         \label{fig:ms3}
 \end{figure}
 
@@ -1364,6 +1368,7 @@ Pour construire la base de données il nous fallait des utilisateurs à pouvoir id
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/ms4.png} 
+        \caption{Exemple de visages reconnu et d'erreurs faites par Harr Cascade}
         \label{fig:ms3}
 \end{figure}
 
@@ -1420,7 +1425,8 @@ La régression logistique peut aussi se représenter sous forme de réseau de neuro
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.8\textwidth]{img/ms5.png} 
+        \includegraphics[width=0.8\textwidth]{img/ms5.png}
+        \caption{Neurone et perceptron simple} 
         \label{fig:ms5}
 \end{figure}
 
@@ -1440,6 +1446,7 @@ Si l'on s'amuse à afficher les ensembles \(\theta\) de chaque classe, on peut vo
 \begin{figure}[H]
     \centering
         \includegraphics[width=1\textwidth]{img/ms6.png} 
+        \caption{Affichage des poids de chaque classe d'une régression logistique}
         \label{fig:ms6}
 \end{figure}
 
@@ -1454,6 +1461,7 @@ Le perceptron multicouches (Hinton 1986) est basé sur le principe de la régressi
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/ms7.png} 
+        \caption{Perceptron multicouches}
         \label{fig:ms7}
 \end{figure}
 
@@ -1523,19 +1531,19 @@ Le principe de la convolution est d'utiliser des noyaux, initialisé aléatoiremen
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.8\textwidth]{img/ms8.png} 
-        \caption {Opération de convolution}
+        \includegraphics[width=0.6\textwidth]{img/ms8.png} 
+        \caption {Exemple de noyaux}
         \label{fig:ms8}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}[b]{0.6\textwidth}
+  \begin{minipage}[b]{0.7\textwidth}
     \includegraphics[width=\textwidth]{img/ms9.png}
-     \caption {Noyaux}
+     \caption {Opération de convolution}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.3\textwidth}
+  \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{img/ms10.png}
      \caption {Filtre obtenu}
   \end{minipage}
@@ -1572,10 +1580,11 @@ Enfin on change notre fonction d'activation sigmoïde par une fonction ReLU (Rect
 \begin{figure}[H]
     \centering
         \includegraphics[width=1\textwidth]{img/ms13.png} 
+        \caption{Normalisation par fonction ReLU}
         \label{fig:ms13}
 \end{figure}
 
-On peut maintenant mettre bout à bout toutes ces couches pour obtenir notre CNN. On suit généralement une architecture comme :
+On peut maintenant mettre bout à bout toutes ces couches pour obtenir notre CNN. On suit généralement une architecture comme :
 
 \begin{lstlisting}
 	INPUT -> [[CONV -> RELU]*N -> POOL?]*M -> [FC -> RELU]*K -> FC
@@ -1588,6 +1597,7 @@ Pour l'apprentissage on utilise le même principe de minimisation par descente du
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/ms14.png} 
+        \caption{Différents types de descente du gradient}
         \label{fig:ms14}
 \end{figure}
 
@@ -1605,7 +1615,7 @@ Architecture choisie :
 	\centering
 	\begin{tabular}{|l|l|l|} 
 		\hline
-		Couches & Description \\
+		\textbf{Couches} & \textbf{Description} \\
 		\hline
 		Convolution & 32 filtres, noyau (3x3) \\
 		\hline
@@ -1634,7 +1644,7 @@ Architecture choisie :
 		\hline
 		SoftMax & {} \\
 		\hline
-		\multicolumn{2}{|l|}{Total du poids : 2 052 000} \tabularnewline
+		\multicolumn{2}{|l|}{\textbf{Total du poids} : 2 052 000} \tabularnewline
 		\hline
 	\end{tabular}	 
 	\label{Table:CTEW}
@@ -1646,12 +1656,14 @@ On peut observer l'évolution du loss (erreur que fait le réseau) et de l'accurac
 
 \begin{figure}[H]
   \centering
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{img/ms15.png}
+    \caption{Évolution de l'accuracy pendant l'entrainement}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.5\textwidth}
     \includegraphics[width=\textwidth]{img/ms16.png}
+    \caption{Évolution du loss pendant l'entrainement}
   \end{minipage}
 \end{figure}
 
@@ -1662,6 +1674,7 @@ On peut également afficher la matrice de confusion entre les classes :
 \begin{figure}[H]
     \centering
         \includegraphics[width=0.8\textwidth]{img/ms17.png} 
+        \caption{Matrice de confusion, valeurs en nombre d'images}
         \label{fig:ms17}
 \end{figure}
 
@@ -1671,14 +1684,16 @@ On remarque qu'il y à très peu de confusion entre les classes. De plus certaines
   \centering
   \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{img/ms18.png}
+    \caption{Individu de la classe k}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.2\textwidth}
     \includegraphics[width=\textwidth]{img/ms19.png}
+    \caption{Individu de la classe c}
   \end{minipage}
 \end{figure}
 
-Les deux individus ont une forme de visage assez ronde, des yeux qui se ressemble, des cheveux longs ? Les erreurs commise entre ces deux classes sont donc compréhensible (ce nombre d'erreur reste très faible par rapport au nombre d'images total)
+Les deux individus ont une forme de visage assez ronde, des yeux qui se ressemblent, des cheveux longs ? Les erreurs commise entre ces deux classes sont donc compréhensible (ce nombre d'erreur reste très faible par rapport au nombre d'images total)
 
 On remarque que l'on obtient de meilleures performances sur la validation que sur le training ce qui s'explique par le fait que comme notre base est très, trop, beaucoup trop, redondante. Lors de la division en 3 sous bases, une grande partie, voir la totalité, de nos validation set et test set sont composés d'images du training set. Nous n'avons donc aucun moyen de prévenir l'overfitting de notre modèle.
 
@@ -1686,13 +1701,14 @@ On remarque effectivement l'overfitting lorsque l'on déploie notre application e
 
 \begin{figure}[H]
     \centering
-        \includegraphics[width=0.8\textwidth]{img/ms20.png} 
+        \includegraphics[width=0.8\textwidth]{img/ms20.png}
+        \caption{Essai sur une photo n'appartenant pas à la base de données} 
         \label{fig:ms20}
 \end{figure}
 
 Nous prenons donc une nouvelle photo de l'individu de la 3eme classe dans d'autres conditions de luminosité, d'angle etc. Le modèle n'arrive toujours pas à l'identifier.
 
-Nous n'avons malheureusement pas pu faire de réel test chiffré pour l'utilisation du modèle dans le monde réel. Nous n'avons donc aucun moyen de savoir de manière fiable la performance de notre solution de reconnaissance faciale. Nous espérons pouvoir faire ces tests avant la soutenance.
+Nous n'avons malheureusement pas pu faire de réels tests chiffrés pour l'utilisation du modèle dans le monde réel. Nous n'avons donc aucun moyen de savoir de manière fiable la performance de notre solution de reconnaissance faciale. Nous espérons pouvoir faire ces tests avant la soutenance.
 
 \subsection{Conclusion : remarques, avancement et améliorations possibles}
 
@@ -1790,12 +1806,12 @@ De plus, il resterait d'autres problème de sécurité à régler, même si nous avion
 
 \newpage
 \section{Conclusion}
-\subsection{point d'avancement par rapport au cdc}
-\subsection{problème rencontrés + discussion}
-\subsection{amélioration possible + discussion}
-\subsection{ressentit par rapport au projet}
 
-Acknowledgement
+Face Key est le premier gros projet informatique que nous avons réalisé. La façon dont on voyait ce projet depuis le début était ambitieuse car nous avons décidé de ne pas simplement faire une interface à notre projet de réseau/BDD mais nous sommes partit sur 3 axes différents : L'interface utilisateur, la sécurité et le machine learning. Nous avons clairement sous-estimé la charge de travail que ça allez nous apporter et sur-estimé le temps que nous avions pour la réalisation. Cependant nous avons réussi à sortir un prototype relativement complet de notre application alors que nous nous étions lancé dans des domaines que nous connaissions peu et dont nous n'avons pas encore suivi de cours.
+\\\\
+Nous sortons comptent de ce projet car pour un projet de synthèse, il à réellement regroupé une grande majorité des cours que nous avons suivis pendant nos 3 années de licence : Réseau, base de données, développement Android, algorithmique, génie logiciel, web, algèbre linéaire, traitement d'images, traitement du signal, gestion de projet informatique, recherche bibliographique et maths pour l'informatique. De plus il nous à aussi permis de nous projeter dans les domaines dans lesquels nous voulions travailler plus tard. En effet en début de projet nous avions choisi les modules que nous allions travailler en fonction de ce qui nous intéressé le plus en informatique. Ce projet à permis à certains d'entre nous de renforcer leurs choix mais a aussi mis de doute à d'autres.
+\\\\
+L'application n'est pas fini,  certains détails reste à implémenter et des améliorations sont possible dans chacune de nos parties. Il y à également des questions qui reste sans réponses pour le moment comme, que se passe-t-il si on augmente notre nombre d'utilisateurs ? L'architecture du réseau sera-t-elle suffisante ? cela va-t-il créer de nouvelle faille de sécurité ? Le modèle de reconnaissance faciale fonctionnera-t-il toujours ? Y a-t-il des solutions technique et théorique plus performante à nos problématiques ?
 
 
 
