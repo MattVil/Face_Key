@@ -1,34 +1,101 @@
 var demo = null;
 console.debug = function() {};
 
-window.addEventListener("load", function() {
-  var connect = document.getElementById("connect");
-  var address = document.getElementById("address");
+var socket = chrome.sockets.udp;
+var PORT = 3001;
+var HOST = '127.0.0.1';
+var sockInfo;
 
-  var echoClient = newEchoClient(address.value);
-  connect.onclick = function(ev) {
-    echoClient.disconnect();
-    echoClient = newEchoClient(address.value);
-  };
-  address.onkeydown = function(ev) {
-    if (ev.which == 13) {
-      echoClient.disconnect();
-      echoClient = newEchoClient(address.value);
-    }
-  };
-
+chrome.app.runtime.onLaunched.addListener(function() {
+    // Create window
+    chrome.app.window.create('echo_mco.html', {
+        'bounds': {
+            'width': 400,
+            'height': 500
+        }
+    });
 });
 
-var newEchoClient = function(address) {
-  var ec = new chromeNetworking.clients.echoClient();
-  var hostnamePort = address.split(":");
-  var hostname = hostnamePort[0];
-  var port = (hostnamePort[1] || 7) | 0;
-  ec.connect(
-    hostname, port,
-    function() {
-      console.log("Connected");
+
+chrome.runtime.onMessageExternal.addListener(
+  function(message, sender, sendResponse) {
+    // TODO: Validate that sender.id is allowed to invoke the app!
+
+    console.log('TODO: Do something with ' + message );
+    if(message=="test"){
+      send();
+                   test();
+
     }
-  );
-  return ec;
-};
+
+    // Do something, e.g. reply to message
+    sendResponse('Processed file');
+    // if you want to send a reply asynchronously, uncomment the next line.
+    // return true;
+});
+
+socket.create({}, function(_sockInfo){
+        sockInfo = _sockInfo;
+        socket.bind(sockInfo.socketId, HOST, 3002, function(result){
+            if(result < 0){
+                throw "Bind failed"
+            }
+            console.log("Socket created and bound.");
+
+            socket.onReceive.addListener(function(info){
+                console.log('Received packet from ' + info.remoteAddress + 
+                            ' : ' + ab2str(info.data) + ' ' + info.remotePort + ', length ' + info.data.length);
+            });
+        });
+    });
+
+function send(){
+    
+    var wholeString = "what is the meaning of life";            
+
+  chrome.sockets.udp.create({}, function (socketInfo) {
+      // The socket is created, now we can send some data
+      var socketId = socketInfo['socketId'];
+      var arrayBuffer = stringToArrayBuffer("hello");
+      chrome.sockets.udp.bind(socketId, HOST, 0, function (result) {
+          chrome.sockets.udp.send(socketId, stringToArrayBuffer(wholeString), HOST, PORT, function (sendInfo) {
+              console.log("sent " + sendInfo.bytesSent);
+              if (sendInfo.resultCode < 0) {
+                  console.log("Error listening: " + chrome.runtime.lastError.message);
+              }
+          });
+      });
+  });
+
+}
+
+function stringToArrayBuffer(string) {
+    var arrayBuffer = new ArrayBuffer(string.length * 2);
+    var buffer = new Uint8Array(arrayBuffer);
+    for (var i = 0, stringLength = string.length; i < stringLength; i++) {
+        buffer[i] = string.charCodeAt(i);
+        // Was: buffer = string.charCodeAt(i);
+    }
+    return buffer;
+}
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint8Array(buf));
+}
+
+function test(){
+var app_id = "bgldmojaamnojiefdcobliedlibdkcnd";
+
+    var message = "test";
+    chrome.runtime.sendMessage(app_id, message, function(result) {
+        if (chrome.runtime.lastError) {
+            // Handle error, e.g. app not installed
+            console.warn('Error: ' + chrome.runtime.lastError.message);
+        } else {
+            // Handle success
+            console.log('Reply from app: ', result);
+        }
+    });
+}
+
+
+

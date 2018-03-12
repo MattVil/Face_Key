@@ -6,13 +6,15 @@
   "minimum_chrome_version": "33",
   "app": {
     "background": {
-      "scripts": ["main.js", "networking.js"]
+      "scripts": ["main.js", "demo.js"]
     }
   },
   "sockets": {
     "udp": {
       "send": ["*"],
-      "bind": ["*"]
+      "bind": ["*"],
+      "multicastMembership": [""]
     }
-  }
+  },
+  "permissions":["system.network"]
 }

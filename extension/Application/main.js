@@ -1,3 +1,4 @@
+/*
 chrome.app.runtime.onLaunched.addListener(function() {
   chrome.app.window.create('echo_mco.html', {
   	id: "mainwin",
@@ -7,3 +8,4 @@ chrome.app.runtime.onLaunched.addListener(function() {
     }
   });
 });
+*/
