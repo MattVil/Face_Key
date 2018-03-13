@@ -26,10 +26,24 @@ int extractID(AccountList list, char* mail);
 
 RSA *pubkey, *privkey;
 int encrypt_enable = 0;
+int hash = 1;
 char *encrypt_buf;
 char *err;
 
 int main(){
+
+	int i;
+	char npssw[100];
+
+	//Hash var
+	char mdString[33];
+	unsigned char digest[MD5_DIGEST_LENGTH];
+
+	/*MD5((unsigned char*)"azertyuiop", strlen("	azertyuiop"), (unsigned char*)&digest);    
+    for(int i = 0; i < 16; i++)
+         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+     if (DEBUG)
+     	printf("md5 of '%s' : %s\n", "azertyuiop", mdString);*/
 
 	/*Socket var*/
 	char buf[BUF_SIZE];
@@ -105,9 +119,7 @@ int main(){
 				if (encrypt_enable){
 					sprintf(encrypt_buf, "%s", buf);
 
-					unsigned char digest[MD5_DIGEST_LENGTH];
 					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
-				    char mdString[33];
 				    for(int i = 0; i < 16; i++)
 				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
 				     if (DEBUG)
@@ -150,7 +162,24 @@ int main(){
 						conn = PQconnectdb(CONN_INFO);
 						verif_conn(conn);
 						printf("%s/%s\n", *split_data, *(split_data+1));
-						user_id = authentification(split_data[0], split_data[1], conn);
+
+						if (hash){
+							for (i = 0; i<strlen(split_data[1]); i++)
+								printf("%d(%c) ", split_data[1][i], split_data[1][i]);
+							printf("\n");
+							sprintf(npssw, "%s", split_data[1]);
+							printf("Hint: %d\n", strcmp(npssw, (const char*)"azertyuiop"));
+							MD5((unsigned char*)&npssw, strlen(npssw), (unsigned char*)&digest);    
+						    for(int i = 0; i < 16; i++)
+						         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+						     if (DEBUG)
+						     	printf("md5 of '%s' : %s\n", npssw, mdString);
+
+							user_id = authentification(split_data[0], mdString, conn);
+						}
+						else
+							user_id = authentification(split_data[0], split_data[1], conn);
+
 						PQfinish(conn);
 						if (user_id == -1){
 							if (DEBUG)
@@ -450,10 +479,24 @@ int main(){
 							printf("\tMAIL: %s\n\tPSEUDO: %s\n\tPASSWORD: %s\n\tGENDER: %d\n\tNAME: %s\n\tFIRSTNAME: %s\n\tLANG: %s\n", mail, pseudo, pssw, gender, name, firstname, lang);
 						}
 
+						if (hash){
+							printf("Hint: %d\n", strcmp(pssw, (const char*)"azertyuiop"));
+							printf("Send password is lenght of %d / %d\n", strlen(pssw), strlen("azertyuiop"));
+							sprintf(npssw, "%s", pssw);
+							MD5((unsigned char*)&npssw, strlen(npssw), (unsigned char*)&digest);    
+						    for(int i = 0; i < 16; i++)
+						         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+						     if (DEBUG)
+						     	printf("md5 of '%s' : %s\n", npssw, mdString);
+						}
+
 						if (ONLINE){
 							conn = PQconnectdb(CONN_INFO);
 							verif_conn(conn);
-							sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
+							if (hash)
+								sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, mdString, lang);
+							else
+								sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
 							result = PQexec(conn, query);
 							PQclear(result);
 							PQfinish(conn);
