@@ -15,7 +15,7 @@ char pssw[100];
 
 RSA *pubkey, *privkey;
 int encrypt_enable = 0;
-char *encrypt_buf;
+unsigned char *encrypt_buf;
 int hash = 1;
 
 int main(int argc, char const *argv[]) {
@@ -62,19 +62,21 @@ int main(int argc, char const *argv[]) {
 		s_cli = socket(PF_INET, SOCK_STREAM, 0);
 		connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
 
-		//RSA_FLAG
-		send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-		recv_data(s_cli, buf);
-		receive_file2(s_cli, "client_x/keys");
-		pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
-		if (pubkey == NULL){
-			encrypt_enable = 0;
-			printf("No Encryption\n");
-		}
-		else{
-			if (DEBUG)
-				printf("Key Loaded\n");
-			encrypt_buf = malloc(RSA_size(pubkey));
+		if (encrypt_enable){
+			//RSA_FLAG
+			send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+			recv_data(s_cli, buf);
+			receive_file2(s_cli, "client_x/keys");
+			pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
+			if (pubkey == NULL){
+				encrypt_enable = 0;
+				printf("No Encryption\n");
+			}
+			else{
+				if (DEBUG)
+					printf("Key Loaded\n");
+				encrypt_buf = malloc(RSA_size(pubkey));
+			}
 		}
 
 		if (connect_flag == -1){
@@ -124,6 +126,7 @@ int main(int argc, char const *argv[]) {
 				//pubkey = loadKey("client_x/keys/publickey.pem", PUBKEY);
 				len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, pubkey, RSA_PKCS1_OAEP_PADDING);
 				printf("Encrypted message (%d): %s\n", len, encrypt_buf);
+				printf("Sizeof: %lu\tstrlen: %d\n", sizeof(encrypt_buf), strlen(encrypt_buf));
 				/*privkey = loadKey("client_x/keys/privatekey.pem", PRIVKEY);
 				len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
 				printf("Decrypted message: %s\n", buf);*/
@@ -139,9 +142,13 @@ int main(int argc, char const *argv[]) {
 				memset(buf, 0, BUF_SIZE);
 				sprintf(buf, "%s", encrypt_buf);
 
+				for (int i = 0; i<strlen(encrypt_buf)+20; i++)
+					printf("%d(%c) ", encrypt_buf[i], encrypt_buf[i]);
+				printf("\n");
+
 			}
 
-			if (hash){
+			/*if (hash){
 				for (int i = 0; i<strlen(pssw); i++)
 					printf("%d(%c) ", pssw[i], pssw[i]);
 				printf("\n");
@@ -151,12 +158,17 @@ int main(int argc, char const *argv[]) {
 			         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
 			     if (DEBUG)
 			     	printf("md5 of '%s' : %s\n", pssw, mdString);
-			}
+			}*/
 
 			if(DEBUG)
 				printf("\t### Message envoyé : %s\n", buf);
 			if(ONLINE){
-				int o = write(s_cli, buf, strlen(buf));
+				if (encrypt_enable){
+					int o = write(s_cli, encrypt_buf, strlen(buf));
+				}
+				else{
+					int o = write(s_cli, buf, strlen(buf));
+				}
 			}
 
 			memset(buf, 0, BUF_SIZE);
@@ -219,10 +231,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = first_conn_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
@@ -233,10 +247,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = conn_to_website_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
@@ -251,10 +267,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = weight_update_routine(s_cli, buf);
 				if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
