@@ -25,7 +25,7 @@ function injecttext(string, id) {
 function test(){
 var app_id = "ngkjemfeajegloicpohncnenmehofjlj";
 
-    var message = "test";
+    var message = "300";
     chrome.runtime.sendMessage(app_id, message, function(result) {
         if (chrome.runtime.lastError) {
             // Handle error, e.g. app not installed
@@ -42,8 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   getCurrentTabUrl((url) => {
     link = document.getElementById('log');
     link.addEventListener('click', () => {
-        injecttext('etudiant@gmail.com',"email");
-        injecttext('p@ssw0rd',"pass");
         test();
     });
   });
@@ -53,10 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 chrome.runtime.onMessageExternal.addListener(
   function(message, sender, sendResponse) {
     // TODO: Validate that sender.id is allowed to invoke the app!
-
     console.log('TODO: Do something with ' + message );
-    if(message=="test"){
-
+    if(message=="quentin@gmail.com"){
+      console.log("Received id ");
+        injecttext('quentin@gmail.com',"email");
+        injecttext('p@ssw0rd',"pass");
     }
     sendResponse('Response received');
 });

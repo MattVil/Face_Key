@@ -18,7 +18,8 @@ If you don't want to save images, DON'T use parameter
 using namespace std;
 using namespace cv;
 
-#define IMAGE_SIZE 100
+#define IMAGE_SIZE 200
+#define SCALE_COEF 2.2
 
 struct stat st = {0};
 
@@ -33,7 +34,7 @@ int main(int argc, char const *argv[]) {
   Mat frame;
 
   //check if parameter for folder name
-  String folder = "./data/";
+  String folder = "./data2/";
   String instruction = "mkdir ";
   if(argc > 1){
     folder += (String)argv[1];
@@ -128,14 +129,21 @@ Mat detect_faces(Mat frame_origin, String folder, CascadeClassifier face_cascade
       ss << nb_images++;
       file_name += ss.str();
       file_name += ".jpg";
-      cout << file_name << endl;
-      imwrite(file_name, face_saved_resized);
+
+      if(nb_images%5 == 0){
+        cout << file_name << endl;
+        imwrite(file_name, face_saved_resized);
+      }
     }
 
     stringstream nbImg;
     nbImg << nb_images++;
     putText(frame, nbImg .str(), Point(10,25), CV_FONT_HERSHEY_DUPLEX, 0.8  , cvScalar(0,0,255), 1, CV_AA);
 
+    int w2 = (int)(faces[i].width * SCALE_COEF);
+    int h2 = (int)(faces[i].height * SCALE_COEF);
+
+    //rectangle(frame, Point(face_center.x - (w2/2), face_center.y - (h2/2)), Point(face_center.x + (w2/2), face_center.y + (h2/2)), Scalar(255, 0, 255), 4);
     ellipse(frame, face_center, Size(faces[i].width/2, faces[i].height/2), 0, 0, 360, Scalar(255, 0, 255), 4, 8, 0);
 
     //Eyes detection

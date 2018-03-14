@@ -22,9 +22,8 @@ chrome.runtime.onMessageExternal.addListener(
     // TODO: Validate that sender.id is allowed to invoke the app!
 
     console.log('TODO: Do something with ' + message );
-    if(message=="test"){
-      send();
-                   test();
+    if(message=="300"){
+      send("301");
 
     }
 
@@ -41,18 +40,20 @@ socket.create({}, function(_sockInfo){
                 throw "Bind failed"
             }
             console.log("Socket created and bound.");
-
             socket.onReceive.addListener(function(info){
                 console.log('Received packet from ' + info.remoteAddress + 
-                            ' : ' + ab2str(info.data) + ' ' + info.remotePort + ', length ' + info.data.length);
+                  ' : ' + ab2str(info.data) + ' ' + info.remotePort + ', length ' + info.data.length);
+                console.log('checking if ' + ab2str(info.data) + ' = 302 ');
+                if(ab2str(info.data).localeCompare("302")){
+                  console.log("YES");
+                     test("quentin@gmail.com");
+                     console.log("sent id for connexion");
+                }
             });
         });
     });
 
-function send(){
-    
-    var wholeString = "what is the meaning of life";            
-
+function send(wholeString){
   chrome.sockets.udp.create({}, function (socketInfo) {
       // The socket is created, now we can send some data
       var socketId = socketInfo['socketId'];
@@ -82,10 +83,9 @@ function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
-function test(){
+function test(message){
 var app_id = "bgldmojaamnojiefdcobliedlibdkcnd";
 
-    var message = "test";
     chrome.runtime.sendMessage(app_id, message, function(result) {
         if (chrome.runtime.lastError) {
             // Handle error, e.g. app not installed
