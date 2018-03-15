@@ -16,8 +16,13 @@ char pssw[100];
 RSA *pubkey, *privkey;
 int encrypt_enable = 0;
 char *encrypt_buf;
+int hash = 1;
 
 int main(int argc, char const *argv[]) {
+
+	//Hash var
+	char mdString[33];
+	unsigned char digest[MD5_DIGEST_LENGTH];
 
 	/*Socket var*/
 	char buf[BUF_SIZE];
@@ -134,6 +139,18 @@ int main(int argc, char const *argv[]) {
 				memset(buf, 0, BUF_SIZE);
 				sprintf(buf, "%s", encrypt_buf);
 
+			}
+
+			if (hash){
+				for (int i = 0; i<strlen(pssw); i++)
+					printf("%d(%c) ", pssw[i], pssw[i]);
+				printf("\n");
+				printf("Hint: %d\n", strcmp(pssw, (const char*)"azertyuiop"));
+				MD5((unsigned char*)&pssw, strlen(pssw), (unsigned char*)&digest);    
+			    for(int i = 0; i < 16; i++)
+			         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+			     if (DEBUG)
+			     	printf("md5 of '%s' : %s\n", pssw, mdString);
 			}
 
 			if(DEBUG)
@@ -268,7 +285,7 @@ int main(int argc, char const *argv[]) {
 
 int first_conn_routine(int s_cli, char *buf){
 
-	char mail[50], pseudo[50], mdp[50], mdp_confirmation[50], gender[10], name[50], first_name[50], lang[10];
+	char mail[50], pseudo[50], mdp[100], mdp_confirmation[100], gender[10], name[50], first_name[50], lang[10];
 	char **splited_req;
 	int splited_req_size;
 	int login_ok = 0, mdp_ok = 0;
