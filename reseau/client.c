@@ -31,7 +31,7 @@ void die(char *s){
  
 
 int sendviaudp(char * message){
-    printf("sending %d\n", message);
+    printf("sending %s\n", message);
     struct sockaddr_in si_other;
     int s, i, slen=sizeof(si_other);
     char buf [BUFLEN];
@@ -43,7 +43,7 @@ int sendviaudp(char * message){
  
     memset((char *) &si_other, 0, sizeof(si_other));
     si_other.sin_family = AF_INET;
-    si_other.sin_port = htons(PORT_S);
+    si_other.sin_port = htons(PORT_C);
      
     if (inet_aton(SERVER , &si_other.sin_addr) == 0) 
     {
@@ -53,7 +53,6 @@ int sendviaudp(char * message){
       
     //send the message
     if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1){
-        printf("sending\n");
         die("sendto()");
 
     }
@@ -62,10 +61,6 @@ int sendviaudp(char * message){
     //clear the buffer by filling null, it might have previously received data
     memset(buf,'\0', BUFLEN);
     //try to receive some data, this is a blocking call
-    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
-    {
-        die("recvfrom()");
-    }
      
     puts(buf);
     close(s);
@@ -82,6 +77,7 @@ int main(int argc, char const *argv[]) {
 
 	/*Socket var*/
 	char buf[BUF_SIZE];
+	char buf2[BUF_SIZE];
 	memset (buf, 0, BUF_SIZE);
 	int s_cli;
 	struct sockaddr_in serv_addr;
@@ -666,19 +662,20 @@ int conn_to_website_routine(int s_cli, char *buf){
 
     struct sockaddr_in si_me, si_other;
      
-    int s, i, slen = sizeof(si_other) , recv_len;
+    int s, i, slen = sizeof(si_other) , recv_len, recv_len2;
      
     //create a UDP socket
     if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
         die("socket");
     }
-     
+             printf("SOCKET OK\n" );
+
     // zero out the structure
     memset((char *) &si_me, 0, sizeof(si_me));
      
     si_me.sin_family = AF_INET;
-    si_me.sin_port = htons(PORT_C);
+    si_me.sin_port = htons(PORT_S);
     si_me.sin_addr.s_addr = htonl(INADDR_ANY);
      
     //bind socket to port
@@ -689,7 +686,7 @@ int conn_to_website_routine(int s_cli, char *buf){
      
 
 	int buf_len = sizeof(buf);
-	char site[50], demacon[4], password[50], mail[100];
+	char site[50], demacon[50], password[50], mail[100];
 	int splited_req_size, splited_mdp_size, splited_data_size;
 	char **splited_req, **splited_mdp, **splited_data;
 	memset(site, 0, 50);
@@ -701,217 +698,244 @@ int conn_to_website_routine(int s_cli, char *buf){
 	/*Timeout var*/
 	fd_set readfds;
 	struct timeval timeout;
+	
 
-		if ((recv_len = recvfrom(s, demacon, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
-	{
-	    die("recvfrom()");
-	    printf("demande de connexion code : %d \n", demacon);
-	}
-	if(strcmp(demacon, "300")){
+	printf("attente de connnexion : \n");
 
-	/*Demande de connexion*/
-	strcpy(buf, "001;connexion");
-	if(DEBUG)
-		printf("\t### Message envoyé : %s\n", buf);
-	if(ONLINE)
-		write(s_cli, buf, strlen(buf));
-
-	if(ONLINE){
-		timeout_config(s_cli, &readfds, &timeout);
-		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
-		if (!select_tt){
-			if (DEBUG)
-				printf("\t### CONNEXION Timeout\n");
-			return 0;
-		}
-		memset(buf, 0, buf_len);
-		read(s_cli, buf, sizeof(buf));
-	}
-	else
-		strcpy(buf, "000;0K");//exemple
-
-	if(DEBUG)
-		printf("\t### Message recu : %s\n", buf);
-	if (split_message(&code, data, buf, s_cli))
-    	return 1;
-	if(code != OK){
-		if(DEBUG)
-			printf("\t### Permission de connexion au serveur refusé.\n");
-		return 0;
-	}
-
-	/*authentification*/
-	/*printf("Veuillez entrer vos identifiants de connexion:\n");
-	printf("\tLogin: ");
-	scanf("%s", login);
-	printf("\tPassword: ");
-	scanf("%s", pssw);*/
-	memset(buf, 0, BUF_SIZE);
-	sprintf(buf, "%d;%s,%s", 103, login, pssw);
-	if(DEBUG)
-		printf("\t### Message envoyé : %s\n", buf);
-	if(ONLINE)
-		write(s_cli, buf, strlen(buf));
-
-	memset(buf, 0, BUF_SIZE);
-	if(ONLINE){
-		timeout_config(s_cli, &readfds, &timeout);
-		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
-		if (!select_tt){
-			if (DEBUG)
-				printf("\t### CONNEXION Timeout\n");
-			return 0;
-		}
-		read(s_cli, buf, BUF_SIZE);
-	}
-	else
-		strcpy(buf, "000;0K");//exemple
-
-	if(DEBUG)
-		printf("\t### Message recu : %s\n", buf);
-
-	if (split_message(&code, data, buf, s_cli))
-    	return 1;
-
-	if(code != OK){
-		if(DEBUG)
-			printf("\t### Permission de connexion au serveur refusé.\n");
-		return 0;
-	}
-
-	/*demande utilisateur*/
-	printf("Veuillez choisir le site auquel se connecter : \t");
-	//scanf("%s", site);
- 	if ((recv_len = recvfrom(s, site, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
+	  //try to receive some data, this is a blocking call
+        if ((recv_len = recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
         {
             die("recvfrom()");
-            printf("connexion à %s \n", site);
         }
-   	printf("%s\n", site);
-         
-	printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	 printf("UDP recu :code = %s \n", buf);
 
-	/*Envoie 100;site;ID_CLIENT*/
-	memset(buf, 0, BUF_SIZE);
-	strcpy(buf, "100");
-	strcat(buf, ";");
-	strcat(buf, site);
+	 printf("on lance la procédure \n");
+	 sendviaudp("309");
+		/*Demande de connexion*/
+		strcpy(buf, "001;connexion");
+		if(DEBUG)
+			printf("\t### Message envoyé : %s\n", buf);
+		if(ONLINE)
+			write(s_cli, buf, strlen(buf));
 
-	if(DEBUG)
-		printf("\t### Message envoyé : %s\n", buf);
-	if(ONLINE)
-		write(s_cli, buf, strlen(buf));
+		if(ONLINE){
+			timeout_config(s_cli, &readfds, &timeout);
+			int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+			if (!select_tt){
+				if (DEBUG)
+					printf("\t### CONNEXION Timeout\n");
+				return 0;
+			}
+			memset(buf, 0, buf_len);
+			read(s_cli, buf, sizeof(buf));
+		}
+		else
+			strcpy(buf, "000;0K");//exemple
 
-	/*Reception de la liste des comptes pour ce sites*/
-	memset(buf, 0, BUF_SIZE);
-	if(ONLINE){
-		timeout_config(s_cli, &readfds, &timeout);
-		int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
-		if (!select_tt){
-			if (DEBUG)
-				printf("\t### CONNEXION Timeout\n");
+		if(DEBUG)
+			printf("\t### Message recu : %s\n", buf);
+		if (split_message(&code, data, buf, s_cli))
+	    	return 1;
+		if(code != OK){
+			if(DEBUG)
+				printf("\t### Permission de connexion au serveur refusé.\n");
 			return 0;
 		}
-		read(s_cli, buf, BUF_SIZE);
-	}
-	else
-		strcpy(buf, "200;mattvil@gmail.com,jean@ucp.fr,jack@mit.com"); //exemple
 
-	if(DEBUG)
-		printf("\t### Message recu : %s\n", buf);
-	if (split_message(&code, data, buf, s_cli))
-    	return 1;
-	splited_data = str_split(data, ',', &splited_data_size);
+		/*authentification*/
+		/*printf("Veuillez entrer vos identifiants de connexion:\n");
+		printf("\tLogin: ");
+		scanf("%s", login);
+		printf("\tPassword: ");
+		scanf("%s", pssw);*/
+		memset(buf, 0, BUF_SIZE);
+		sprintf(buf, "%d;%s,%s", 103, login, pssw);
+		if(DEBUG)
+			printf("\t### Message envoyé : %s\n", buf);
+		if(ONLINE)
+			write(s_cli, buf, strlen(buf));
 
-	switch(code){
-		/*Site il y a une lisye de site dispo*/
-		case IDS_SD :
-			printf("Voici les comptes %s auquel vous avez accès : \n", site);
-			for(i=0; i<splited_data_size; i++)
-				printf("\t%d - %s\n", i+1, splited_data[i]);
-			printf("A quel compte voulez vous vous connecter ? (choisir un numero) : ");
-			int num_choice;
-			//scanf("%d", &num_choice);
-			num_choice = 0;
-
-			if(num_choice<0 || num_choice>splited_data_size){
-				if(DEBUG)
-					printf("\t### Erreur dans la selection du compte\n");
+		memset(buf, 0, BUF_SIZE);
+		if(ONLINE){
+			timeout_config(s_cli, &readfds, &timeout);
+			int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+			if (!select_tt){
+				if (DEBUG)
+					printf("\t### CONNEXION Timeout\n");
 				return 0;
 			}
+			read(s_cli, buf, BUF_SIZE);
+		}
+		else
+			strcpy(buf, "000;0K");//exemple
 
-			/*construction de la chaine d'envoi*/
-			memset(buf, 0, BUF_SIZE);
-			strcpy(buf, "101;");
-			strcat(buf, splited_data[num_choice-1]);
+		if(DEBUG)
+			printf("\t### Message recu : %s\n", buf);
+
+		if (split_message(&code, data, buf, s_cli))
+	    	return 1;
+
+		if(code != OK){
 			if(DEBUG)
-				printf("\t### Message envoyé : %s\n", buf);
-			if(ONLINE)
-				write(s_cli, buf, strlen(buf));
+				printf("\t### Permission de connexion au serveur refusé.\n");
+			return 0;
+		}
 
-			memset(buf, 0, BUF_SIZE);
-			if(ONLINE){
-				timeout_config(s_cli, &readfds, &timeout);
-				int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
-				if (!select_tt){
-					if (DEBUG)
-						printf("\t### CONNEXION Timeout\n");
+		/*demande utilisateur*/
+		printf("Veuillez choisir le site auquel se connecter : \t");
+		//scanf("%s", site);
+
+		    close(s);
+
+	  if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+	    {
+	        die("socket");
+	    }
+
+	    // zero out the structure
+	    memset((char *) &si_me, 0, sizeof(si_me));
+	     
+	    si_me.sin_family = AF_INET;
+	    si_me.sin_port = htons(PORT_S);
+	    si_me.sin_addr.s_addr = htonl(INADDR_ANY);
+	     
+	    //bind socket to port
+	    if( bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) == -1){
+	        die("bind");
+	    }
+
+	 	if ((recv_len = recvfrom(s, site, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1){
+	            die("recvfrom()");
+	        }
+	    printf("connexion à %s \n", site);
+	         
+		printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+
+		/*Envoie 100;site;ID_CLIENT*/
+		memset(buf, 0, BUF_SIZE);
+		strcpy(buf, "100");
+		strcat(buf, ";");
+		strcat(buf, site);
+
+		if(DEBUG)
+			printf("\t### Message envoyé : %s\n", buf);
+		if(ONLINE)
+			write(s_cli, buf, strlen(buf));
+
+		/*Reception de la liste des comptes pour ce sites*/
+		memset(buf, 0, BUF_SIZE);
+		if(ONLINE){
+			timeout_config(s_cli, &readfds, &timeout);
+			int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+			if (!select_tt){
+				if (DEBUG)
+					printf("\t### CONNEXION Timeout\n");
+				return 0;
+			}
+			read(s_cli, buf, BUF_SIZE);
+		}
+		else
+			strcpy(buf, "200;mattvil@gmail.com,jean@ucp.fr,jack@mit.com"); //exemple
+
+		if(DEBUG)
+			printf("\t### Message recu : %s\n", buf);
+		if (split_message(&code, data, buf, s_cli))
+	    	return 1;
+		splited_data = str_split(data, ',', &splited_data_size);
+
+		switch(code){
+			/*Site il y a une lisye de site dispo*/
+			case IDS_SD :
+				printf("Voici les comptes %s auquel vous avez accès : \n", site);
+				//for(i=0; i</*splited_data_size*/1; i++)
+				i=0;
+					printf("\t%d - %s\n", i+1, splited_data[i]);
+				printf("A quel compte voulez vous vous connecter ? (choisir un numero) : ");
+				int num_choice;
+				//scanf("%d", &num_choice);
+				num_choice = 0;
+				printf("par la?");
+
+				if(num_choice<0 || num_choice>splited_data_size){
+					if(DEBUG)
+						printf("\t### Erreur dans la selection du compte\n");
 					return 0;
 				}
-				read(s_cli, buf, BUF_SIZE);
-			}
-			else
-				strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
 
-			if(DEBUG)
-				printf("\t### Message recu : %s\n", buf);
-			splited_mdp = str_split(buf, ';', &splited_mdp_size);
-			if(atoi(splited_mdp[0]) == PSSW_SD){
-				memset(password, 0, 50);
-				strcpy(password, splited_mdp[1]);
-				printf("Le mot de passe du compte %s pour le site %s est %s\n", splited_data[num_choice - 1], site, password);
+				/*construction de la chaine d'envoi*/
+				printf("ici?");
 				memset(buf, 0, BUF_SIZE);
-				strcat(buf, "0");
-				if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
-			        printf("sending\n");
-			        die("sendto()");
-			    }
-				memset(buf, 0, BUF_SIZE);
-				strcat(buf, "305;");
-				strcat(buf, splited_data[num_choice - 1]);
-				strcat(buf, "/");
-				strcat(buf, password);
-				if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
-			        printf("sending\n");
-			        die("sendto()");
-			    }
-     
-			}
-			else{
-				printf("Une erreur est survenue\n");
+				strcpy(buf, "101;");
+				strcat(buf, splited_data[num_choice-1]);
+								printf("la?");
+
 				if(DEBUG)
-					printf("\t### Erreur dans le code reçu %d dans : %s\n", atoi(splited_mdp[0]), buf);
-				return 0;
-			}
+					printf("\t### Message envoyé : %s\n", buf);
+				if(ONLINE)
+					write(s_cli, buf, strlen(buf));
 
-			break;
-		/*si il n'y à pas de site dispo pour ce site*/
-		case NO_ACC :
-			printf("Vous n'avez pas de compte enregistré pour le site %s\n", site);
-			memset(buf, 0, BUF_SIZE);
-			strcat(buf, "999");
-			if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
-			    printf("sending\n");
-			    die("sendto()");
-			}
-			break;
-		default :
-			printf("Une erreur est survenue :(\n");
-			if(DEBUG)
-				printf("\t### Erreur dans le code reçu %d dans : %s\n", atoi(splited_req[0]), buf);
-			return 0;
-	}
-	}
+				memset(buf, 0, BUF_SIZE);
+				if(ONLINE){
+					timeout_config(s_cli, &readfds, &timeout);
+					int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+					if (!select_tt){
+						if (DEBUG)
+							printf("\t### CONNEXION Timeout\n");
+						return 0;
+					}
+					read(s_cli, buf, BUF_SIZE);
+				}
+				else
+					strcpy(buf, "201;c38e<5fe{5e#ec5^}{ec2#ec5"); //exemple
+
+				if(DEBUG)
+					printf("\t### Message recu : %s\n", buf);
+				splited_mdp = str_split(buf, ';', &splited_mdp_size);
+				if(atoi(splited_mdp[0]) == PSSW_SD){
+					memset(password, 0, 50);
+					strcpy(password, splited_mdp[1]);
+					printf("Le mot de passe du compte %s pour le site %s est %s\n", splited_data[num_choice - 1], site, password);
+					memset(buf, 0, BUF_SIZE);
+					strcat(buf, "0");
+					if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+				        printf("sending\n");
+				        die("sendto()");
+				    }
+					memset(buf, 0, BUF_SIZE);
+					strcat(buf, "305;");
+					strcat(buf, splited_data[num_choice - 1]);
+					strcat(buf, "/");
+					strcat(buf, password);
+					if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+				        printf("sending\n");
+				        die("sendto()");
+				    }
+	     
+				}
+				else{
+					printf("Une erreur est survenue\n");
+					if(DEBUG)
+						printf("\t### Erreur dans le code reçu %d dans : %s\n", atoi(splited_mdp[0]), buf);
+					return 0;
+				}
+
+				break;
+			/*si il n'y à pas de site dispo pour ce site*/
+			case NO_ACC :
+				printf("Vous n'avez pas de compte enregistré pour le site %s\n", site);
+				memset(buf, 0, BUF_SIZE);
+				strcat(buf, "999");
+				if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+				    printf("sending\n");
+				    die("sendto()");
+				}
+				break;
+			default :
+				printf("Une erreur est survenue :(\n");
+				if(DEBUG)
+					printf("\t### Erreur dans le code reçu %d dans : %s\n", atoi(splited_req[0]), buf);
+				return 0;
+		}
 
 	return 1;
 }

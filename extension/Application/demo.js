@@ -16,21 +16,28 @@ chrome.app.runtime.onLaunched.addListener(function() {
     });
 });
 
+function splitString(stringToSplit, separator) {
+  return arrayOfStrings = stringToSplit.split(separator);
+}
 
 chrome.runtime.onMessageExternal.addListener(
   function(message, sender, sendResponse) {
     // TODO: Validate that sender.id is allowed to invoke the app!
-
     console.log('TODO: Do something with ' + message );
     if(message=="300"){
-      send("301");
-
+      send("300");
+    }
+    var slash = "/";
+    var ptvirgule = ";";
+    var splitmsg = splitString(message, ptvirgule);
+    var code = splitmsg[0];
+    if(code=="302"){
+      var domainname = splitmsg[1];
+      send(domainname);
+      console.log("I just sent to client the domain name : " + domainname);
     }
 
-    // Do something, e.g. reply to message
     sendResponse('Processed file');
-    // if you want to send a reply asynchronously, uncomment the next line.
-    // return true;
 });
 
 socket.create({}, function(_sockInfo){
@@ -43,15 +50,21 @@ socket.create({}, function(_sockInfo){
             socket.onReceive.addListener(function(info){
                 console.log('Received packet from ' + info.remoteAddress + 
                   ' : ' + ab2str(info.data) + ' ' + info.remotePort + ', length ' + info.data.length);
-                console.log('checking if ' + ab2str(info.data) + ' = 302 ');
-                if(ab2str(info.data).localeCompare("302")){
-                  console.log("YES");
-                     test("quentin@gmail.com");
-                     console.log("sent id for connexion");
+               if(ab2str(info.data)=="309"){
+                           console.log("I just sent to client i want to connect");
+                  messagepassing("301");
+                }
+                var slash = "/";
+                var ptvirgule = ";";
+                var splitmsg = splitString(ab2str(info.data), ptvirgule);
+                var code = splitmsg[0];
+                if(code=="305"){
+                  messagepassing(ab2str(info.data));
+                  console.log("I just sent to client the login ids : " + splitmsg[1]);
                 }
             });
         });
-    });
+    }); 
 
 function send(wholeString){
   chrome.sockets.udp.create({}, function (socketInfo) {
@@ -60,7 +73,7 @@ function send(wholeString){
       var arrayBuffer = stringToArrayBuffer("hello");
       chrome.sockets.udp.bind(socketId, HOST, 0, function (result) {
           chrome.sockets.udp.send(socketId, stringToArrayBuffer(wholeString), HOST, PORT, function (sendInfo) {
-              console.log("sent " + sendInfo.bytesSent);
+              console.log("sent " + wholeString + " total bytes sent : " +  sendInfo.bytesSent);
               if (sendInfo.resultCode < 0) {
                   console.log("Error listening: " + chrome.runtime.lastError.message);
               }
@@ -83,9 +96,8 @@ function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
-function test(message){
+function messagepassing(message){
 var app_id = "bgldmojaamnojiefdcobliedlibdkcnd";
-
     chrome.runtime.sendMessage(app_id, message, function(result) {
         if (chrome.runtime.lastError) {
             // Handle error, e.g. app not installed
