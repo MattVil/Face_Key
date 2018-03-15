@@ -18,6 +18,62 @@ int encrypt_enable = 0;
 char *encrypt_buf;
 int hash = 1;
 
+
+#define SERVER "127.0.0.1"
+#define BUFLEN 512  //Max length of buffer
+#define PORT_C 3002   //The port on which to listen for incoming data
+#define PORT_S 3001   //The port on which to listen for incoming data
+ 
+void die(char *s){
+    perror(s);
+    exit(1);
+}
+ 
+
+int sendviaudp(char * message){
+    printf("sending %d\n", message);
+    struct sockaddr_in si_other;
+    int s, i, slen=sizeof(si_other);
+    char buf [BUFLEN];
+ 
+    if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    {
+        die("socket");
+    }
+ 
+    memset((char *) &si_other, 0, sizeof(si_other));
+    si_other.sin_family = AF_INET;
+    si_other.sin_port = htons(PORT_S);
+     
+    if (inet_aton(SERVER , &si_other.sin_addr) == 0) 
+    {
+        fprintf(stderr, "inet_aton() failed\n");
+        exit(1);
+    }
+      
+    //send the message
+    if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+        printf("sending\n");
+        die("sendto()");
+
+    }
+     
+    //receive a reply and print it
+    //clear the buffer by filling null, it might have previously received data
+    memset(buf,'\0', BUFLEN);
+    //try to receive some data, this is a blocking call
+    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
+    {
+        die("recvfrom()");
+    }
+     
+    puts(buf);
+    close(s);
+    printf("sent\n");
+    return 0;
+}
+
+
 int main(int argc, char const *argv[]) {
 
 	//Hash var
@@ -62,19 +118,21 @@ int main(int argc, char const *argv[]) {
 		s_cli = socket(PF_INET, SOCK_STREAM, 0);
 		connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
 
-		//RSA_FLAG
-		send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-		recv_data(s_cli, buf);
-		receive_file2(s_cli, "client_x/keys");
-		pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
-		if (pubkey == NULL){
-			encrypt_enable = 0;
-			printf("No Encryption\n");
-		}
-		else{
-			if (DEBUG)
-				printf("Key Loaded\n");
-			encrypt_buf = malloc(RSA_size(pubkey));
+		if (encrypt_enable){
+			//RSA_FLAG
+			send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+			recv_data(s_cli, buf);
+			receive_file2(s_cli, "client_x/keys");
+			pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
+			if (pubkey == NULL){
+				encrypt_enable = 0;
+				printf("No Encryption\n");
+			}
+			else{
+				if (DEBUG)
+					printf("Key Loaded\n");
+				encrypt_buf = malloc(RSA_size(pubkey));
+			}
 		}
 
 		if (connect_flag == -1){
@@ -219,10 +277,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = first_conn_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
@@ -233,10 +293,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = conn_to_website_routine(s_cli, buf);
 				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
@@ -251,10 +313,12 @@ int main(int argc, char const *argv[]) {
 				if(ONLINE)
 					s_cli = socket(PF_INET, SOCK_STREAM, 0);
 					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					//RSA_FLAG
-					send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
-					recv_data(s_cli, buf);
-					receive_file2(s_cli, "client_x/keys");
+					if (encrypt_enable){
+						//RSA_FLAG
+						send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+						recv_data(s_cli, buf);
+						receive_file2(s_cli, "client_x/keys");
+					}
 		
 					flag = weight_update_routine(s_cli, buf);
 				if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
@@ -600,12 +664,36 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	//char login[100], pssw[100];
 
+    struct sockaddr_in si_me, si_other;
+     
+    int s, i, slen = sizeof(si_other) , recv_len;
+     
+    //create a UDP socket
+    if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    {
+        die("socket");
+    }
+     
+    // zero out the structure
+    memset((char *) &si_me, 0, sizeof(si_me));
+     
+    si_me.sin_family = AF_INET;
+    si_me.sin_port = htons(PORT_C);
+    si_me.sin_addr.s_addr = htonl(INADDR_ANY);
+     
+    //bind socket to port
+    if( bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) == -1)
+    {
+        die("bind");
+    }
+     
+
 	int buf_len = sizeof(buf);
-	int i;
-	char site[50], password[50], mail[100];
+	char site[50], demacon[4], password[50], mail[100];
 	int splited_req_size, splited_mdp_size, splited_data_size;
 	char **splited_req, **splited_mdp, **splited_data;
 	memset(site, 0, 50);
+	memset(demacon, 0, 4);
 	memset(buf, 0, buf_len);
 	int code;
 	char data[BUF_SIZE];
@@ -613,6 +701,13 @@ int conn_to_website_routine(int s_cli, char *buf){
 	/*Timeout var*/
 	fd_set readfds;
 	struct timeval timeout;
+
+		if ((recv_len = recvfrom(s, demacon, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
+	{
+	    die("recvfrom()");
+	    printf("demande de connexion code : %d \n", demacon);
+	}
+	if(strcmp(demacon, "300")){
 
 	/*Demande de connexion*/
 	strcpy(buf, "001;connexion");
@@ -686,8 +781,14 @@ int conn_to_website_routine(int s_cli, char *buf){
 
 	/*demande utilisateur*/
 	printf("Veuillez choisir le site auquel se connecter : \t");
-	scanf("%s", site);
-
+	//scanf("%s", site);
+ 	if ((recv_len = recvfrom(s, site, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
+        {
+            die("recvfrom()");
+            printf("connexion à %s \n", site);
+        }
+   	printf("%s\n", site);
+         
 	printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
 
 	/*Envoie 100;site;ID_CLIENT*/
@@ -730,7 +831,8 @@ int conn_to_website_routine(int s_cli, char *buf){
 				printf("\t%d - %s\n", i+1, splited_data[i]);
 			printf("A quel compte voulez vous vous connecter ? (choisir un numero) : ");
 			int num_choice;
-			scanf("%d", &num_choice);
+			//scanf("%d", &num_choice);
+			num_choice = 0;
 
 			if(num_choice<0 || num_choice>splited_data_size){
 				if(DEBUG)
@@ -768,6 +870,22 @@ int conn_to_website_routine(int s_cli, char *buf){
 				memset(password, 0, 50);
 				strcpy(password, splited_mdp[1]);
 				printf("Le mot de passe du compte %s pour le site %s est %s\n", splited_data[num_choice - 1], site, password);
+				memset(buf, 0, BUF_SIZE);
+				strcat(buf, "0");
+				if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+			        printf("sending\n");
+			        die("sendto()");
+			    }
+				memset(buf, 0, BUF_SIZE);
+				strcat(buf, "305;");
+				strcat(buf, splited_data[num_choice - 1]);
+				strcat(buf, "/");
+				strcat(buf, password);
+				if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+			        printf("sending\n");
+			        die("sendto()");
+			    }
+     
 			}
 			else{
 				printf("Une erreur est survenue\n");
@@ -780,12 +898,19 @@ int conn_to_website_routine(int s_cli, char *buf){
 		/*si il n'y à pas de site dispo pour ce site*/
 		case NO_ACC :
 			printf("Vous n'avez pas de compte enregistré pour le site %s\n", site);
+			memset(buf, 0, BUF_SIZE);
+			strcat(buf, "999");
+			if (sendto(s, buf, strlen(buf) , 0 , (struct sockaddr *) &si_other, slen)==-1){
+			    printf("sending\n");
+			    die("sendto()");
+			}
 			break;
 		default :
 			printf("Une erreur est survenue :(\n");
 			if(DEBUG)
 				printf("\t### Erreur dans le code reçu %d dans : %s\n", atoi(splited_req[0]), buf);
 			return 0;
+	}
 	}
 
 	return 1;

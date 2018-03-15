@@ -26,7 +26,7 @@ int extractID(AccountList list, char* mail);
 
 RSA *pubkey, *privkey;
 int encrypt_enable = 0;
-int hash = 1;
+int hash = 0;
 char *encrypt_buf;
 char *err;
 
@@ -101,14 +101,16 @@ int main(){
 			char trace[20];
 			char path[50];
 
-			pid_t pid = getpid();
-			sprintf(path, "face_key_db/keys/%d", pid);
-			receive_file2(s_dial, path);
-			send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
-			recv_data(s_dial, buf);
-			sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
-			privkey = loadKey("server_data/keys/privatekey.pem", PRIVKEY);
-			encrypt_buf = malloc(256);
+			if (encrypt_enable){
+				pid_t pid = getpid();
+				sprintf(path, "face_key_db/keys/%d", pid);
+				receive_file2(s_dial, path);
+				send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
+				recv_data(s_dial, buf);
+				sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
+				privkey = loadKey("server_data/keys/privatekey.pem", PRIVKEY);
+				encrypt_buf = malloc(256);
+			}
 
 			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
