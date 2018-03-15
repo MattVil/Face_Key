@@ -29,7 +29,7 @@ if(face_cascade.empty()):
 
 path = "coloredmodel/"
 
-model = load_model(path + 'new_model.h5')
+model = load_model('resultats/' + path + 'new_model.h5')
 print("Loaded model from disk")
 
 names = ['Romane', 'Guillaume', 'Bruno', 'Julien', 'Solene', 'Pierre', 'Clemence', 'Quentin', 'JP', 'Phillipe', 'Louis', 'Matthieu', 'Mihail', 'Orphyse', 'Eugenie', 'Sofiane', 'Mathilde']
