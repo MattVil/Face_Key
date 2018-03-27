@@ -15,6 +15,7 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/md5.h>
+#include "ipcTools.h"
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
