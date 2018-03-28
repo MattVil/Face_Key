@@ -18,38 +18,47 @@ int encrypt_enable = 0;
 unsigned char *encrypt_buf;
 int hash = 1;
 
+key_t semkey;
+pid_t pidFork;
+int semid, shmkey, *fd;
+int tube[2];
+char tubeBuffer[100];
+
 int main(int argc, char const *argv[]) {
 
-	//Sem & SharedMem Init
-	key_t semkey;
-	pid_t pidFork;
-	int semid, shmkey, *x;
-
-	if ((semkey = ftok("sem.key", 1)) == -1){
-		perror("Semkey creation failed");
-		exit(-1);
-	}
-	if ((shmkey = ftok("shm.key", 1)) == -1){
-		perror("Semkey creation failed");
-		exit(-1);
-	}
-
-	if ((semid = semalloc(semkey, 0)) == -1){
-		perror("Semaphore creation failed");
-		exit(-1);
-	}
-
-	x = shmalloc(shmkey, sizeof(int));
-	*x = 0;
-
+	printf("Lancement du programme de reconnaissance\n");
 	pidFork = fork();
-	//Child case
 	if (pidFork == 0){
-
+		system("./reco");
 	}
-
-	//Parent case
 	else{
+		printf("Programme lancé\n");
+		//Sem & SharedMem Init
+		if ((semkey = ftok("sem.key", 1)) == -1){
+			perror("Semkey creation failed");
+			exit(-1);
+		}
+		if ((shmkey = ftok("shm.key", 1)) == -1){
+			perror("Semkey creation failed");
+			exit(-1);
+		}
+
+		if ((semid = semalloc(semkey, 0)) == -1){
+			perror("Semaphore creation failed");
+			exit(-1);
+		}
+		if (pipe(tube)) {
+		    perror("erreur creation de tube");
+		    return 1;
+		}
+		printf("SEMID: %d\n", semid);
+		fd = shmalloc(shmkey, sizeof(int));
+		*fd = tube[0];
+		V(semid);
+		P(semid);
+		*fd = tube[1];
+		V(semid);
+		close(tube[1]);
 
 		int quitFlag = 1;
 
@@ -339,6 +348,7 @@ int main(int argc, char const *argv[]) {
 			perror("Semaphore destruction failed");
 			exit(-1);
 		}
+		close(tube[0]);
 	}
 
 	return 0;
@@ -749,7 +759,16 @@ int conn_to_website_routine(int s_cli, char *buf){
 	printf("Veuillez choisir le site auquel se connecter : \t");
 	scanf("%s", site);
 
-	printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	//printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	//Envoie signal
+	V(semid);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	printf("Traitement des informations recu\n");
 
 	/*Envoie 100;site;ID_CLIENT*/
 	memset(buf, 0, BUF_SIZE);

@@ -7,7 +7,6 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-
 int semalloc(key_t key, int valInit);
 int semfree(int semid);
 void P(int semid);
