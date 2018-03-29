@@ -1,10 +1,13 @@
-all: server client take_picture
+all: server client take_picture reco
 
 server: server.o util.o dbutil.o
 	gcc -ggdb -Wall -Wextra server.o util.o dbutil.o -o server -lpq -lcrypto -lssl
 
 client: client.o util.o
 	gcc -ggdb -Wall -Wextra client.o util.o ipcTools.o -o client -lcrypto
+
+reco: ipcTools.o
+	g++ reco.cpp ipcTools.o -o reco
 
 take_picture:
 	g++ take_picture.cpp -o take_picture `pkg-config --cflags opencv` `pkg-config --libs opencv`

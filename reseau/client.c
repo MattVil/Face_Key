@@ -58,6 +58,7 @@ int main(int argc, char const *argv[]) {
 	x = shmalloc(shmkey, sizeof(int));
 	*x = 0;
 
+	printf("Lancement du programme de reconnaissance\n");
 	pidFork = fork();
 
 	//Client
@@ -370,7 +371,6 @@ int main(int argc, char const *argv[]) {
 			perror("Semaphore destruction failed");
 			exit(-1);
 		}
-
 		printf("Recognition process ended !\nGoodbye !\n");
 	}
 
@@ -783,6 +783,7 @@ int conn_to_website_routine(int s_cli, char *buf){
 	scanf("%s", site);
 
 	//printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+
 	printf("Info reconnaissance:\n");
 	V(semid);
 	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
