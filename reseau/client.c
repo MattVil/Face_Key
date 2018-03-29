@@ -1,3 +1,5 @@
+/** /!\ Attention /!\
+**/
 #include "util.h"
 
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
@@ -18,12 +20,15 @@ int encrypt_enable = 0;
 unsigned char *encrypt_buf;
 int hash = 1;
 
+//Sem & SharedMem Init
+key_t semkey;
+pid_t pidFork;
+int semid, shmkey, *x, tube[2];
+char tubeBuffer[100];
+
 int main(int argc, char const *argv[]) {
 
-	//Sem & SharedMem Init
-	key_t semkey;
-	pid_t pidFork;
-	int semid, shmkey, *x;
+	printf("Init SEM, SHM and PIPE\n");
 
 	if ((semkey = ftok("sem.key", 1)) == -1){
 		perror("Semkey creation failed");
@@ -39,17 +44,24 @@ int main(int argc, char const *argv[]) {
 		exit(-1);
 	}
 
+	if (pipe(tube)) {
+	    perror("erreur creation de tube");
+	    return 1;
+	}
+	/**
+	* 0 = Lecture
+	* 1 = Ecriture
+	**/
+
+	printf("SHM, SEM, TUBE OK\n");
+
 	x = shmalloc(shmkey, sizeof(int));
 	*x = 0;
 
 	pidFork = fork();
-	//Child case
-	if (pidFork == 0){
 
-	}
-
-	//Parent case
-	else{
+	//Client
+	if(pidFork == 0){
 
 		int quitFlag = 1;
 
@@ -329,6 +341,25 @@ int main(int argc, char const *argv[]) {
 		}
 
 		close(s_cli);
+	}
+
+	//Code de reconnaissance (père)
+	else{
+		printf("Loading Model...\n");
+		sleep(10);
+		printf("Model Loaded !\n");
+		while(waitpid(pidFork,0,0) < 0){
+			/*Traitement*/
+			P(semid);
+			tubeBuffer = "Autorisation";
+			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+			tubeBuffer = "0.98";
+			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+			tubeBuffer = "0.80 0.99 0.99 0.50 0.99";
+			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+		}
+
+		printf("Ending Recognition process ...\n");
 
 		//Free Semid & SharedMem
 		if (shmfree(shmkey) == -1){
@@ -339,6 +370,8 @@ int main(int argc, char const *argv[]) {
 			perror("Semaphore destruction failed");
 			exit(-1);
 		}
+
+		printf("Recognition process ended !\nGoodbye !\n");
 	}
 
 	return 0;
@@ -749,7 +782,15 @@ int conn_to_website_routine(int s_cli, char *buf){
 	printf("Veuillez choisir le site auquel se connecter : \t");
 	scanf("%s", site);
 
-	printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	//printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	printf("Info reconnaissance:\n");
+	V(semid);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
 
 	/*Envoie 100;site;ID_CLIENT*/
 	memset(buf, 0, BUF_SIZE);

@@ -19,7 +19,7 @@
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
-#define DEBUG 1
+#define DEBUG 0
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
 #define ONLINE 1
