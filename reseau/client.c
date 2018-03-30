@@ -1,11 +1,15 @@
 /** /!\ Attention /!\
 **/
 #include "util.h"
+#include "opencv/highgui.h"
+#include "opencv/cv.h"
 
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]);
 int weight_update_routine(int s_cli, char buf[BUF_SIZE]);
+void recognition(char buff[100], int user_class);
+void neuralNetwork(IplImage* frame);
 
 
 char IP_SERV[20] = "127.0.0.1";
@@ -146,7 +150,7 @@ int main(int argc, char const *argv[]) {
 			send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
 			recv_data(s_cli, buf);
 			receive_file2(s_cli, "client_x/keys");*/
-			
+
 	      flag = first_conn_routine(s_cli, buf);
 	      if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
 	      printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
@@ -178,7 +182,7 @@ int main(int argc, char const *argv[]) {
 					printf("Decrypted message: %s\n", buf);*/
 
 					unsigned char digest[MD5_DIGEST_LENGTH];
-					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
+					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);
 				    char mdString[33];
 				    for(int i = 0; i < 16; i++)
 				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
@@ -199,7 +203,7 @@ int main(int argc, char const *argv[]) {
 						printf("%d(%c) ", pssw[i], pssw[i]);
 					printf("\n");
 					printf("Hint: %d\n", strcmp(pssw, (const char*)"azertyuiop"));
-					MD5((unsigned char*)&pssw, strlen(pssw), (unsigned char*)&digest);    
+					MD5((unsigned char*)&pssw, strlen(pssw), (unsigned char*)&digest);
 				    for(int i = 0; i < 16; i++)
 				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
 				     if (DEBUG)
@@ -283,7 +287,7 @@ int main(int argc, char const *argv[]) {
 							recv_data(s_cli, buf);
 							receive_file2(s_cli, "client_x/keys");
 						}
-			
+
 						flag = first_conn_routine(s_cli, buf);
 					if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
 					close(s_cli);
@@ -299,7 +303,7 @@ int main(int argc, char const *argv[]) {
 							recv_data(s_cli, buf);
 							receive_file2(s_cli, "client_x/keys");
 						}
-			
+
 						flag = conn_to_website_routine(s_cli, buf);
 					if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
 			        if (!flag){
@@ -319,7 +323,7 @@ int main(int argc, char const *argv[]) {
 							recv_data(s_cli, buf);
 							receive_file2(s_cli, "client_x/keys");
 						}
-			
+
 						flag = weight_update_routine(s_cli, buf);
 					if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
 					if (flag){
@@ -343,15 +347,16 @@ int main(int argc, char const *argv[]) {
 
 		close(s_cli);
 	}
-
 	//Code de reconnaissance (père)
 	else{
+		char buffRecognition[100];
 		printf("Loading Model...\n");
 		sleep(20);
 		printf("Model Loaded !\n");
 		while(1){
 			/*Traitement*/
 			printf("Wait for Recognition !\n");
+			recognition(buffRecognition, ID_CLIENT);
 			if (waitpid(pidFork, 0, WNOHANG) != pidFork){
 				P(semid);
 				sprintf(tubeBuffer, "Autorisation");
@@ -934,7 +939,9 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 		return 1;
 	}
 	send_data(s_cli, UP, "OK", buf, BUF_SIZE);
+
 	receive_file2(s_cli, "client_x");
+
 	return 0;
 }
 
@@ -995,4 +1002,34 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 	}
 
 	return 0;
+}
+
+void recognition(char buff[100], int user_class){
+	printf("Ouai ca reconnais avec Opencv mdr\n");
+
+	//open the video stream
+	CvCapture* cap=cvCaptureFromCAM(0);
+	IplImage* frame;
+
+	//ignore the few first image bc they can be co
+	int i=0;
+	for(i=0; i<5; i++){
+		frame = cvQueryFrame(cap);
+	}
+
+	//pass somme image of the video stream on the neural network for recognition
+	for(i=0; i<10; i++){
+		frame = cvQueryFrame(cap);
+		neuralNetwork(frame);
+	}
+	//fake result of the recognition
+
+}
+
+void neuralNetwork(IplImage* frame){
+	/*
+	This function is just a simulation for the OS course.
+	The real neural network is implemented in python and can be found at :
+	/face_recognition/client_detect.py
+	*/
 }

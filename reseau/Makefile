@@ -4,7 +4,7 @@ server: server.o util.o dbutil.o
 	gcc -ggdb -Wall -Wextra server.o util.o dbutil.o -o server -lpq -lcrypto -lssl
 
 client: client.o util.o ipcTools.o
-	gcc -ggdb -Wall -Wextra client.o util.o ipcTools.o -o client -lcrypto
+	gcc -ggdb -Wall -Wextra client.o util.o ipcTools.o -o client -lcrypto `pkg-config --cflags opencv` `pkg-config --libs opencv`
 
 take_picture:
 	g++ take_picture.cpp -o take_picture `pkg-config --cflags opencv` `pkg-config --libs opencv`
