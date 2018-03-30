@@ -740,7 +740,7 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 		return 1;
 	}
 	send_data(s_cli, UP, "OK", buf, BUF_SIZE);
-	receive_file(s_cli, "client_x");
+	receive_file(s_cli, "client_x/");
 	return 0;
 }
 
