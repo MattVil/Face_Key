@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['neuralnetwork',['neuralNetwork',['../client_8c.html#a90937619433bf894fd8ebc6a36fdc015',1,'client.c']]]
+  ['first_5fconn_5froutine',['first_conn_routine',['../client_8c.html#abdbbb2ed12ec88b8baaef49290698cf9',1,'client.c']]]
 ];

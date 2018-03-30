@@ -1,0 +1,75 @@
+\hypertarget{client__simple__chrome_8c}{}\section{reseau/client\+\_\+simple\+\_\+chrome.c File Reference}
+\label{client__simple__chrome_8c}\index{reseau/client\+\_\+simple\+\_\+chrome.\+c@{reseau/client\+\_\+simple\+\_\+chrome.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{client__simple__chrome_8c_a24cd3c37a165a8c4626d9e78df4574ff}{S\+E\+R\+V\+ER}}~\char`\"{}127.\+0.\+0.\+1\char`\"{}
+\item 
+\#define \mbox{\hyperlink{client__simple__chrome_8c_ad974fe981249f5e84fbf1683b012c9f8}{B\+U\+F\+L\+EN}}~512
+\item 
+\#define \mbox{\hyperlink{client__simple__chrome_8c_a614217d263be1fb1a5f76e2ff7be19a2}{P\+O\+RT}}~3001
+\item 
+\#define \mbox{\hyperlink{client__simple__chrome_8c_acb270e4aec8a0ab123e6c24a5810150b}{P\+O\+R\+T2}}~3002
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{client__simple__chrome_8c_a282734757254386816e94d3491c27f34}{sendviaudp}} (char $\ast$message)
+\item 
+void \mbox{\hyperlink{client__simple__chrome_8c_a6001c195cd514c2dc549f922056bfcbf}{die}} (char $\ast$s)
+\item 
+int \mbox{\hyperlink{client__simple__chrome_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{client__simple__chrome_8c_ad974fe981249f5e84fbf1683b012c9f8}\label{client__simple__chrome_8c_ad974fe981249f5e84fbf1683b012c9f8}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!B\+U\+F\+L\+EN@{B\+U\+F\+L\+EN}}
+\index{B\+U\+F\+L\+EN@{B\+U\+F\+L\+EN}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{B\+U\+F\+L\+EN}{BUFLEN}}
+{\footnotesize\ttfamily \#define B\+U\+F\+L\+EN~512}
+
+\mbox{\Hypertarget{client__simple__chrome_8c_a614217d263be1fb1a5f76e2ff7be19a2}\label{client__simple__chrome_8c_a614217d263be1fb1a5f76e2ff7be19a2}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!P\+O\+RT@{P\+O\+RT}}
+\index{P\+O\+RT@{P\+O\+RT}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{P\+O\+RT}{PORT}}
+{\footnotesize\ttfamily \#define P\+O\+RT~3001}
+
+\mbox{\Hypertarget{client__simple__chrome_8c_acb270e4aec8a0ab123e6c24a5810150b}\label{client__simple__chrome_8c_acb270e4aec8a0ab123e6c24a5810150b}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!P\+O\+R\+T2@{P\+O\+R\+T2}}
+\index{P\+O\+R\+T2@{P\+O\+R\+T2}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{P\+O\+R\+T2}{PORT2}}
+{\footnotesize\ttfamily \#define P\+O\+R\+T2~3002}
+
+\mbox{\Hypertarget{client__simple__chrome_8c_a24cd3c37a165a8c4626d9e78df4574ff}\label{client__simple__chrome_8c_a24cd3c37a165a8c4626d9e78df4574ff}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!S\+E\+R\+V\+ER@{S\+E\+R\+V\+ER}}
+\index{S\+E\+R\+V\+ER@{S\+E\+R\+V\+ER}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{S\+E\+R\+V\+ER}{SERVER}}
+{\footnotesize\ttfamily \#define S\+E\+R\+V\+ER~\char`\"{}127.\+0.\+0.\+1\char`\"{}}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{client__simple__chrome_8c_a6001c195cd514c2dc549f922056bfcbf}\label{client__simple__chrome_8c_a6001c195cd514c2dc549f922056bfcbf}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!die@{die}}
+\index{die@{die}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{die()}{die()}}
+{\footnotesize\ttfamily void die (\begin{DoxyParamCaption}\item[{char $\ast$}]{s }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{client__simple__chrome_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{client__simple__chrome_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!main@{main}}
+\index{main@{main}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{client__simple__chrome_8c_a282734757254386816e94d3491c27f34}\label{client__simple__chrome_8c_a282734757254386816e94d3491c27f34}} 
+\index{client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}!sendviaudp@{sendviaudp}}
+\index{sendviaudp@{sendviaudp}!client\+\_\+simple\+\_\+chrome.\+c@{client\+\_\+simple\+\_\+chrome.\+c}}
+\subsubsection{\texorpdfstring{sendviaudp()}{sendviaudp()}}
+{\footnotesize\ttfamily int sendviaudp (\begin{DoxyParamCaption}\item[{char $\ast$}]{message }\end{DoxyParamCaption})}
+

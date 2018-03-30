@@ -1,10 +1,27 @@
+/**
+* \file dbutil.c
+* \brief tools for database use
+* \author  Matthieu Vilain, Quentin Gerard
+* \version 1.0
+* \date 20/03/2018
+*/
 #include "dbutil.h"
 
+/**
+* \fn void db_exit_nicely(PGconn *conn)
+* \brief exit database
+* \param *conn connexion to exit
+*/
 void db_exit_nicely(PGconn *conn){
   PQfinish(conn);
   exit(1);
 }
 
+/**
+* \fn db_display_result(PGresult *result)
+* \brief display db result
+* \param *result result of database
+*/
 void db_display_result(PGresult *result){
 	int i, j, nFields = PQnfields(result);
 	for (i = 0; i < PQntuples(result); i++)
@@ -15,6 +32,11 @@ void db_display_result(PGresult *result){
     }
 }
 
+/**
+* \fn build_id_data(PGresult *result)
+* \brief build data
+* \param *result result of database
+*/
 char* build_id_data(PGresult *result){
 	char *data = NULL;
 	char temp[100];

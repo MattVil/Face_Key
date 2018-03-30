@@ -72,6 +72,9 @@ $(function() {
 <div class="title">dbutil.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>tools for database use  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
@@ -80,34 +83,28 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a4beac42b387ab95040d5d137aa3ea0b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dbutil_8h.html#a4beac42b387ab95040d5d137aa3ea0b9">CONN_INFO</a>&#160;&#160;&#160;&quot;host=10.40.128.23 port=5432 dbname=db2017l3i_mvilain user=y2017l3i_mvilain password=A123456# connect_timeout=10&quot;</td></tr>
+<tr class="memitem:a4beac42b387ab95040d5d137aa3ea0b9"><td class="memItemLeft" align="right" valign="top"><a id="a4beac42b387ab95040d5d137aa3ea0b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CONN_INFO</b>&#160;&#160;&#160;&quot;host=10.40.128.23 port=5432 dbname=db2017l3i_mvilain user=y2017l3i_mvilain password=A123456# connect_timeout=10&quot;</td></tr>
 <tr class="separator:a4beac42b387ab95040d5d137aa3ea0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a191689b983befcd2fb56dd708b4788b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dbutil_8h.html#a191689b983befcd2fb56dd708b4788b7">db_exit_nicely</a> (PGconn *conn)</td></tr>
+<tr class="memdesc:a191689b983befcd2fb56dd708b4788b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">exit database  <a href="#a191689b983befcd2fb56dd708b4788b7">More...</a><br /></td></tr>
 <tr class="separator:a191689b983befcd2fb56dd708b4788b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c3353bdcfd43c09256570028add60d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dbutil_8h.html#a2c3353bdcfd43c09256570028add60d5">db_display_result</a> (PGresult *result)</td></tr>
+<tr class="memdesc:a2c3353bdcfd43c09256570028add60d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">display db result  <a href="#a2c3353bdcfd43c09256570028add60d5">More...</a><br /></td></tr>
 <tr class="separator:a2c3353bdcfd43c09256570028add60d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c23632d1423898f9b442f4040bc9e2b"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dbutil_8h.html#a8c23632d1423898f9b442f4040bc9e2b">build_id_data</a> (PGresult *result)</td></tr>
+<tr class="memdesc:a8c23632d1423898f9b442f4040bc9e2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">build data  <a href="#a8c23632d1423898f9b442f4040bc9e2b">More...</a><br /></td></tr>
 <tr class="separator:a8c23632d1423898f9b442f4040bc9e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a4beac42b387ab95040d5d137aa3ea0b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4beac42b387ab95040d5d137aa3ea0b9">&#9670;&nbsp;</a></span>CONN_INFO</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CONN_INFO&#160;&#160;&#160;&quot;host=10.40.128.23 port=5432 dbname=db2017l3i_mvilain user=y2017l3i_mvilain password=A123456# connect_timeout=10&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>tools for database use </p>
+<dl class="section author"><dt>Author</dt><dd>Matthieu Vilain, Quentin Gerard </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>20/03/2018 </dd></dl>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a8c23632d1423898f9b442f4040bc9e2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c23632d1423898f9b442f4040bc9e2b">&#9670;&nbsp;</a></span>build_id_data()</h2>
 
@@ -123,6 +120,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>build data </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*result</td><td>result of database </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -142,6 +147,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>display db result </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*result</td><td>result of database </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a191689b983befcd2fb56dd708b4788b7"></a>
@@ -159,6 +172,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>exit database </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*conn</td><td>connexion to exit </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

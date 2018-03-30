@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['neuralnetwork',['neuralNetwork',['../client_8c.html#a90937619433bf894fd8ebc6a36fdc015',1,'client.c']]]
+  ['timeout_5fconfig',['timeout_config',['../util2_8h.html#a245f9cdde9560eb3d4968e55c99e0f97',1,'util.c']]]
 ];

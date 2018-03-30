@@ -1,3 +1,10 @@
+/**
+* \file util.h
+* \brief tools for database use
+* \author  Matthieu Vilain, Quentin Gerard
+* \version 1.0
+* \date 20/03/2018
+*/
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <string.h>

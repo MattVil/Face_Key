@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['recognition',['recognition',['../client_8c.html#a128f2bef3aaf93d50acf00ef8b1e0b97',1,'client.c']]]
+  ['main',['main',['../client_8c.html#abf9e6b7e6f15df4b525a2e7705ba3089',1,'client.c']]]
 ];

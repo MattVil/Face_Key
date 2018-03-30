@@ -1,0 +1,79 @@
+\hypertarget{dbutil_8c}{}\section{reseau/dbutil.c File Reference}
+\label{dbutil_8c}\index{reseau/dbutil.\+c@{reseau/dbutil.\+c}}
+
+
+tools for database use  
+
+
+{\ttfamily \#include \char`\"{}dbutil.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dbutil_8c_a191689b983befcd2fb56dd708b4788b7}{db\+\_\+exit\+\_\+nicely}} (P\+Gconn $\ast$conn)
+\begin{DoxyCompactList}\small\item\em exit database \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dbutil_8c_ac7bad5938cf758a4be376024d06fd4ed}{db\+\_\+display\+\_\+result}} (P\+Gresult $\ast$result)
+\begin{DoxyCompactList}\small\item\em display db result \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{dbutil_8c_a68e2087a88776cadd115838e4835cfe0}{build\+\_\+id\+\_\+data}} (P\+Gresult $\ast$result)
+\begin{DoxyCompactList}\small\item\em build data \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+tools for database use 
+
+\begin{DoxyAuthor}{Author}
+Matthieu Vilain, Quentin Gerard 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/03/2018 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{dbutil_8c_a68e2087a88776cadd115838e4835cfe0}\label{dbutil_8c_a68e2087a88776cadd115838e4835cfe0}} 
+\index{dbutil.\+c@{dbutil.\+c}!build\+\_\+id\+\_\+data@{build\+\_\+id\+\_\+data}}
+\index{build\+\_\+id\+\_\+data@{build\+\_\+id\+\_\+data}!dbutil.\+c@{dbutil.\+c}}
+\subsubsection{\texorpdfstring{build\+\_\+id\+\_\+data()}{build\_id\_data()}}
+{\footnotesize\ttfamily build\+\_\+id\+\_\+data (\begin{DoxyParamCaption}\item[{P\+Gresult $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+build data 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$result} & result of database \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dbutil_8c_ac7bad5938cf758a4be376024d06fd4ed}\label{dbutil_8c_ac7bad5938cf758a4be376024d06fd4ed}} 
+\index{dbutil.\+c@{dbutil.\+c}!db\+\_\+display\+\_\+result@{db\+\_\+display\+\_\+result}}
+\index{db\+\_\+display\+\_\+result@{db\+\_\+display\+\_\+result}!dbutil.\+c@{dbutil.\+c}}
+\subsubsection{\texorpdfstring{db\+\_\+display\+\_\+result()}{db\_display\_result()}}
+{\footnotesize\ttfamily db\+\_\+display\+\_\+result (\begin{DoxyParamCaption}\item[{P\+Gresult $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+display db result 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$result} & result of database \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dbutil_8c_a191689b983befcd2fb56dd708b4788b7}\label{dbutil_8c_a191689b983befcd2fb56dd708b4788b7}} 
+\index{dbutil.\+c@{dbutil.\+c}!db\+\_\+exit\+\_\+nicely@{db\+\_\+exit\+\_\+nicely}}
+\index{db\+\_\+exit\+\_\+nicely@{db\+\_\+exit\+\_\+nicely}!dbutil.\+c@{dbutil.\+c}}
+\subsubsection{\texorpdfstring{db\+\_\+exit\+\_\+nicely()}{db\_exit\_nicely()}}
+{\footnotesize\ttfamily void db\+\_\+exit\+\_\+nicely (\begin{DoxyParamCaption}\item[{P\+Gconn $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+exit database 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$conn} & connexion to exit \\
+\hline
+\end{DoxyParams}

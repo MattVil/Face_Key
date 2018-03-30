@@ -1,3 +1,11 @@
+/**
+* \file dbutil.h
+* \brief tools for database use
+* \author  Matthieu Vilain, Quentin Gerard
+* \version 1.0
+* \date 20/03/2018
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

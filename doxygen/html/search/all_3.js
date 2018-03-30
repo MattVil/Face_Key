@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../client_8c.html#abf9e6b7e6f15df4b525a2e7705ba3089',1,'client.c']]]
+  ['first_5fconn_5froutine',['first_conn_routine',['../client_8c.html#abdbbb2ed12ec88b8baaef49290698cf9',1,'client.c']]]
 ];
