@@ -172,7 +172,7 @@ int main(int argc, char const *argv[]) {
 					//pubkey = loadKey("client_x/keys/publickey.pem", PUBKEY);
 					len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, pubkey, RSA_PKCS1_OAEP_PADDING);
 					printf("Encrypted message (%d): %s\n", len, encrypt_buf);
-					printf("Sizeof: %lu\tstrlen: %d\n", sizeof(encrypt_buf), strlen(encrypt_buf));
+					printf("Sizeof: %lu\tstrlen: %lu\n", sizeof(encrypt_buf), strlen(encrypt_buf));
 					/*privkey = loadKey("client_x/keys/privatekey.pem", PRIVKEY);
 					len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
 					printf("Decrypted message: %s\n", buf);*/
@@ -347,32 +347,41 @@ int main(int argc, char const *argv[]) {
 	//Code de reconnaissance (père)
 	else{
 		printf("Loading Model...\n");
-		sleep(10);
+		sleep(20);
 		printf("Model Loaded !\n");
-		while(waitpid(pidFork,0,0) < 0){
+		while(1){
 			/*Traitement*/
-			P(semid);
-			tubeBuffer = "Autorisation";
-			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
-			tubeBuffer = "0.98";
-			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
-			tubeBuffer = "0.80 0.99 0.99 0.50 0.99";
-			write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+			printf("Wait for Recognition !\n");
+			if (waitpid(pidFork, 0, WNOHANG) != pidFork){
+				P(semid);
+				sprintf(tubeBuffer, "Autorisation");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+				sprintf(tubeBuffer, "0.98");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+				sprintf(tubeBuffer, "0.80 0.99 0.99 0.50 0.99");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+			}
+			else{
+				break;
+			}
 		}
 
 		printf("Ending Recognition process ...\n");
 
-		//Free Semid & SharedMem
-		if (shmfree(shmkey) == -1){
-			perror("Shared Memory destruction failed");
-			exit(-1);
-		}
-		if (semfree(semid) == -1){
-			perror("Semaphore destruction failed");
-			exit(-1);
-		}
 		printf("Recognition process ended !\nGoodbye !\n");
 	}
+
+	//Free Semid & SharedMem
+	if (shmfree(shmkey) == -1){
+		perror("Shared Memory destruction failed");
+		exit(-1);
+	}
+	if (semfree(semid) == -1){
+		perror("Semaphore destruction failed");
+		exit(-1);
+	}
+	close(tube[0]);
+	close(tube[1]);
 
 	return 0;
 }

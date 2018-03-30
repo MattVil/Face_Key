@@ -4,12 +4,12 @@ int semalloc(key_t key, int valInit){
 	int semid;
 	if ((semid = semget(key, 0, 0)) == -1){
 		if ((semid = semget(key, 1, IPC_CREAT|IPC_EXCL|0600)) == -1){
-			//perror("Semaphore creation failed");
+			perror("Semaphore creation failed");
 			return -1;
 		}
 	}
 	if (semctl(semid, 0, SETVAL, valInit) == -1){
-		//perror("Semaphore init failed");
+		perror("Semaphore init failed");
 		semfree(semid);
 		return -1;
 	}
@@ -18,7 +18,7 @@ int semalloc(key_t key, int valInit){
 
 int semfree(int semid){
 	if (semctl(semid, 0, IPC_RMID, 0) == -1){
-		//perror("Semaphore destruction failed");
+		perror("Semaphore destruction failed");
 		return -1;
 	}
 	return 0;
@@ -43,7 +43,7 @@ void V(int semid){
 }
 
 void* shmalloc(key_t key, int size){
-	void *adress;
+	void *adress = NULL;
 	int shmid;
 
 	if((shmid = shmget(key, 0, 0600)) == -1){
