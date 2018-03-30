@@ -1,5 +1,10 @@
-/** /!\ Attention /!\
-**/
+/**
+* \file client.c
+* \brief Client of FaceKey
+* \author  Matthieu Vilain, Quentin Gerard, Louis L'Haridon 
+* \version 2.0
+* \date 20/03/2018
+*/
 #include "util.h"
 #include "opencv/highgui.h"
 #include "opencv/cv.h"
@@ -30,6 +35,13 @@ pid_t pidFork;
 int semid, shmkey, *x, tube[2];
 char tubeBuffer[100];
 
+/**
+* \fn int main(int argc, char const *argv[])
+* \brief  Main function
+* \param  argc An integer argument count of the command line arguments
+* \param  argv An argument vector of the command line arguments
+* \return an integer 0 upon exit success
+*/
 int main(int argc, char const *argv[]) {
 
 	printf("Init SEM, SHM and PIPE\n");
@@ -56,7 +68,6 @@ int main(int argc, char const *argv[]) {
 	* 0 = Lecture
 	* 1 = Ecriture
 	**/
-
 	printf("SHM, SEM, TUBE OK\n");
 
 	x = shmalloc(shmkey, sizeof(int));
@@ -391,6 +402,12 @@ int main(int argc, char const *argv[]) {
 	return 0;
 }
 
+/**
+* \fn int first_conn_routine(int s_cli, char *buf)
+* \brief function of the first connexion to server
+* \param s_cli ref to server
+* \param *buf buffer to write and read
+*/
 int first_conn_routine(int s_cli, char *buf){
 
 	char mail[50], pseudo[50], mdp[100], mdp_confirmation[100], gender[10], name[50], first_name[50], lang[10];
@@ -704,6 +721,12 @@ int first_conn_routine(int s_cli, char *buf){
 	return 1;
 }
 
+/**
+* \fn int conn_to_website_routine(int s_cli, char *buf)
+* \brief function of the connect to a website
+* \param s_cli ref to server
+* \param *buf buffer to write and read
+*/
 int conn_to_website_routine(int s_cli, char *buf){
 
 	//char login[100], pssw[100];
@@ -908,6 +931,12 @@ int conn_to_website_routine(int s_cli, char *buf){
 	return 1;
 }
 
+/**
+* \fn int weight_update_routine(int s_cli, char buf[BUF_SIZE])
+* \brief function to update weight
+* \param s_cli ref to server
+* \param buf[BUF_SIZE] buffer to write and read
+*/
 int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 	int select_tt, read_tt;
 	fd_set readfds;
@@ -945,6 +974,12 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 	return 0;
 }
 
+/**
+* \fn int photo_transfer_routine(int s_cli, char buf[BUF_SIZE])
+* \brief function to transfer photo to server
+* \param s_cli ref to server
+* \param buf[BUF_SIZE] buffer to write and read
+*/
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 	int nb_photo = 29;
@@ -1004,6 +1039,12 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 	return 0;
 }
 
+/**
+* \fn void recognition(char buff[100], int user_class)
+* \brief function to recognize
+* \param buff[100] buffer to write and read
+* \param user_class user class to recognize
+*/
 void recognition(char buff[100], int user_class){
 	printf("Ouai ca reconnais avec Opencv mdr\n");
 
@@ -1026,6 +1067,15 @@ void recognition(char buff[100], int user_class){
 
 }
 
+/**
+* \fn void neuralNetwork(IplImage* frame)
+* \brief NeuralNetwork function
+* \param frame image to put into neural network
+
+	This function is just a simulation for the OS course.
+	The real neural network is implemented in python and can be found at :
+	/face_recognition/client_detect.py
+*/
 void neuralNetwork(IplImage* frame){
 	/*
 	This function is just a simulation for the OS course.

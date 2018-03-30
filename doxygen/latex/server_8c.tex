@@ -1,0 +1,211 @@
+\hypertarget{server_8c}{}\section{reseau/server.c File Reference}
+\label{server_8c}\index{reseau/server.\+c@{reseau/server.\+c}}
+{\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}dbutil.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnode}{node}}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structnode}{node}} $\ast$ \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{server_8c_a20fd4b5386ed612feb19b2f5f27ad7cb}{serv\+\_\+config}} (struct sockaddr\+\_\+in $\ast$serv\+\_\+addr, int $\ast$s\+\_\+ecoute)
+\item 
+void \mbox{\hyperlink{server_8c_afe4f3bb2a824df65050c217bd4449c93}{database\+\_\+connect}} (P\+Gconn $\ast$conn)
+\item 
+int \mbox{\hyperlink{server_8c_a50011349b66cc6ec33e1748132c59cde}{connect\+\_\+to\+\_\+client}} (int s\+\_\+ecoute, struct sockaddr\+\_\+in $\ast$cli\+\_\+addr)
+\item 
+int \mbox{\hyperlink{server_8c_a9d783cea3e8241d5874293a7bf1bfc99}{authentification}} (char $\ast$\mbox{\hyperlink{client_8c_a9b08b2c33063b888187424d4c66d080e}{login}}, char $\ast$password, P\+Gconn $\ast$conn)
+\item 
+void \mbox{\hyperlink{server_8c_a334a0afee97de9c573574a8172793799}{verif\+\_\+conn}} (P\+Gconn $\ast$conn)
+\item 
+void \mbox{\hyperlink{server_8c_a78f3866ca65ec3b755abff888da54f37}{idrequ}} (char $\ast$domain, int id\+\_\+user, int s\+\_\+dial, P\+Gconn $\ast$conn, char $\ast$buf, \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} $\ast$list)
+\item 
+char $\ast$ \mbox{\hyperlink{server_8c_a6cd26b7f17e4af01dd99c87c09ad02d3}{extract\+Pssw}} (int id, P\+Gconn $\ast$conn)
+\item 
+int \mbox{\hyperlink{server_8c_adda268647904c65d0a3bb84a11e51f51}{exist\+\_\+mail}} (P\+Gconn $\ast$conn, char $\ast$mail)
+\item 
+int \mbox{\hyperlink{server_8c_a3f79e9955a985a28fd6bf201bbed13d8}{exist\+\_\+pseudo}} (P\+Gconn $\ast$conn, char $\ast$pseudo)
+\item 
+\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} \mbox{\hyperlink{server_8c_ae37514d69e2e77eec6d107825b154042}{insert}} (char $\ast$mail, int id\+\_\+account, \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} list)
+\item 
+\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} \mbox{\hyperlink{server_8c_a508814689a8f0408eafb83c8d3bf4fd2}{create\+Node}} (char $\ast$mail, int account\+\_\+id)
+\item 
+void \mbox{\hyperlink{server_8c_aef960af857f3e0046ff66e10c87bca92}{display\+Account\+List}} (\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} list)
+\item 
+\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} \mbox{\hyperlink{server_8c_a9f9631bfefdb8b106ab1f183d7dfec0d}{add\+To\+List}} (P\+Gresult $\ast$result, \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} list)
+\item 
+\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} \mbox{\hyperlink{server_8c_a98ce5235d6aef96f77d0836e7d41d870}{free\+Account\+List}} (\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} list)
+\item 
+int \mbox{\hyperlink{server_8c_ad096477e9124c5c91b3a780e870f85f0}{extract\+ID}} (\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} list, char $\ast$mail)
+\item 
+int \mbox{\hyperlink{server_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+R\+SA $\ast$ \mbox{\hyperlink{server_8c_a3e7e5081a03a76a247ebb1cc3f1ec85c}{pubkey}}
+\item 
+R\+SA $\ast$ \mbox{\hyperlink{server_8c_a3be07c647a758988877c1da6fa7855b1}{privkey}}
+\item 
+int \mbox{\hyperlink{server_8c_af822f1b10ec8a71b4168e8bb331acffb}{encrypt\+\_\+enable}} = 0
+\item 
+int \mbox{\hyperlink{server_8c_a6656561117ec1ab686401179004f53ba}{hash}} = 0
+\item 
+char $\ast$ \mbox{\hyperlink{server_8c_afb049121402e821fb6781342a8e728a1}{encrypt\+\_\+buf}}
+\item 
+char $\ast$ \mbox{\hyperlink{server_8c_a838a5b5da6ce426d8ff53c3031ebcd0f}{err}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{server_8c_a85048a0e80cf8df5bd71c471d3117d27}\label{server_8c_a85048a0e80cf8df5bd71c471d3117d27}} 
+\index{server.\+c@{server.\+c}!Account\+List@{Account\+List}}
+\index{Account\+List@{Account\+List}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{Account\+List}{AccountList}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structnode}{node}}$\ast$ \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{server_8c_a9f9631bfefdb8b106ab1f183d7dfec0d}\label{server_8c_a9f9631bfefdb8b106ab1f183d7dfec0d}} 
+\index{server.\+c@{server.\+c}!add\+To\+List@{add\+To\+List}}
+\index{add\+To\+List@{add\+To\+List}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{add\+To\+List()}{addToList()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} add\+To\+List (\begin{DoxyParamCaption}\item[{P\+Gresult $\ast$}]{result,  }\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a9d783cea3e8241d5874293a7bf1bfc99}\label{server_8c_a9d783cea3e8241d5874293a7bf1bfc99}} 
+\index{server.\+c@{server.\+c}!authentification@{authentification}}
+\index{authentification@{authentification}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{authentification()}{authentification()}}
+{\footnotesize\ttfamily int authentification (\begin{DoxyParamCaption}\item[{char $\ast$}]{login,  }\item[{char $\ast$}]{password,  }\item[{P\+Gconn $\ast$}]{conn }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a50011349b66cc6ec33e1748132c59cde}\label{server_8c_a50011349b66cc6ec33e1748132c59cde}} 
+\index{server.\+c@{server.\+c}!connect\+\_\+to\+\_\+client@{connect\+\_\+to\+\_\+client}}
+\index{connect\+\_\+to\+\_\+client@{connect\+\_\+to\+\_\+client}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{connect\+\_\+to\+\_\+client()}{connect\_to\_client()}}
+{\footnotesize\ttfamily int connect\+\_\+to\+\_\+client (\begin{DoxyParamCaption}\item[{int}]{s\+\_\+ecoute,  }\item[{struct sockaddr\+\_\+in $\ast$}]{cli\+\_\+addr }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a508814689a8f0408eafb83c8d3bf4fd2}\label{server_8c_a508814689a8f0408eafb83c8d3bf4fd2}} 
+\index{server.\+c@{server.\+c}!create\+Node@{create\+Node}}
+\index{create\+Node@{create\+Node}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{create\+Node()}{createNode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} create\+Node (\begin{DoxyParamCaption}\item[{char $\ast$}]{mail,  }\item[{int}]{account\+\_\+id }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_afe4f3bb2a824df65050c217bd4449c93}\label{server_8c_afe4f3bb2a824df65050c217bd4449c93}} 
+\index{server.\+c@{server.\+c}!database\+\_\+connect@{database\+\_\+connect}}
+\index{database\+\_\+connect@{database\+\_\+connect}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{database\+\_\+connect()}{database\_connect()}}
+{\footnotesize\ttfamily void database\+\_\+connect (\begin{DoxyParamCaption}\item[{P\+Gconn $\ast$}]{conn }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_aef960af857f3e0046ff66e10c87bca92}\label{server_8c_aef960af857f3e0046ff66e10c87bca92}} 
+\index{server.\+c@{server.\+c}!display\+Account\+List@{display\+Account\+List}}
+\index{display\+Account\+List@{display\+Account\+List}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{display\+Account\+List()}{displayAccountList()}}
+{\footnotesize\ttfamily void display\+Account\+List (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_adda268647904c65d0a3bb84a11e51f51}\label{server_8c_adda268647904c65d0a3bb84a11e51f51}} 
+\index{server.\+c@{server.\+c}!exist\+\_\+mail@{exist\+\_\+mail}}
+\index{exist\+\_\+mail@{exist\+\_\+mail}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{exist\+\_\+mail()}{exist\_mail()}}
+{\footnotesize\ttfamily int exist\+\_\+mail (\begin{DoxyParamCaption}\item[{P\+Gconn $\ast$}]{conn,  }\item[{char $\ast$}]{mail }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a3f79e9955a985a28fd6bf201bbed13d8}\label{server_8c_a3f79e9955a985a28fd6bf201bbed13d8}} 
+\index{server.\+c@{server.\+c}!exist\+\_\+pseudo@{exist\+\_\+pseudo}}
+\index{exist\+\_\+pseudo@{exist\+\_\+pseudo}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{exist\+\_\+pseudo()}{exist\_pseudo()}}
+{\footnotesize\ttfamily int exist\+\_\+pseudo (\begin{DoxyParamCaption}\item[{P\+Gconn $\ast$}]{conn,  }\item[{char $\ast$}]{pseudo }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_ad096477e9124c5c91b3a780e870f85f0}\label{server_8c_ad096477e9124c5c91b3a780e870f85f0}} 
+\index{server.\+c@{server.\+c}!extract\+ID@{extract\+ID}}
+\index{extract\+ID@{extract\+ID}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{extract\+I\+D()}{extractID()}}
+{\footnotesize\ttfamily int extract\+ID (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}]{list,  }\item[{char $\ast$}]{mail }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a6cd26b7f17e4af01dd99c87c09ad02d3}\label{server_8c_a6cd26b7f17e4af01dd99c87c09ad02d3}} 
+\index{server.\+c@{server.\+c}!extract\+Pssw@{extract\+Pssw}}
+\index{extract\+Pssw@{extract\+Pssw}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{extract\+Pssw()}{extractPssw()}}
+{\footnotesize\ttfamily char $\ast$ extract\+Pssw (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{P\+Gconn $\ast$}]{conn }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a98ce5235d6aef96f77d0836e7d41d870}\label{server_8c_a98ce5235d6aef96f77d0836e7d41d870}} 
+\index{server.\+c@{server.\+c}!free\+Account\+List@{free\+Account\+List}}
+\index{free\+Account\+List@{free\+Account\+List}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{free\+Account\+List()}{freeAccountList()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} free\+Account\+List (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a78f3866ca65ec3b755abff888da54f37}\label{server_8c_a78f3866ca65ec3b755abff888da54f37}} 
+\index{server.\+c@{server.\+c}!idrequ@{idrequ}}
+\index{idrequ@{idrequ}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{idrequ()}{idrequ()}}
+{\footnotesize\ttfamily void idrequ (\begin{DoxyParamCaption}\item[{char $\ast$}]{domain,  }\item[{int}]{id\+\_\+user,  }\item[{int}]{s\+\_\+dial,  }\item[{P\+Gconn $\ast$}]{conn,  }\item[{char $\ast$}]{buf,  }\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_ae37514d69e2e77eec6d107825b154042}\label{server_8c_ae37514d69e2e77eec6d107825b154042}} 
+\index{server.\+c@{server.\+c}!insert@{insert}}
+\index{insert@{insert}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}} insert (\begin{DoxyParamCaption}\item[{char $\ast$}]{mail,  }\item[{int}]{id\+\_\+account,  }\item[{\mbox{\hyperlink{server_8c_a85048a0e80cf8df5bd71c471d3117d27}{Account\+List}}}]{list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{server_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{server.\+c@{server.\+c}!main@{main}}
+\index{main@{main}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a20fd4b5386ed612feb19b2f5f27ad7cb}\label{server_8c_a20fd4b5386ed612feb19b2f5f27ad7cb}} 
+\index{server.\+c@{server.\+c}!serv\+\_\+config@{serv\+\_\+config}}
+\index{serv\+\_\+config@{serv\+\_\+config}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{serv\+\_\+config()}{serv\_config()}}
+{\footnotesize\ttfamily void serv\+\_\+config (\begin{DoxyParamCaption}\item[{struct sockaddr\+\_\+in $\ast$}]{serv\+\_\+addr,  }\item[{int $\ast$}]{s\+\_\+ecoute }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a334a0afee97de9c573574a8172793799}\label{server_8c_a334a0afee97de9c573574a8172793799}} 
+\index{server.\+c@{server.\+c}!verif\+\_\+conn@{verif\+\_\+conn}}
+\index{verif\+\_\+conn@{verif\+\_\+conn}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{verif\+\_\+conn()}{verif\_conn()}}
+{\footnotesize\ttfamily void verif\+\_\+conn (\begin{DoxyParamCaption}\item[{P\+Gconn $\ast$}]{conn }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{server_8c_afb049121402e821fb6781342a8e728a1}\label{server_8c_afb049121402e821fb6781342a8e728a1}} 
+\index{server.\+c@{server.\+c}!encrypt\+\_\+buf@{encrypt\+\_\+buf}}
+\index{encrypt\+\_\+buf@{encrypt\+\_\+buf}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{encrypt\+\_\+buf}{encrypt\_buf}}
+{\footnotesize\ttfamily char$\ast$ encrypt\+\_\+buf}
+
+\mbox{\Hypertarget{server_8c_af822f1b10ec8a71b4168e8bb331acffb}\label{server_8c_af822f1b10ec8a71b4168e8bb331acffb}} 
+\index{server.\+c@{server.\+c}!encrypt\+\_\+enable@{encrypt\+\_\+enable}}
+\index{encrypt\+\_\+enable@{encrypt\+\_\+enable}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{encrypt\+\_\+enable}{encrypt\_enable}}
+{\footnotesize\ttfamily int encrypt\+\_\+enable = 0}
+
+\mbox{\Hypertarget{server_8c_a838a5b5da6ce426d8ff53c3031ebcd0f}\label{server_8c_a838a5b5da6ce426d8ff53c3031ebcd0f}} 
+\index{server.\+c@{server.\+c}!err@{err}}
+\index{err@{err}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{err}{err}}
+{\footnotesize\ttfamily char$\ast$ err}
+
+\mbox{\Hypertarget{server_8c_a6656561117ec1ab686401179004f53ba}\label{server_8c_a6656561117ec1ab686401179004f53ba}} 
+\index{server.\+c@{server.\+c}!hash@{hash}}
+\index{hash@{hash}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{hash}{hash}}
+{\footnotesize\ttfamily int hash = 0}
+
+\mbox{\Hypertarget{server_8c_a3be07c647a758988877c1da6fa7855b1}\label{server_8c_a3be07c647a758988877c1da6fa7855b1}} 
+\index{server.\+c@{server.\+c}!privkey@{privkey}}
+\index{privkey@{privkey}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{privkey}{privkey}}
+{\footnotesize\ttfamily R\+SA $\ast$ privkey}
+
+\mbox{\Hypertarget{server_8c_a3e7e5081a03a76a247ebb1cc3f1ec85c}\label{server_8c_a3e7e5081a03a76a247ebb1cc3f1ec85c}} 
+\index{server.\+c@{server.\+c}!pubkey@{pubkey}}
+\index{pubkey@{pubkey}!server.\+c@{server.\+c}}
+\subsubsection{\texorpdfstring{pubkey}{pubkey}}
+{\footnotesize\ttfamily R\+SA$\ast$ pubkey}
+

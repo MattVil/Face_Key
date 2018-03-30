@@ -1,3 +1,10 @@
+/**
+* \file ipcTools.h
+* \brief tools for semaphore use
+* \author  Matthieu Vilain, Quentin Gerard, Louis L'Haridon 
+* \version 1.0
+* \date 20/03/2018
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>

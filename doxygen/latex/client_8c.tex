@@ -1,0 +1,227 @@
+\hypertarget{client_8c}{}\section{reseau/client.c File Reference}
+\label{client_8c}\index{reseau/client.\+c@{reseau/client.\+c}}
+
+
+Client of Face\+Key.  
+
+
+{\ttfamily \#include \char`\"{}util.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}opencv/highgui.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}opencv/cv.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{client_8c_a1b12700d71defa5e7f4f63670626025d}\label{client_8c_a1b12700d71defa5e7f4f63670626025d}} 
+int {\bfseries first\+\_\+conn\+\_\+routine} (int s\+\_\+cli, char buf\mbox{[}B\+U\+F\+\_\+\+S\+I\+ZE\mbox{]})
+\item 
+\mbox{\Hypertarget{client_8c_aeebcb9ec323500535b6a502972f19d7e}\label{client_8c_aeebcb9ec323500535b6a502972f19d7e}} 
+int {\bfseries conn\+\_\+to\+\_\+website\+\_\+routine} (int s\+\_\+cli, char buf\mbox{[}B\+U\+F\+\_\+\+S\+I\+ZE\mbox{]})
+\item 
+int \mbox{\hyperlink{client_8c_a124725ea9dac50f4418f6db0cb175baf}{photo\+\_\+transfer\+\_\+routine}} (int s\+\_\+cli, char buf\mbox{[}B\+U\+F\+\_\+\+S\+I\+ZE\mbox{]})
+\begin{DoxyCompactList}\small\item\em function to transfer photo to server \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{client_8c_a195e7e824b505e0e09ea0cd5a3496694}{weight\+\_\+update\+\_\+routine}} (int s\+\_\+cli, char buf\mbox{[}B\+U\+F\+\_\+\+S\+I\+ZE\mbox{]})
+\begin{DoxyCompactList}\small\item\em function to update weight \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{client_8c_a128f2bef3aaf93d50acf00ef8b1e0b97}{recognition}} (char buff\mbox{[}100\mbox{]}, int user\+\_\+class)
+\begin{DoxyCompactList}\small\item\em function to recognize \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{client_8c_a90937619433bf894fd8ebc6a36fdc015}{neural\+Network}} (Ipl\+Image $\ast$frame)
+\begin{DoxyCompactList}\small\item\em Neural\+Network function. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{client_8c_abf9e6b7e6f15df4b525a2e7705ba3089}{main}} (int argc, char const $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{client_8c_abdbbb2ed12ec88b8baaef49290698cf9}{first\+\_\+conn\+\_\+routine}} (int s\+\_\+cli, char $\ast$buf)
+\begin{DoxyCompactList}\small\item\em function of the first connexion to server \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{client_8c_a8670d56fd9e578e291aa4259a1fb8546}{conn\+\_\+to\+\_\+website\+\_\+routine}} (int s\+\_\+cli, char $\ast$buf)
+\begin{DoxyCompactList}\small\item\em function of the connect to a website \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{client_8c_a5f429265cf906682c7cb686f7b392280}\label{client_8c_a5f429265cf906682c7cb686f7b392280}} 
+char {\bfseries I\+P\+\_\+\+S\+E\+RV} \mbox{[}20\mbox{]} = \char`\"{}127.\+0.\+0.\+1\char`\"{}
+\item 
+\mbox{\Hypertarget{client_8c_a6b9af8a2bd43b8121ef7becd2af659a3}\label{client_8c_a6b9af8a2bd43b8121ef7becd2af659a3}} 
+int {\bfseries P\+O\+R\+T\+\_\+\+S\+E\+RV} = 5000
+\item 
+\mbox{\Hypertarget{client_8c_ae93dfddcf4362ff6e074b9b9b39af65b}\label{client_8c_ae93dfddcf4362ff6e074b9b9b39af65b}} 
+int {\bfseries I\+D\+\_\+\+C\+L\+I\+E\+NT} = 1
+\item 
+\mbox{\Hypertarget{client_8c_a11cb859eea495d07a75554d4c1079eca}\label{client_8c_a11cb859eea495d07a75554d4c1079eca}} 
+double {\bfseries version} = 0
+\item 
+\mbox{\Hypertarget{client_8c_a9b08b2c33063b888187424d4c66d080e}\label{client_8c_a9b08b2c33063b888187424d4c66d080e}} 
+char {\bfseries login} \mbox{[}100\mbox{]}
+\item 
+\mbox{\Hypertarget{client_8c_a49d75f9e243701067636ce5978dd934b}\label{client_8c_a49d75f9e243701067636ce5978dd934b}} 
+char {\bfseries pssw} \mbox{[}100\mbox{]}
+\item 
+\mbox{\Hypertarget{client_8c_a3e7e5081a03a76a247ebb1cc3f1ec85c}\label{client_8c_a3e7e5081a03a76a247ebb1cc3f1ec85c}} 
+R\+SA $\ast$ {\bfseries pubkey}
+\item 
+\mbox{\Hypertarget{client_8c_a3be07c647a758988877c1da6fa7855b1}\label{client_8c_a3be07c647a758988877c1da6fa7855b1}} 
+R\+SA $\ast$ {\bfseries privkey}
+\item 
+\mbox{\Hypertarget{client_8c_af822f1b10ec8a71b4168e8bb331acffb}\label{client_8c_af822f1b10ec8a71b4168e8bb331acffb}} 
+int {\bfseries encrypt\+\_\+enable} = 0
+\item 
+\mbox{\Hypertarget{client_8c_ad989097898e5bf1db5d81937c3832b95}\label{client_8c_ad989097898e5bf1db5d81937c3832b95}} 
+unsigned char $\ast$ {\bfseries encrypt\+\_\+buf}
+\item 
+\mbox{\Hypertarget{client_8c_a6656561117ec1ab686401179004f53ba}\label{client_8c_a6656561117ec1ab686401179004f53ba}} 
+int {\bfseries hash} = 1
+\item 
+\mbox{\Hypertarget{client_8c_a9600f47d09dee34e6da9bd490fa6bafc}\label{client_8c_a9600f47d09dee34e6da9bd490fa6bafc}} 
+key\+\_\+t {\bfseries semkey}
+\item 
+\mbox{\Hypertarget{client_8c_a6deddd055a77b54ab1be7b9b1e18491e}\label{client_8c_a6deddd055a77b54ab1be7b9b1e18491e}} 
+pid\+\_\+t {\bfseries pid\+Fork}
+\item 
+\mbox{\Hypertarget{client_8c_a7c35ac5305085cf7360645b8d52988b5}\label{client_8c_a7c35ac5305085cf7360645b8d52988b5}} 
+int {\bfseries semid}
+\item 
+\mbox{\Hypertarget{client_8c_a39f28a67ceaf4beb0430971633c5e2d3}\label{client_8c_a39f28a67ceaf4beb0430971633c5e2d3}} 
+int {\bfseries shmkey}
+\item 
+\mbox{\Hypertarget{client_8c_af383991cd688341bdce5ce9b357fd356}\label{client_8c_af383991cd688341bdce5ce9b357fd356}} 
+int $\ast$ {\bfseries x}
+\item 
+\mbox{\Hypertarget{client_8c_af3d9e4d2bdcc52e79e5635833b3b6712}\label{client_8c_af3d9e4d2bdcc52e79e5635833b3b6712}} 
+int {\bfseries tube} \mbox{[}2\mbox{]}
+\item 
+\mbox{\Hypertarget{client_8c_ac0c9b1f044ac04a5dadf063aa6e09915}\label{client_8c_ac0c9b1f044ac04a5dadf063aa6e09915}} 
+char {\bfseries tube\+Buffer} \mbox{[}100\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Client of Face\+Key. 
+
+\begin{DoxyAuthor}{Author}
+Matthieu Vilain, Quentin Gerard, Louis L\textquotesingle{}Haridon 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/03/2018 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{client_8c_a8670d56fd9e578e291aa4259a1fb8546}\label{client_8c_a8670d56fd9e578e291aa4259a1fb8546}} 
+\index{client.\+c@{client.\+c}!conn\+\_\+to\+\_\+website\+\_\+routine@{conn\+\_\+to\+\_\+website\+\_\+routine}}
+\index{conn\+\_\+to\+\_\+website\+\_\+routine@{conn\+\_\+to\+\_\+website\+\_\+routine}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{conn\+\_\+to\+\_\+website\+\_\+routine()}{conn\_to\_website\_routine()}}
+{\footnotesize\ttfamily int conn\+\_\+to\+\_\+website\+\_\+routine (\begin{DoxyParamCaption}\item[{int}]{s\+\_\+cli,  }\item[{char $\ast$}]{buf }\end{DoxyParamCaption})}
+
+
+
+function of the connect to a website 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+\_\+cli} & ref to server \\
+\hline
+{\em $\ast$buf} & buffer to write and read \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{client_8c_abdbbb2ed12ec88b8baaef49290698cf9}\label{client_8c_abdbbb2ed12ec88b8baaef49290698cf9}} 
+\index{client.\+c@{client.\+c}!first\+\_\+conn\+\_\+routine@{first\+\_\+conn\+\_\+routine}}
+\index{first\+\_\+conn\+\_\+routine@{first\+\_\+conn\+\_\+routine}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{first\+\_\+conn\+\_\+routine()}{first\_conn\_routine()}}
+{\footnotesize\ttfamily int first\+\_\+conn\+\_\+routine (\begin{DoxyParamCaption}\item[{int}]{s\+\_\+cli,  }\item[{char $\ast$}]{buf }\end{DoxyParamCaption})}
+
+
+
+function of the first connexion to server 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+\_\+cli} & ref to server \\
+\hline
+{\em $\ast$buf} & buffer to write and read \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{client_8c_abf9e6b7e6f15df4b525a2e7705ba3089}\label{client_8c_abf9e6b7e6f15df4b525a2e7705ba3089}} 
+\index{client.\+c@{client.\+c}!main@{main}}
+\index{main@{main}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char const $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Main function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & An integer argument count of the command line arguments \\
+\hline
+{\em argv} & An argument vector of the command line arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an integer 0 upon exit success 
+\end{DoxyReturn}
+0 = Lecture 1 = Ecriture\mbox{\Hypertarget{client_8c_a90937619433bf894fd8ebc6a36fdc015}\label{client_8c_a90937619433bf894fd8ebc6a36fdc015}} 
+\index{client.\+c@{client.\+c}!neural\+Network@{neural\+Network}}
+\index{neural\+Network@{neural\+Network}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{neural\+Network()}{neuralNetwork()}}
+{\footnotesize\ttfamily void neural\+Network (\begin{DoxyParamCaption}\item[{Ipl\+Image $\ast$}]{frame }\end{DoxyParamCaption})}
+
+
+
+Neural\+Network function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & image to put into neural network\\
+\hline
+\end{DoxyParams}
+This function is just a simulation for the OS course. The real neural network is implemented in python and can be found at \+: /face\+\_\+recognition/client\+\_\+detect.py \mbox{\Hypertarget{client_8c_a124725ea9dac50f4418f6db0cb175baf}\label{client_8c_a124725ea9dac50f4418f6db0cb175baf}} 
+\index{client.\+c@{client.\+c}!photo\+\_\+transfer\+\_\+routine@{photo\+\_\+transfer\+\_\+routine}}
+\index{photo\+\_\+transfer\+\_\+routine@{photo\+\_\+transfer\+\_\+routine}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{photo\+\_\+transfer\+\_\+routine()}{photo\_transfer\_routine()}}
+{\footnotesize\ttfamily int photo\+\_\+transfer\+\_\+routine (\begin{DoxyParamCaption}\item[{int}]{s\+\_\+cli,  }\item[{char}]{buf\mbox{[}\+B\+U\+F\+\_\+\+S\+I\+Z\+E\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+function to transfer photo to server 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+\_\+cli} & ref to server \\
+\hline
+{\em buf\mbox{[}\+B\+U\+F\+\_\+\+S\+I\+Z\+E\mbox{]}} & buffer to write and read \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{client_8c_a128f2bef3aaf93d50acf00ef8b1e0b97}\label{client_8c_a128f2bef3aaf93d50acf00ef8b1e0b97}} 
+\index{client.\+c@{client.\+c}!recognition@{recognition}}
+\index{recognition@{recognition}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{recognition()}{recognition()}}
+{\footnotesize\ttfamily void recognition (\begin{DoxyParamCaption}\item[{char}]{buff\mbox{[}100\mbox{]},  }\item[{int}]{user\+\_\+class }\end{DoxyParamCaption})}
+
+
+
+function to recognize 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buff\mbox{[}100\mbox{]}} & buffer to write and read \\
+\hline
+{\em user\+\_\+class} & user class to recognize \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{client_8c_a195e7e824b505e0e09ea0cd5a3496694}\label{client_8c_a195e7e824b505e0e09ea0cd5a3496694}} 
+\index{client.\+c@{client.\+c}!weight\+\_\+update\+\_\+routine@{weight\+\_\+update\+\_\+routine}}
+\index{weight\+\_\+update\+\_\+routine@{weight\+\_\+update\+\_\+routine}!client.\+c@{client.\+c}}
+\subsubsection{\texorpdfstring{weight\+\_\+update\+\_\+routine()}{weight\_update\_routine()}}
+{\footnotesize\ttfamily int weight\+\_\+update\+\_\+routine (\begin{DoxyParamCaption}\item[{int}]{s\+\_\+cli,  }\item[{char}]{buf\mbox{[}\+B\+U\+F\+\_\+\+S\+I\+Z\+E\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+function to update weight 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s\+\_\+cli} & ref to server \\
+\hline
+{\em buf\mbox{[}\+B\+U\+F\+\_\+\+S\+I\+Z\+E\mbox{]}} & buffer to write and read \\
+\hline
+\end{DoxyParams}

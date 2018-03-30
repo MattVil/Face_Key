@@ -1,0 +1,143 @@
+\hypertarget{ipc_tools_8c}{}\section{reseau/ipc\+Tools.c File Reference}
+\label{ipc_tools_8c}\index{reseau/ipc\+Tools.\+c@{reseau/ipc\+Tools.\+c}}
+
+
+tools for semaphore use  
+
+
+{\ttfamily \#include \char`\"{}ipc\+Tools.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{ipc_tools_8c_a1ced9d2738adfdc25ea838402d87e1f3}{semalloc}} (key\+\_\+t key, int val\+Init)
+\begin{DoxyCompactList}\small\item\em create a semaphore \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{ipc_tools_8c_a1a1666796045a3210edd37d16b0f9625}{semfree}} (int semid)
+\begin{DoxyCompactList}\small\item\em destroy a semaphore \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ipc_tools_8c_a07d9975feec68c95cb5aba62b9d24ed8}{P}} (int semid)
+\begin{DoxyCompactList}\small\item\em do P operation \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ipc_tools_8c_a8a7b1645beb620891b3a8256143791e4}{V}} (int semid)
+\begin{DoxyCompactList}\small\item\em do V operation \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{ipc_tools_8c_a2388152033ebd5306bb178e3078b5118}{shmalloc}} (key\+\_\+t key, int size)
+\begin{DoxyCompactList}\small\item\em returns a pointer to a block of at least size bytes suitably aligned for any use \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{ipc_tools_8c_af6b34b8a7db92f7b60d335e3f06b8e34}{shmfree}} (key\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em free a block of at least size bytes suitably aligned for any use \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+tools for semaphore use 
+
+\begin{DoxyAuthor}{Author}
+Matthieu Vilain, Quentin Gerard, Louis L\textquotesingle{}Haridon 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+20/03/2018 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{ipc_tools_8c_a07d9975feec68c95cb5aba62b9d24ed8}\label{ipc_tools_8c_a07d9975feec68c95cb5aba62b9d24ed8}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!P@{P}}
+\index{P@{P}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{P()}{P()}}
+{\footnotesize\ttfamily void P (\begin{DoxyParamCaption}\item[{int}]{semid }\end{DoxyParamCaption})}
+
+
+
+do P operation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em semid} & id of semaphore on which to do P operation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ipc_tools_8c_a1ced9d2738adfdc25ea838402d87e1f3}\label{ipc_tools_8c_a1ced9d2738adfdc25ea838402d87e1f3}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!semalloc@{semalloc}}
+\index{semalloc@{semalloc}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{semalloc()}{semalloc()}}
+{\footnotesize\ttfamily semalloc (\begin{DoxyParamCaption}\item[{key\+\_\+t}]{key,  }\item[{int}]{val\+Init }\end{DoxyParamCaption})}
+
+
+
+create a semaphore 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & key to alloc  \\
+\hline
+{\em val\+Init} & value to init \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+semid the semaphore id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ipc_tools_8c_a1a1666796045a3210edd37d16b0f9625}\label{ipc_tools_8c_a1a1666796045a3210edd37d16b0f9625}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!semfree@{semfree}}
+\index{semfree@{semfree}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{semfree()}{semfree()}}
+{\footnotesize\ttfamily int semfree (\begin{DoxyParamCaption}\item[{int}]{semid }\end{DoxyParamCaption})}
+
+
+
+destroy a semaphore 
+
+
+\begin{DoxyParams}{Parameters}
+{\em semid} & id of semaphore to kill \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{ipc_tools_8c_a2388152033ebd5306bb178e3078b5118}\label{ipc_tools_8c_a2388152033ebd5306bb178e3078b5118}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!shmalloc@{shmalloc}}
+\index{shmalloc@{shmalloc}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{shmalloc()}{shmalloc()}}
+{\footnotesize\ttfamily void $\ast$ shmalloc (\begin{DoxyParamCaption}\item[{key\+\_\+t}]{key,  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+returns a pointer to a block of at least size bytes suitably aligned for any use 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & the key to alloc \\
+\hline
+{\em size} & the size to alloc \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+adress pointer to the allocated space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ipc_tools_8c_af6b34b8a7db92f7b60d335e3f06b8e34}\label{ipc_tools_8c_af6b34b8a7db92f7b60d335e3f06b8e34}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!shmfree@{shmfree}}
+\index{shmfree@{shmfree}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{shmfree()}{shmfree()}}
+{\footnotesize\ttfamily int shmfree (\begin{DoxyParamCaption}\item[{key\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+free a block of at least size bytes suitably aligned for any use 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & the key of the block to free \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+adress pointer to the allocated space 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ipc_tools_8c_a8a7b1645beb620891b3a8256143791e4}\label{ipc_tools_8c_a8a7b1645beb620891b3a8256143791e4}} 
+\index{ipc\+Tools.\+c@{ipc\+Tools.\+c}!V@{V}}
+\index{V@{V}!ipc\+Tools.\+c@{ipc\+Tools.\+c}}
+\subsubsection{\texorpdfstring{V()}{V()}}
+{\footnotesize\ttfamily void V (\begin{DoxyParamCaption}\item[{int}]{semid }\end{DoxyParamCaption})}
+
+
+
+do V operation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em semid} & id of semaphore on which to do V operation \\
+\hline
+\end{DoxyParams}

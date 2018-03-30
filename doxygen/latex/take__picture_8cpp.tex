@@ -1,0 +1,69 @@
+\hypertarget{take__picture_8cpp}{}\section{reseau/take\+\_\+picture.cpp File Reference}
+\label{take__picture_8cpp}\index{reseau/take\+\_\+picture.\+cpp@{reseau/take\+\_\+picture.\+cpp}}
+{\ttfamily \#include \char`\"{}opencv/highgui.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}opencv/cv.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{take__picture_8cpp_a03231544d56f41bf8432d385c56ac927}{I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE}}~100
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Mat \mbox{\hyperlink{take__picture_8cpp_a126d972f9896842936873739fa970960}{detect\+\_\+faces}} (Mat frame\+\_\+origin, Cascade\+Classifier face\+\_\+cascade, Cascade\+Classifier eyes\+\_\+cascade)
+\item 
+int \mbox{\hyperlink{take__picture_8cpp_abf9e6b7e6f15df4b525a2e7705ba3089}{main}} (int argc, char const $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct stat \mbox{\hyperlink{take__picture_8cpp_a909b9c34d788f026a675e03094d3085b}{st}} = \{0\}
+\item 
+int \mbox{\hyperlink{take__picture_8cpp_ae2e41bb3a59a2d21905a767a95c010f1}{nb\+\_\+images}} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{take__picture_8cpp_a03231544d56f41bf8432d385c56ac927}\label{take__picture_8cpp_a03231544d56f41bf8432d385c56ac927}} 
+\index{take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}!I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE@{I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE}}
+\index{I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE@{I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE}!take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}}
+\subsubsection{\texorpdfstring{I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE}{IMAGE\_SIZE}}
+{\footnotesize\ttfamily \#define I\+M\+A\+G\+E\+\_\+\+S\+I\+ZE~100}
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{take__picture_8cpp_a126d972f9896842936873739fa970960}\label{take__picture_8cpp_a126d972f9896842936873739fa970960}} 
+\index{take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}!detect\+\_\+faces@{detect\+\_\+faces}}
+\index{detect\+\_\+faces@{detect\+\_\+faces}!take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}}
+\subsubsection{\texorpdfstring{detect\+\_\+faces()}{detect\_faces()}}
+{\footnotesize\ttfamily Mat detect\+\_\+faces (\begin{DoxyParamCaption}\item[{Mat}]{frame\+\_\+origin,  }\item[{Cascade\+Classifier}]{face\+\_\+cascade,  }\item[{Cascade\+Classifier}]{eyes\+\_\+cascade }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{take__picture_8cpp_abf9e6b7e6f15df4b525a2e7705ba3089}\label{take__picture_8cpp_abf9e6b7e6f15df4b525a2e7705ba3089}} 
+\index{take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}!main@{main}}
+\index{main@{main}!take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char const $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{take__picture_8cpp_ae2e41bb3a59a2d21905a767a95c010f1}\label{take__picture_8cpp_ae2e41bb3a59a2d21905a767a95c010f1}} 
+\index{take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}!nb\+\_\+images@{nb\+\_\+images}}
+\index{nb\+\_\+images@{nb\+\_\+images}!take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}}
+\subsubsection{\texorpdfstring{nb\+\_\+images}{nb\_images}}
+{\footnotesize\ttfamily int nb\+\_\+images = 0}
+
+\mbox{\Hypertarget{take__picture_8cpp_a909b9c34d788f026a675e03094d3085b}\label{take__picture_8cpp_a909b9c34d788f026a675e03094d3085b}} 
+\index{take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}!st@{st}}
+\index{st@{st}!take\+\_\+picture.\+cpp@{take\+\_\+picture.\+cpp}}
+\subsubsection{\texorpdfstring{st}{st}}
+{\footnotesize\ttfamily struct stat st = \{0\}}
+
