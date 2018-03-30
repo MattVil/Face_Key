@@ -24,7 +24,26 @@ AccountList addToList(PGresult *result, AccountList list);
 AccountList freeAccountList(AccountList list);
 int extractID(AccountList list, char* mail);
 
+RSA *pubkey, *privkey;
+int encrypt_enable = 0;
+int hash = 0;
+char *encrypt_buf;
+char *err;
+
 int main(){
+
+	int i;
+	char npssw[100];
+
+	//Hash var
+	char mdString[33];
+	unsigned char digest[MD5_DIGEST_LENGTH];
+
+	/*MD5((unsigned char*)"azertyuiop", strlen("	azertyuiop"), (unsigned char*)&digest);    
+    for(int i = 0; i < 16; i++)
+         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+     if (DEBUG)
+     	printf("md5 of '%s' : %s\n", "azertyuiop", mdString);*/
 
 	/*Socket var*/
 	char buf[BUF_SIZE];
@@ -80,10 +99,44 @@ int main(){
 
 		if (fork() == 0){
 			char trace[20];
+			char path[50];
+
+			if (encrypt_enable){
+				pid_t pid = getpid();
+				sprintf(path, "face_key_db/keys/%d", pid);
+				receive_file2(s_dial, path);
+				send_file2("server_data/keys/publickey.pem", "server_pubkey.pem", s_dial);
+				recv_data(s_dial, buf);
+				sprintf(path, "face_key_db/keys/%d/publickey.pem", pid);
+				privkey = loadKey("server_data/keys/privatekey.pem", PRIVKEY);
+				encrypt_buf = malloc(256);
+			}
+
 			sprintf(trace, "[%s:%d]", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 			read_tt = recv_data(s_dial, buf);
 			if (read_tt != -1){
 				printf("%s MESSAGE RECEIVED: %s\n", trace, buf);
+
+				//RSA_DECRYPT_FLAG
+				if (encrypt_enable){
+					sprintf(encrypt_buf, "%s", buf);
+
+					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);    
+				    for(int i = 0; i < 16; i++)
+				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+				     if (DEBUG)
+				     	printf("md5: %s\n", mdString);
+
+					memset(buf, 0, BUF_SIZE);
+					int len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
+					printf("Decrypted message: %s\n", buf);
+					unsigned long e = ERR_get_error();
+					printf("Decrypt flag: %d | Err code: %lu\n", len, e);
+					ERR_load_crypto_strings();
+					printf("Error: %s\n", ERR_error_string(e, err));
+					printf("Private Key correctly loaded ?: %d\n", (privkey != NULL));
+				}
+
 				strcpy(temp_buf, buf);
 				code = getCode(temp_buf);
 				strcpy(temp_buf, buf);
@@ -111,7 +164,24 @@ int main(){
 						conn = PQconnectdb(CONN_INFO);
 						verif_conn(conn);
 						printf("%s/%s\n", *split_data, *(split_data+1));
-						user_id = authentification(split_data[0], split_data[1], conn);
+
+						if (hash){
+							for (i = 0; i<strlen(split_data[1]); i++)
+								printf("%d(%c) ", split_data[1][i], split_data[1][i]);
+							printf("\n");
+							sprintf(npssw, "%s", split_data[1]);
+							printf("Hint: %d\n", strcmp(npssw, (const char*)"azertyuiop"));
+							MD5((unsigned char*)&npssw, strlen(npssw), (unsigned char*)&digest);    
+						    for(int i = 0; i < 16; i++)
+						         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+						     if (DEBUG)
+						     	printf("md5 of '%s' : %s\n", npssw, mdString);
+
+							user_id = authentification(split_data[0], mdString, conn);
+						}
+						else
+							user_id = authentification(split_data[0], split_data[1], conn);
+
 						PQfinish(conn);
 						if (user_id == -1){
 							if (DEBUG)
@@ -274,7 +344,6 @@ int main(){
 						break;
 
 					case CREATION:
-
 						send_data(s_dial, OK, "OK", buf, sizeof(buf));
 
 						//REC MAIL+PSEUDO
@@ -412,10 +481,24 @@ int main(){
 							printf("\tMAIL: %s\n\tPSEUDO: %s\n\tPASSWORD: %s\n\tGENDER: %d\n\tNAME: %s\n\tFIRSTNAME: %s\n\tLANG: %s\n", mail, pseudo, pssw, gender, name, firstname, lang);
 						}
 
+						if (hash){
+							printf("Hint: %d\n", strcmp(pssw, (const char*)"azertyuiop"));
+							printf("Send password is lenght of %d / %d\n", strlen(pssw), strlen("azertyuiop"));
+							sprintf(npssw, "%s", pssw);
+							MD5((unsigned char*)&npssw, strlen(npssw), (unsigned char*)&digest);    
+						    for(int i = 0; i < 16; i++)
+						         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+						     if (DEBUG)
+						     	printf("md5 of '%s' : %s\n", npssw, mdString);
+						}
+
 						if (ONLINE){
 							conn = PQconnectdb(CONN_INFO);
 							verif_conn(conn);
-							sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
+							if (hash)
+								sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, mdString, lang);
+							else
+								sprintf(query, "INSERT INTO Users (name, first_name, gender, pseudo, mail, password, language, creation_date) VALUES ('%s', '%s', '%d', '%s', '%s', '%s', '%s', '1970/01/01');", name, firstname, gender, pseudo, mail, pssw, lang);
 							result = PQexec(conn, query);
 							PQclear(result);
 							PQfinish(conn);
@@ -523,10 +606,12 @@ int main(){
 						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code == OK)
-							send_file("neuron/network.npz", "network.npz", s_dial);
+							send_file2("neuron/network.npz", "network.npz", s_dial);
 						break;
 
 					case UPDATE:
+						receive_file2(s_dial, path);
+
 						sprintf(query, "%d", version);
 						send_data(s_dial, OK, query, buf, sizeof(buf));
 						timeout_config(s_dial, &readfds, &timeout);
@@ -548,7 +633,7 @@ int main(){
 						if (split_message(&code, data, buf, s_dial))
 							break;
 						if (code == UP){
-							send_file("neuron/network.npz", "network.npz", s_dial);
+							send_file2("neuron/network.npz", "network.npz", s_dial);
 						}
 						read_tt = recv_data(s_dial, buf);
 						break;
@@ -567,9 +652,10 @@ int main(){
 				printf("Read failed\n");
 			}
 			if (list != NULL)
-			list = freeAccountList(list);
+				list = freeAccountList(list);
 			if (PQstatus(conn) == CONNECTION_OK)
 				PQfinish(conn);
+			close (s_dial);
 
 			printf("End of Communication with %s:%d\n", inet_ntoa(cli_addr.sin_addr), ntohs(cli_addr.sin_port));
 

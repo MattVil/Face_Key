@@ -491,7 +491,8 @@ int send_file2(char *filename, char *send_filename, int s_dial){
 		}
 		memset(buf, 0, BUF_FILE);
 		total_bytes_sent+=bytes_sent;
-		printf("Bytes sent: %d\n", total_bytes_sent);
+		if (FULL_DEBUG)
+			printf("Bytes sent: %d\n", total_bytes_sent);
 	}
 	if (bytes_read < 0){
 		perror("Read file error");
@@ -540,15 +541,30 @@ int receive_file2(int s_dial, char *directory){
 		read_flag = read(s_dial, buf_file, BUF_FILE);
 		write(file, buf_file, sizeof(buf_file));
 		total_size_receive+=read_flag;
-		printf("%d - %d\n", read_flag, total_size_receive);
+		if (FULL_DEBUG)
+			printf("%d - %d\n", read_flag, total_size_receive);
 	}while(total_size_receive < file_size);
 	// if (read_flag < 0){
 	// 	perror("Read file error");
 	// 	return 1;
 	// }
+
 	send_data(s_dial, OK, "OK", buf, BUF_SIZE);
 
 	printf("End of transfer\n");
 	close(file);
 	return 0;
+}
+
+RSA* loadKey(char *path, int keytype){
+	RSA *keypair = RSA_new();
+	FILE *f;
+	f = fopen(path, "rb");
+	if (f == NULL)
+		return NULL;
+	if (keytype)
+		keypair = PEM_read_RSA_PUBKEY(f, &keypair, NULL, NULL);
+	else
+		keypair = PEM_read_RSAPrivateKey(f, &keypair, NULL, NULL);
+	return keypair;
 }

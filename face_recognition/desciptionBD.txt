@@ -1,0 +1,28 @@
+nb classes : 18
+nb photo : 19462 -x13-> 2253006 : 2700
+nb male : 12
+nb female : 6
+
+bruno : 1228 : 150
+clemence : 812 : 150
+eugenie : 922 : 150
+guillaume : 964 : 150
+jp : 1310 : 150
+julien : 739 : 150
+phillipe : 999 : 150
+louis : 1416 : 150
+mathilde : 1289 : 150
+matthieu : 1300 : 150
+mihail : 1307 : 150
+orphyse : 956 : 150
+pierref : 582 : 150  + /!\ pas de rotation
+pierrea : 1018 : 150
+quentin : 1291 : 150
+romane : 908 : 150
+sofiane : 924 : 150
+solene : 1497 : 150
+
+moyenne image par classe : 1227 : 15952
+
+temps de conversion : 1min45
+poid : 985mo : 1.3go

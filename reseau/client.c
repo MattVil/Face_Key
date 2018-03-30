@@ -1,9 +1,15 @@
+/** /!\ Attention /!\
+**/
 #include "util.h"
+#include "opencv/highgui.h"
+#include "opencv/cv.h"
 
 int first_conn_routine(int s_cli, char buf[BUF_SIZE]);
 int conn_to_website_routine(int s_cli, char buf[BUF_SIZE]);
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]);
 int weight_update_routine(int s_cli, char buf[BUF_SIZE]);
+void recognition(char buff[100], int user_class);
+void neuralNetwork(IplImage* frame);
 
 
 char IP_SERV[20] = "127.0.0.1";
@@ -13,197 +19,381 @@ double version = 0;
 char login[100];
 char pssw[100];
 
+RSA *pubkey, *privkey;
+int encrypt_enable = 0;
+unsigned char *encrypt_buf;
+int hash = 1;
+
+//Sem & SharedMem Init
+key_t semkey;
+pid_t pidFork;
+int semid, shmkey, *x, tube[2];
+char tubeBuffer[100];
+
 int main(int argc, char const *argv[]) {
 
-	/*Socket var*/
-	char buf[BUF_SIZE];
-	memset (buf, 0, BUF_SIZE);
-	int s_cli;
-	struct sockaddr_in serv_addr;
+	printf("Init SEM, SHM and PIPE\n");
 
-	/*Timeout var*/
-	fd_set readfds;
-	struct timeval timeout;
+	if ((semkey = ftok("sem.key", 1)) == -1){
+		perror("Semkey creation failed");
+		exit(-1);
+	}
+	if ((shmkey = ftok("shm.key", 1)) == -1){
+		perror("Semkey creation failed");
+		exit(-1);
+	}
 
-	config("configClient.txt", &PORT_SERV, IP_SERV);
+	if ((semid = semalloc(semkey, 0)) == -1){
+		perror("Semaphore creation failed");
+		exit(-1);
+	}
 
-	s_cli = socket(PF_INET, SOCK_STREAM, 0);
+	if (pipe(tube)) {
+	    perror("erreur creation de tube");
+	    return 1;
+	}
+	/**
+	* 0 = Lecture
+	* 1 = Ecriture
+	**/
 
-	/*Config serveur*/
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_addr.s_addr = inet_addr(IP_SERV);
-	serv_addr.sin_port = htons(PORT_SERV);
-	memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
+	printf("SHM, SEM, TUBE OK\n");
 
-	char choise;
-	int flag;
+	x = shmalloc(shmkey, sizeof(int));
+	*x = 0;
 
-	int flag_co = 1, choice, connect_flag;
-	int splited_req_size;
-	char **splited_req;
+	printf("Lancement du programme de reconnaissance\n");
+	pidFork = fork();
 
-  int code;
-  char data[BUF_SIZE];
+	//Client
+	if(pidFork == 0){
 
-	printf("------------------------------------------\n");
-	printf("|                 Client                 |\n");
-	printf("------------------------------------------\n");
+		int quitFlag = 1;
 
-	while (flag_co){
+		//Hash var
+		char mdString[33];
+		unsigned char digest[MD5_DIGEST_LENGTH];
+
+		/*Socket var*/
+		char buf[BUF_SIZE];
+		memset (buf, 0, BUF_SIZE);
+		int s_cli;
+		struct sockaddr_in serv_addr;
+
+		/*Timeout var*/
+		fd_set readfds;
+		struct timeval timeout;
+
+		config("configClient.txt", &PORT_SERV, IP_SERV);
+
 		s_cli = socket(PF_INET, SOCK_STREAM, 0);
-		connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-		if (connect_flag == -1){
-			connect_err();
-			printf("An error occurred: you may need to reconfigure the conf file\n");
-			return 1;
-		}
-		printf("\nVeuillez vous connecter à votre compte ou creer un compte\n");
-		printf("1 - Connexion\n");
-		printf("2 - Creer un compte\n");
-		printf("3 - Quitter\n");
+
+		/*Config serveur*/
+		serv_addr.sin_family = AF_INET;
+		serv_addr.sin_addr.s_addr = inet_addr(IP_SERV);
+		serv_addr.sin_port = htons(PORT_SERV);
+		memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero));
+
+		char choise;
+		int flag;
+
+		int flag_co = 1, choice, connect_flag;
+		int splited_req_size;
+		char **splited_req;
+
+	  int code;
+	  char data[BUF_SIZE];
+
 		printf("------------------------------------------\n");
-		printf("Votre choix: ");
-		scanf("%d", &choice);
-		if (choice != 1 && choice != 2 && choice != 3){
-			printf("Ce choix n'est pas disponible\n");
-		}
-    else if (choice == 2){
-      connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-      flag = first_conn_routine(s_cli, buf);
-      if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-      printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
-      close(s_cli);
-    }
-		else if (choice == 3){
-			printf("Arrêt...\n");
-			exit(0);
-		}
-		else if (choice){
-			printf("Veuillez entrer vos identifiants de connexion:\n");
-			printf("\tLogin: ");
-			scanf("%s", login);
-			printf("\tPassword: ");
-			scanf("%s", pssw);
-			memset(buf, 0, BUF_SIZE);
-			sprintf(buf, "%d;%s,%s", 103, login, pssw);
-			printf("%s\n", buf);
-			if(DEBUG)
-				printf("\t### Message envoyé : %s\n", buf);
-			if(ONLINE){
-				int o = write(s_cli, buf, strlen(buf));
-			}
+		printf("|                 Client                 |\n");
+		printf("------------------------------------------\n");
 
-			memset(buf, 0, BUF_SIZE);
-			if(ONLINE){
-				timeout_config(s_cli, &readfds, &timeout);
-				int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
-				if (!select_tt){
-					if (DEBUG)
-						printf("\t### CONNEXION Timeout\n");
-					break;
+		while (flag_co){
+			s_cli = socket(PF_INET, SOCK_STREAM, 0);
+			connect_flag = connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+
+			if (encrypt_enable){
+				//RSA_FLAG
+				send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+				recv_data(s_cli, buf);
+				receive_file2(s_cli, "client_x/keys");
+				pubkey = loadKey("client_x/keys/server_pubkey.pem", PUBKEY);
+				if (pubkey == NULL){
+					encrypt_enable = 0;
+					printf("No Encryption\n");
 				}
-				read(s_cli, buf, BUF_SIZE);
+				else{
+					if (DEBUG)
+						printf("Key Loaded\n");
+					encrypt_buf = malloc(RSA_size(pubkey));
+				}
 			}
-			else
-				strcpy(buf, "000;0K");//exemple
 
-			if(DEBUG)
-				printf("\t### Message recu : %s\n", buf);
+			if (connect_flag == -1){
+				connect_err();
+				printf("An error occurred: you may need to reconfigure the conf file\n");
+				return 1;
+			}
+			printf("\nVeuillez vous connecter à votre compte ou creer un compte\n");
+			printf("1 - Connexion\n");
+			printf("2 - Creer un compte\n");
+			printf("3 - Quitter\n");
+			printf("------------------------------------------\n");
+			printf("Votre choix: ");
+			scanf("%d", &choice);
+			if (choice != 1 && choice != 2 && choice != 3){
+				printf("Ce choix n'est pas disponible\n");
+			}
+	    else if (choice == 2){
+	      /*connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+	      //RSA_FLAG
+			send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+			recv_data(s_cli, buf);
+			receive_file2(s_cli, "client_x/keys");*/
 
-      if (split_message(&code, data, buf, s_cli))
-        exit(1);
+	      flag = first_conn_routine(s_cli, buf);
+	      if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+	      printf("Votre compte a été créé ! Utilisez le pour vous connecter\n");
+	      close(s_cli);
+	    }
+			else if (choice == 3){
+				printf("Arrêt...\n");
+				exit(0);
+			}
+			else if (choice){
+				printf("Veuillez entrer vos identifiants de connexion:\n");
+				printf("\tLogin: ");
+				scanf("%s", login);
+				printf("\tPassword: ");
+				scanf("%s", pssw);
+				memset(buf, 0, BUF_SIZE);
+				sprintf(buf, "%d;%s,%s", 103, login, pssw);
 
-			if(code != OK){
+				//ENCRYPT_RSA_FLAG
+				if (encrypt_enable){
+					int len;
+					printf("Message: %s\n", buf);
+					//pubkey = loadKey("client_x/keys/publickey.pem", PUBKEY);
+					len = RSA_public_encrypt(strlen(buf)+1, (unsigned char*)buf, (unsigned char*)encrypt_buf, pubkey, RSA_PKCS1_OAEP_PADDING);
+					printf("Encrypted message (%d): %s\n", len, encrypt_buf);
+					printf("Sizeof: %lu\tstrlen: %lu\n", sizeof(encrypt_buf), strlen(encrypt_buf));
+					/*privkey = loadKey("client_x/keys/privatekey.pem", PRIVKEY);
+					len = RSA_private_decrypt(256, (unsigned char*)encrypt_buf, (unsigned char*)buf, privkey, RSA_PKCS1_OAEP_PADDING);
+					printf("Decrypted message: %s\n", buf);*/
+
+					unsigned char digest[MD5_DIGEST_LENGTH];
+					MD5((unsigned char*)&encrypt_buf, strlen(encrypt_buf), (unsigned char*)&digest);
+				    char mdString[33];
+				    for(int i = 0; i < 16; i++)
+				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+				     if (DEBUG)
+				     	printf("md5: %s\n", mdString);
+
+					memset(buf, 0, BUF_SIZE);
+					sprintf(buf, "%s", encrypt_buf);
+
+					for (int i = 0; i<strlen(encrypt_buf)+20; i++)
+						printf("%d(%c) ", encrypt_buf[i], encrypt_buf[i]);
+					printf("\n");
+
+				}
+
+				/*if (hash){
+					for (int i = 0; i<strlen(pssw); i++)
+						printf("%d(%c) ", pssw[i], pssw[i]);
+					printf("\n");
+					printf("Hint: %d\n", strcmp(pssw, (const char*)"azertyuiop"));
+					MD5((unsigned char*)&pssw, strlen(pssw), (unsigned char*)&digest);
+				    for(int i = 0; i < 16; i++)
+				         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+				     if (DEBUG)
+				     	printf("md5 of '%s' : %s\n", pssw, mdString);
+				}*/
+
 				if(DEBUG)
-					printf("\t### Permission de connexion au serveur refusé.\n");
+					printf("\t### Message envoyé : %s\n", buf);
+				if(ONLINE){
+					if (encrypt_enable){
+						int o = write(s_cli, encrypt_buf, strlen(buf));
+					}
+					else{
+						int o = write(s_cli, buf, strlen(buf));
+					}
+				}
+
+				memset(buf, 0, BUF_SIZE);
+				if(ONLINE){
+					timeout_config(s_cli, &readfds, &timeout);
+					int select_tt = select(s_cli+1, &readfds, NULL, NULL, &timeout);
+					if (!select_tt){
+						if (DEBUG)
+							printf("\t### CONNEXION Timeout\n");
+						break;
+					}
+					read(s_cli, buf, BUF_SIZE);
+				}
+				else
+					strcpy(buf, "000;0K");//exemple
+
+				if(DEBUG)
+					printf("\t### Message recu : %s\n", buf);
+
+	      if (split_message(&code, data, buf, s_cli))
+	        exit(1);
+
+				if(code != OK){
+					if(DEBUG)
+						printf("\t### Permission de connexion au serveur refusé.\n");
+				}
+				else{
+					flag_co = 0;
+				}
+				close(s_cli);
+			}
+		}
+
+		while(quitFlag){
+			choise = getchar();
+
+			printf("-----------------------------------------\n");
+			printf("|\t\t\t\t\t|\n");
+			printf("|\tVous êtes le client %d\t\t|\n", ID_CLIENT);
+			printf("|\t\t\t\t\t|\n");
+			printf("-----------------------------------------\n");
+
+			printf("\n\nChoix :\n");
+			printf("\tp - Simuler une premiere connexion\n");
+			printf("\tc - Vous connecter à un site\n");
+			printf("\tu - Mettre à jour la version de votre réseau de neurones\n");
+			printf("\tt - Transmettre les photos de vous pour amélioration du réseau\n");
+			printf("\tq - Quitter\n");
+
+		    fflush(stdin);
+			printf("\nVotre choix (p/c/u/t/q): ");
+
+			scanf("%c", &choise);
+
+			//system ("clear");
+
+			switch(choise){
+				case 'p': //premiere connexion,creation du compte FK
+					/*connexion*/
+					if(ONLINE)
+						s_cli = socket(PF_INET, SOCK_STREAM, 0);
+						connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+						if (encrypt_enable){
+							//RSA_FLAG
+							send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+							recv_data(s_cli, buf);
+							receive_file2(s_cli, "client_x/keys");
+						}
+
+						flag = first_conn_routine(s_cli, buf);
+					if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
+					close(s_cli);
+					break;
+				case 'c': //connexion à un site
+					/*connexion*/
+					if(ONLINE)
+						s_cli = socket(PF_INET, SOCK_STREAM, 0);
+						connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+						if (encrypt_enable){
+							//RSA_FLAG
+							send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+							recv_data(s_cli, buf);
+							receive_file2(s_cli, "client_x/keys");
+						}
+
+						flag = conn_to_website_routine(s_cli, buf);
+					if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+			        if (!flag){
+			          close(s_cli);
+			          printf("Server is down\n");
+			          exit(1);
+			        }
+					close(s_cli);
+					break;
+				case 'u': //update quotidienne des poids du réseau
+					if(ONLINE)
+						s_cli = socket(PF_INET, SOCK_STREAM, 0);
+						connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
+						if (encrypt_enable){
+							//RSA_FLAG
+							send_file2("client_x/keys/publickey.pem", "publickey.pem", s_cli);
+							recv_data(s_cli, buf);
+							receive_file2(s_cli, "client_x/keys");
+						}
+
+						flag = weight_update_routine(s_cli, buf);
+					if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
+					if (flag){
+						close(s_cli);
+						printf("Server is down\n");
+						exit(1);
+					}
+					close(s_cli);
+					break;
+				case 't': //transmission quotidienne des photos
+					break;
+				case 'q':
+					quitFlag = 0;
+					break;
+				default :
+					printf("Mauvais choix, veuillez entrer une nouvelle lettre\n");
+					break;
+			}
+
+		}
+
+		close(s_cli);
+	}
+	//Code de reconnaissance (père)
+	else{
+		char buffRecognition[100];
+		printf("Loading Model...\n");
+		sleep(20);
+		printf("Model Loaded !\n");
+		while(1){
+			/*Traitement*/
+			printf("Wait for Recognition !\n");
+			recognition(buffRecognition, ID_CLIENT);
+			if (waitpid(pidFork, 0, WNOHANG) != pidFork){
+				P(semid);
+				sprintf(tubeBuffer, "Autorisation");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+				sprintf(tubeBuffer, "0.98");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
+				sprintf(tubeBuffer, "0.80 0.99 0.99 0.50 0.99");
+				write(tube[1], tubeBuffer, sizeof(tubeBuffer));
 			}
 			else{
-				flag_co = 0;
+				break;
 			}
-			close(s_cli);
-		}
-	}
-
-	printf("-----------------------------------------\n");
-	printf("|\t\t\t\t\t|\n");
-	printf("|\tVous êtes le client %d\t\t|\n", ID_CLIENT);
-	printf("|\t\t\t\t\t|\n");
-	printf("-----------------------------------------\n");
-
-	printf("\n\nChoix :\n");
-	printf("\tp - Simuler une premiere connexion\n");
-	printf("\tc - Vous connecter à un site\n");
-	printf("\tu - Mettre à jour la version de votre réseau de neurones\n");
-	printf("\tt - Transmettre les photos de vous pour amélioration du réseau\n");
-	printf("\tq - Quitter\n");
-
-	while(1){
-
-    fflush(stdin);
-		printf("\nVotre choix (p/c/u/t/q): ");
-
-		scanf("%c", &choise);
-
-		//system ("clear");
-
-		switch(choise){
-			case 'p': //premiere connexion,creation du compte FK
-				/*connexion*/
-				if(ONLINE)
-					s_cli = socket(PF_INET, SOCK_STREAM, 0);
-					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					flag = first_conn_routine(s_cli, buf);
-				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction first_conn_routine\n");}
-				close(s_cli);
-				break;
-			case 'c': //connexion à un site
-				/*connexion*/
-				if(ONLINE)
-					s_cli = socket(PF_INET, SOCK_STREAM, 0);
-					connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-					flag = conn_to_website_routine(s_cli, buf);
-				if(DEBUG && flag == 0){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-        if (flag){
-          close(s_cli);
-          printf("Server is down\n");
-          exit(1);
-        }
-				close(s_cli);
-				break;
-			case 'u': //update quotidienne des poids du réseau
-			if(ONLINE)
-				s_cli = socket(PF_INET, SOCK_STREAM, 0);
-				connect(s_cli, (struct sockaddr *)&serv_addr, sizeof serv_addr);
-				flag = weight_update_routine(s_cli, buf);
-			if(DEBUG && flag == 1){printf("\t### Erreur dans la fonction conn_to_website_routine\n");}
-			if (flag){
-				close(s_cli);
-				printf("Server is down\n");
-				exit(1);
-			}
-			close(s_cli);
-			break;
-				break;
-			case 't': //transmission quotidienne des photos
-				break;
-			case 'q':
-				exit(0);
-				break;
-			default :
-				//printf("Mauvais choix, veuillez entrer une nouvelle lettre\n");
-				break;
 		}
 
+		printf("Ending Recognition process ...\n");
+
+		printf("Recognition process ended !\nGoodbye !\n");
 	}
 
-	close(s_cli);
+	//Free Semid & SharedMem
+	if (shmfree(shmkey) == -1){
+		perror("Shared Memory destruction failed");
+		exit(-1);
+	}
+	if (semfree(semid) == -1){
+		perror("Semaphore destruction failed");
+		exit(-1);
+	}
+	close(tube[0]);
+	close(tube[1]);
 
 	return 0;
 }
 
 int first_conn_routine(int s_cli, char *buf){
 
-	char mail[50], pseudo[50], mdp[50], mdp_confirmation[50], gender[10], name[50], first_name[50], lang[10];
+	char mail[50], pseudo[50], mdp[100], mdp_confirmation[100], gender[10], name[50], first_name[50], lang[10];
 	char **splited_req;
 	int splited_req_size;
 	int login_ok = 0, mdp_ok = 0;
@@ -606,7 +796,16 @@ int conn_to_website_routine(int s_cli, char *buf){
 	printf("Veuillez choisir le site auquel se connecter : \t");
 	scanf("%s", site);
 
-	printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+	//printf("Vérification de l'identité ... prise de la photo ... identification ... OK !\n");
+
+	printf("Info reconnaissance:\n");
+	V(semid);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
+	read(tube[0], tubeBuffer, sizeof(tubeBuffer));
+	printf("%s\n", tubeBuffer);
 
 	/*Envoie 100;site;ID_CLIENT*/
 	memset(buf, 0, BUF_SIZE);
@@ -740,14 +939,16 @@ int weight_update_routine(int s_cli, char buf[BUF_SIZE]){
 		return 1;
 	}
 	send_data(s_cli, UP, "OK", buf, BUF_SIZE);
-	receive_file(s_cli, "client_x/");
+
+	receive_file2(s_cli, "client_x");
+
 	return 0;
 }
 
 int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
-	//int nb_photo = 29;
-	int nb_photo = system("./take_picture");
+	int nb_photo = 29;
+	//int nb_photo = system("./take_picture");
 	int flag;
 	int i;
 	char data[BUF_SIZE];
@@ -775,7 +976,7 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 
 			printf("Transfer du fichier : %s ... ", path);
 			flag = send_file2(path, filename, s_cli);
-			remove(path);
+			//remove(path);
 			if(flag == 0)
 				printf("OK\n");
 			else{
@@ -793,8 +994,42 @@ int photo_transfer_routine(int s_cli, char buf[BUF_SIZE]){
 				return 1;
 
 		}
+		else{
+			if (DEBUG)
+				printf("File: %s is null\n", filename);
+		}
 
 	}
 
 	return 0;
+}
+
+void recognition(char buff[100], int user_class){
+	printf("Ouai ca reconnais avec Opencv mdr\n");
+
+	//open the video stream
+	CvCapture* cap=cvCaptureFromCAM(0);
+	IplImage* frame;
+
+	//ignore the few first image bc they can be co
+	int i=0;
+	for(i=0; i<5; i++){
+		frame = cvQueryFrame(cap);
+	}
+
+	//pass somme image of the video stream on the neural network for recognition
+	for(i=0; i<10; i++){
+		frame = cvQueryFrame(cap);
+		neuralNetwork(frame);
+	}
+	//fake result of the recognition
+
+}
+
+void neuralNetwork(IplImage* frame){
+	/*
+	This function is just a simulation for the OS course.
+	The real neural network is implemented in python and can be found at :
+	/face_recognition/client_detect.py
+	*/
 }

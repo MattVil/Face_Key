@@ -1,22 +1,23 @@
-\subsection{Les Requêtes}
+% !TEX encoding = UTF-8 Unicode
+\subsection{Les RequÃªtes}
 \begin{tabular}{|c|c|c|}
 \hline
 
-\multirow{}{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site à l'instant t \\
+\multirow{}{Client -> Serveur (100-149)} & 100 & Demande la liste des IDs disponible pour un utilisateur sur un site Ã  l'instant t \\
 \cline{2-3}
 & 101 & Demande le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
 \cline{2-3}
-& 102 & Envoie d'une photo de l'utilisateur ainsi que ses coordonnées GPS \\
+& 102 & Envoie d'une photo de l'utilisateur ainsi que ses coordonnÃ©es GPS \\
 
 \hline
 
-\multirow{}{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site à l'instant t \\
+\multirow{}{Serveur -> Client (200-249)} & 200 & Envoie la liste des IDs disponible pour un utilisateur pour un site Ã  l'instant t \\
 \cline{2-3}
 & 201 & Envoie le mot de passe pour un ID (accessible par l'utilisateur) sur un site \\
 
 \hline
 
-\multirow{}{Erreurs côté serveur (400-499)} & 400 & Requête inconnue \\
+\multirow{}{Erreurs cÃŽtÃ© serveur (400-499)} & 400 & RequÃªte inconnue \\
 \cline{2-3}
 & 401 & Utilisateur introuvable \\
 \cline{2-3}
@@ -25,12 +26,12 @@
 \hline
 \end{tabular}
 
-Une requête est constitué de 2 parties:
+Une requÃªte est constituÃ© de 2 parties:
 \begin{itemize}
-	\item Le code de la requête (voir tableau ci-dessus)
+	\item Le code de la requÃªte (voir tableau ci-dessus)
 	\item Les informations
 \end{itemize}
-Dans la requête, les informations sont séparées du code de la requête par un ";". Ainsi la requête est composé de la manière suivante:
+Dans la requÃªte, les informations sont sÃ©parÃ©es du code de la requÃªte par un ";". Ainsi la requÃªte est composÃ© de la maniÃšre suivante:
 \newline
 \begin{tabular}{|c|c|}
 \hline

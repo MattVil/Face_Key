@@ -1,0 +1,110 @@
+\select@language {french}
+\contentsline {section}{\numberline {I}Pr\'esentation de Face Key}{2}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {I-A}}Situation initiale}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-A}1}Probl\`eme des mots de passe}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-A}2}Maturation de la technologie}{2}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {I-B}}Notre solution : Face Key}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-B}1}Pr\'esentation}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-B}2}Fonctionnement}{2}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {I-C}}Organisation des diff\'erents projets}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-C}1}Base de donn\'ees}{2}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-C}2}R\'eseau}{3}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-C}3}D\'eveloppement d'application mobile}{3}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-C}4}Syst\`eme d'exploitation}{3}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {I-C}5}Projet de synth\`ese}{3}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {I-D}}Nos ambitions, nos limites}{3}
+\contentsline {section}{\numberline {II}Gestion de projet}{4}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-A}}R\'epartition des t\^aches}{4}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-B}}Les deadlines}{4}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {II-C}}Organisation du travail}{4}
+\contentsline {section}{\numberline {III}Base de Donn\'ees}{6}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-A}}Introduction}{6}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-B}}Analyse du besoin}{6}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-C}}Mod\`ele Conceptuel des Donn\'ees}{7}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-D}}Mod\`ele Logique de Donn\'ees}{7}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-E}}Requ\^etes significatives}{8}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}1}Liste les comptes d'un user}{8}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}2}Liste sharedAccount d'un user}{8}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}3}Liste des positions GPS des utilisateurs d'un site}{9}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}4}Somme du temps d'utilisation et nombre utilisateurs d'un site pour calcul moyenne}{9}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}5}Dernier compte utilis\'e par l'utilisateur}{10}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-E}6}Liste des comptes partag\'e avec un utilisateur}{10}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-F}}Panel d'administration}{11}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-F}1}Utilisateurs}{11}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {III-F}2}Sites}{11}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {III-G}}Conclusion}{11}
+\contentsline {section}{\numberline {IV}R\'eseau}{12}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-A}}Sp\'ecification}{12}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-B}}Fonctionnement global}{12}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-C}}Les requ\^etes}{12}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {IV-D}}Diagrammes applicatifs}{13}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-D}1}Cr\'eation d'un compte}{13}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-D}2}Phase d'authentification}{13}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-D}3}Connexion \`a un site}{14}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {IV-D}4}Mise \`a jour des poids du r\'eseau de neurones}{14}
+\contentsline {section}{\numberline {V}Application Android}{15}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Introduction}{15}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-B}}Description de l'application}{15}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-C}}Activit\'ees}{15}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-C}1}Login Activity}{15}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-C}2}Choice Activity}{16}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-C}3}Activit\'e de tri de photos}{17}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-D}}Intents}{20}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {V-D}1}Camera intent}{20}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-E}}Background service}{21}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-F}}Conclusion}{24}
+\contentsline {section}{\numberline {VI}Interface Homme-Machine}{25}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-A}}Introduction}{25}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-B}}Analyse du March\'e}{25}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}}Les technologies Chrome}{26}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}1}Application chrome}{26}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-C}2}Extension chrome}{27}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-D}}D\'eveloppement}{28}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-D}1}Application}{28}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-D}2}Extension}{29}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-D}3}Communication Application-Extension}{30}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-E}}Int\'egration au reste du projet}{31}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VI-F}}Conclusion}{31}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-F}1}Validation}{31}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VI-F}2}Perspectives}{32}
+\contentsline {section}{\numberline {VII}Reconnaissance Faciale}{33}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-A}}contexte}{33}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-B}}Int\'egration de la reconnaissance faciale dans le projet}{33}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}}Construction de la base de donn\'ees d'images}{35}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}1}Comment l'utilisateur entre-t-il dans la base de donn\'ees Face Key ?}{35}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}2}Comment d\'etecte-on le visage de l'utilisateur dans une image ?}{36}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}3}Et une fois les photos collect\'ees sur le serveur ?}{36}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}4}Comment avez-vous concr\`etement construit votre base ?}{37}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-C}5}Remarques}{37}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}}Apprentissage/Reconnaissance des visages}{38}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}1}D\'ecoupe de la base de donn\'ees}{38}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}2}M\'ethode par r\'egression logistique}{38}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}2a}Th\'erorie}{38}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}2b}Impl\'ementation}{39}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}2c}R\'esultats}{39}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}3}M\'ethode par perceptron multicouches}{40}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}3a}Th\'erorie}{40}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}3b}Impl\'ementation}{41}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}3c}R\'esultats}{41}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VII-D}4}M\'ethode par r\'eseau de neurones convolutif}{41}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4a}Th\'eorie}{41}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4b}Impl\'ementation}{44}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VII-D}4c}R\'esultats}{44}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VII-E}}Conclusion : remarques, avancement et am\'eliorations possibles}{46}
+\contentsline {section}{\numberline {VIII}Securit\'e}{48}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-A}}Introduction au probl\`eme}{48}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}}RSA}{48}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}1}Introduction}{48}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}2}G\'en\'eration des cl\'es}{49}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}3}Cryptage et D\'ecryptage des messages}{49}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-B}4}Impl\'ementation}{49}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VIII-B}4a}G\'en\'eration des cl\'es}{49}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VIII-B}4b}\'Echange des cl\'es}{49}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VIII-B}4c}Cryptage et d\'ecryptage}{49}
+\contentsline {paragraph}{\numberline {\unhbox \voidb@x \hbox {VIII-B}4d}\'Etat de l'impl\'ementation}{49}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-C}}Fonctions de Hachages}{50}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-C}1}Introduction}{50}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-C}2}Int\'egration au sein du projet}{50}
+\contentsline {subsubsection}{\numberline {\unhbox \voidb@x \hbox {VIII-C}3}Le Haching sal\'e}{50}
+\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {VIII-D}}Bilan de la s\'ecurit\'e}{51}
+\contentsline {section}{\numberline {IX}Conclusion}{52}

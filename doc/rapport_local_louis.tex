@@ -1,0 +1,753 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[francais]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[T1]{fontenc}
+
+\usepackage{ifpdf}
+\usepackage{cite}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{epsfig}
+
+\renewcommand{\familydefault}{\sfdefault}
+\graphicspath{{./data/}}
+
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png,.pdf}
+
+\usepackage[cmex10]{amsmath}
+\usepackage{empheq}
+\usepackage[tight,footnotesize]{subfigure}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\hyphenation{}
+
+\usepackage{listings}
+\usepackage{color}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color
+  basicstyle=\footnotesize,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+  frame =tBlR,
+  rulesep =1mm ,
+  framesep =5mm,
+  framerule =2pt,
+  xrightmargin =5mm,
+  xleftmargin =5mm ,
+}
+\setlength{\parindent}{4em}
+\setlength{\parskip}{1em}
+\usepackage{amssymb}
+
+
+\begin{document}
+\onecolumn
+
+\title{Face Key}
+
+\author{\IEEEauthorblockN{Quentin GERARD, Louis L'HARIDON et Matthieu VILAIN}
+\IEEEauthorblockA{CMI Systèmes Intelligents et Communicants, Université de Cergy-Pontoise\\
+mail@etu.u-cergy.fr}}
+
+\maketitle
+
+
+\begin{abstract}
+\boldmath Face Key est un projet de gestionnaire de mot de passe par reconnaissance faciale réalisé dans le cadre du projet de synthèse de Licence 3. Il embarque des composantes réseau, base de données, sécurité, application web et machine learning/reconnaissance faciale.
+\end{abstract}
+
+\section{Présentation de Face Key}
+\label{sec:introduction}
+\subsection{Situation initiale}
+\subsubsection{Problème des mots de passe}
+De nos jours on observe une augmentation du nombre de sites qui nécessite la création d'un compte : réseaux sociaux, diffèrent compte mail, opérateur téléphonique, journaux en ligne ... Il devient difficile d'avoir un mot de passe différent par site, qu'il soit assez complexe pour être sécurisé et qu'on n'ait pas besoin de la noter quelque part. La plupart des utilisateurs utilisent donc un seul mot de passe, souvent très simple, en dépit des problèmes de sécurité que cela pose. Leurs comptes et les informations qu'ils contiennent deviennent donc facilement hackable et comme les comptes sont souvent liés, on risque un hacking en chaine de beaucoup de ses comptes.
+Une solution développée pour pallier ce problème est celle du gestionnaire de mot de passe (GMDP). Le principe est simple : l'utilisateur n'a qu'un seul mot de passe maître (plus élaboré) à connaitre et c'est le GMDP qui s'occupe des combinaisons identifiant/mot de passe sécurisé pour chaque site. L'un des problèmes de cette solution est qu'il faut toujours retenir un mot de passe maître élaboré pour déverrouiller le GMDP ; ce déverrouillage pouvant prendre plus de temps. Avec cette méthode il peut aussi être fastidieux, contre intuitif et peu sécurisé de partager l'accès à un compte (partager son compteur d'opérateur téléphonique avec son conjoint par exemple).
+\subsubsection{Maturation de la technologie}
+Avec l'émergence du deeplearning et d'autres technique de traitement d'image et de machine learning, les techniques de reconnaissance faciale deviennent de plus en plus performante. Certain algorithme arrive même à battre l'humain dans certaines conditions (Chaochao Lu et Xiaou Tang 2014). De plus beaucoup de grands acteurs économiques s'attaquent au problème, obtiennent d'excellents résultats et en sortent des applications, par exemple Facebook avec deepFace en 2014, Microsoft avec Hello en 2015 et enfin très récemment Apple avec FaceID (en 2017).
+Il a également été prouvé que la reconnaissance faciale pouvait être plus difficilement hackable que des mots de passe de par la complexité et l'unicité du visage humain.
+\subsection{Notre solution : Face Key}
+\subsubsection{Présentation}
+Notre idée est de combiner les technologies émergentes avec un gestionnaire de mot de passe traditionnel afin de supprimer le mot de passe maître afin de rendre instantanée et sécurisée la connexion à nos sites préférés.
+\subsubsection{Fonctionnement}
+Notre application se présentera sous forme d'un plug-in web, il suffira de se présenter sur la page du site où l'on veut se connecter et cliquer sur le plug-in en haut à droite du navigateur. L'application va alors prendre une photo avec la webcam du l'ordinateur, l'envoyer sur l'application Face Key qui tourne sur l'ordinateur de l'utilisateur ; un algorithme va trouver le visage présent d'en l'image et l'identifier. Si il s'agit bien du visage de l'utilisateur une requête sera faite aux bases de données des serveurs Face Key afin d'obtenir les identifiants pour la page visitée. La page s'actualise avec les identifiants du compte et d'un coup d'½il vous êtes connecté.
+Nous proposons également un système de partage de compte. L'utilisateur peut choisir de partager certains de ses comptes avec d'autres utilisateurs Face Key. Il choisira alors quel personne est autorisé à utiliser quel compte et de la même manière l'autre utilisateur pourra accéder uniquement avec son visage au compte du premier.
+\subsection{Organisation des différents projets}
+Le projet Face Key s'intègre dans le projet d'intégration et recoupe donc les projets de base de données, de réseau, de développement d'application mobile et potentiellement celle de système d'exploitation.
+\subsubsection{Base de données}
+Nous utiliserons une base de données pour stocker différentes informations et paramètres de nos utilisateurs. Par exemple les informations de connexion à la plateforme, les couples identifiant/password pour se connecter aux différents sites, différents paramètre de préférence de l'utilisateur, des données utilisateur collecter sur chaque site (heure moyenne de connexion, fréquence de connexion ...), des données sur l'utilisation de notre application(date de création, fréquence d'utilisation ...).
+Un des objectif est de rendre la base de données "anonyme", c'est-à-dire qu'on ne demande pas de nom, prénom à notre utilisateur, uniquement une adresse mail, afin que si quelqu'un à accès aux données que nous collectons il ne puisse pas remonter à l'identité de nos utilisateurs.
+Les images nécessaires pour l'apprentissage des visages ne seront pas stockées dans une base de données sql, après quelques recherche nous pensons que cet outil n'est pas adapté.
+Pour plus d'informations sur la partie base de données, consultez le schéma relationnel ci joint.
+\subsubsection{Réseau}
+La partie réseau de l'application est décomposée en 3 parties :
+\begin{itemize}	
+	\item Le Plugin Web
+	\item Un Client local (tournant sur la machine de l'utilisateur)
+	\item Un Serveur Distant relié à une Base de Donnée
+\end{itemize}
+Le Plugin Web communiquera avec le serveur local et lui transmettra toutes les entrées de l'utilisateur. Le client local lui s'occupera de traiter toutes les demandes de l'utilisateur en effectuant les taches nécessaires quant à la résolution du problème donné par l'utilisateur. Le client local communiquera avec le serveur distant (lui-même relié à une base de données) pour obtenir les données nécessaires à la résolution du problème.
+La connexion entre le client et le serveur sera assuré par le protocole TCP permettant un transport des informations fiable et en mode connecté.
+Les informations transitant sur le réseau seront de plusieurs natures : Images, textes, fichiers, etc ...
+\subsubsection{Développement d'application mobile}
+L'application Face Key est une application qui sera utilise à la production du projet. Elle servira en effet à collecter les données pour l'apprentissage de nos modèles en recueillant des photos d'utilisateurs.
+\subsubsection{Système d'exploitation}
+A DEFININIR
+\subsubsection{Projet de synthèse}
+Pour la partie projet de synthèse, nous apportons chacun un plus au projet en y incorporant des domaines qui nous ont intéressés cette année :
+\begin{itemize}
+	\item Louis L'Haridon : plug-in web/interface utilisateur
+	\item Quentin Gerard : cryptographie/sécurité réseau
+	\item Matthieu Vilain : machine learning/reconnaissance faciale
+\end{itemize}
+\subsection{Nos ambitions, nos limites}
+Tout ce qui a été présenté précédemment est la vision idéale du projet. Dans un premier temps nous nous concentrerons sur le gestionnaire de mot de passe avec reconnaissance faciale sans implémenter le partage de compte mais en concevant l'architecture du logiciel pour que le partage soit possible.
+En revanche si nous arrivons à tout finir en temps et en heure, nous nous laissons libre d'ajouter des fonctionnalités comme analyse de l'émotion de l'utilisateur lorsqu'il déverrouille l'application ou autre.
+L'idéal initial était de pousser le projet à fond en développent un protocole d'installation, une documentation détaillé etc... afin de proposer le logiciel final en open source. Cet objectif ne pourra pas être réalisé au court du projet de L3 par manque de temps.
+
+\section{Gestion de projet}
+test
+
+\section{Base de Données}
+\subsection{Introduction}
+Qui dit gestionnaire de mot de passe dit données à stocker. En effet dans ce genre de projet la Base De Données est un aspect majeur, qu'elle serve à stocker les informations basiques telles que les couples identifiant/mot de passe ou bien tout simplement les informations nécessaires au bon fonctionnement de l'application, il faut lui fournir une architecture robuste et habile. On peut également imaginer vouloir stocker et accéder à tout un tas d'information intéressantes sur les sites visités. Perdre du temps à chercher des informations dans la BDD c'est ralentir tout le fonctionnement de l'application, il faut donc être précautionneux quand à la conception de la BDD.
+\subsection{Analyse du besoin}
+Pour cela nous avons donc évalué les besoins d'une telle Base de Données. Au delà du simple aspect nécessaire de certaines données, nous avons eu la volonté d'étoffer notre BDD avec des statistiques sur les sites et les utilisateurs qui nous semblent pertinentes à la compréhension de l'usage fait de FaceKey. Il nous semble aussi important d'utiliser certaines données pour détecter les activités anormales sur les comptes et ainsi, augmenter la sécurité de notre application. Nous avons retenu qu'elle devait contenir les informations suivantes : 
+\begin{itemize}
+\item Les  informations concernant un utilisateur
+	\begin{itemize}
+		\item Nom, Prénom
+		\item Identifiant maitre / Mot de passe Maitre
+		\item Comptes enregistrés dans Face Key
+		\begin{itemize}
+			\item Site sur lequel le compte est utilisé
+			\item Identifiant du compte
+			\item Mot de Passe du compte
+			\item Géolocalisation des dernières connexions
+		\end{itemize}
+	\end{itemize}
+	\item Les informations concernant les sites utilisables dans FaceKey
+	\begin{itemize}
+		\item Nom de domaine
+		\item Id des champs de connexions
+		\item Statistiques sur les utilisateurs des sites
+		\begin{itemize}
+			\item Géolocalisation
+			\item Date de dernières connexions
+			\item Utilisateurs inscrits
+			\item Fréquence d'utilisation
+		\end{itemize}
+	\end{itemize}
+\end{itemize} 
+Pour réaliser cette Base De Données nous avons donc schématisé sa conception à partir des informations ci-dessus. 
+\subsection{Modèle Conceptuel des Données}
+Dans un premier temps nous avons décrit sous forme d'un schéma les données à traiter.. (Fig.~\ref{fig:MCD})
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/MCD.jpg} 
+        \caption{Modélisation Conceptuelle des Données}
+        \label{fig:MCD}
+\end{figure}
+
+\subsection{Modèle Logique de Données}
+A partir du MCD nous avons réalisé le Modèle Logique des Données qui est le formalisme adapté à l'implémentation de notre BDD en postgreSQL. (Fig.~\ref{fig:MLD})
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/MLD.jpg} 
+        \caption{Modélisation Logique de Données}
+        \label{fig:MLD}
+\end{figure}
+
+C'est grâce à cd modèle que nous créé en postgreSQL notre Base De Données.
+\subsection{Requêtes significatives}
+Depuis notre BDD nous pouvons effectuer les requêtes pour accéder à toutes les informations nécessaires au bon fonctionnement de l'application. Nous notons ici quelques requêtes significatives qui représentent le fonctionnement de l'application et de l'accès aux données via la BDD.
+\subsubsection{Liste les comptes d'un user}
+Code SQL : 
+\begin{lstlisting}
+SELECT id_account, domain, login
+FROM Account
+  INNER JOIN Sites
+    ON account.id_site = sites.id_site
+WHERE account.id_user = 2     
+;
+\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/req1.png} 
+\end{figure}
+
+\subsubsection{Liste sharedAccount d'un user}
+Code SQL : 
+\begin{lstlisting}
+SELECT id_sharedAccount, domain, name, first_name
+FROM SharedAccount
+  INNER JOIN Account
+    ON sharedAccount.id_account = account.id_account
+  INNER JOIN Sites
+    ON account.id_site = sites.id_site
+  INNER JOIN Users
+    ON account.id_user = users.id_user
+WHERE sharedAccount.id_receiver = 3    
+;\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/req3.png} 
+\end{figure}
+
+\subsubsection{Liste des positions GPS des utilisateurs d'un site}
+Code SQL : 
+\begin{lstlisting}
+SELECT last_loc
+FROM DataAccount
+  INNER JOIN Account
+    ON DataAccount.id_account = Account.id_account
+  INNER JOIN Sites
+    ON Account.id_site = Sites.id_site
+WHERE domain = 'twitter.com'
+;\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.2\textwidth]{img/req7.png} 
+\end{figure}
+
+
+\subsubsection{Somme du temps d'utilisation et nombre utilisateurs d'un site pour calcul moyenne}
+Code SQL : 
+\begin{lstlisting}
+SELECT domain, SUM(average_conn_time) AS sum_time,  COUNT(average_conn_time) AS nb_user
+FROM Account
+  INNER JOIN Sites
+    ON Account.id_site = Sites.id_site
+  INNER JOIN DataAccount
+    ON Account.id_account = DataAccount.id_account
+GROUP BY domain;
+\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/req11.png} 
+\end{figure}
+
+\subsubsection{Dernier compte utilisé par l'utilisateur}
+Code SQL : 
+\begin{lstlisting}
+SELECT id_user AS user, domain AS site, last_conn AS last_connexion FROM (SELECT Account.id_user, Account.id_account, domain, last_conn, 	account.id_site  FROM Account    
+    INNER JOIN sites 
+          ON account.id_site = sites.id_site   
+    INNER JOIN DataAccount      
+          ON account.id_account = DataAccount.id_account 
+    WHERE account.id_user = 2) AS list_conn
+ORDER BY last_conn DESC 
+FETCH FIRST 1 ROWS ONLY;
+\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/req12.png} 
+\end{figure}
+
+\subsubsection{Liste des comptes partagé avec un utilisateur}
+Code SQL : 
+\begin{lstlisting}
+SELECT id_sharedAccount, domain, name, first_name, login, id_receiver
+FROM SharedAccount
+  INNER JOIN Account
+    ON sharedAccount.id_account = account.id_account
+  INNER JOIN Sites
+    ON account.id_site = sites.id_site
+  INNER JOIN Users
+    ON account.id_user = users.id_user
+WHERE sharedAccount.id_receiver = 2 ;
+\end{lstlisting}
+Résultat : 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.8\textwidth]{img/req13.png} 
+\end{figure}
+
+\subsection{Panel d'administration}
+Pour administrer notre BDD nous avons implémenté un panel d'administration en PHP. Ce dernier fonctionne sur un modèle simple : sur une page d'accueil on choisit si on veut accéder aux données relatives aux sites ou aux utilisateurs.
+\subsubsection{Utilisateurs} 
+Dans cette partie nous allons pouvoir ajouter/supprimer un utilisateur,  accéder au profil d'un utilisateur et gérer ses informations. Pour chaque utilisateur nous pouvons lister ses comptes, les supprimer/modifier ou en ajouter de nouveaux, modifier les comptes partagés avec d'autres utilisateurs et afficher les informations relatives à cet utilisateur (géolocalisation des connexions, fréquence d'utilisation...).
+\subsubsection{Sites} 
+Dans cette partie du panel d'administration on va pour ajouter/supprimer des sites utilisables par FaceKey et modifier les informations de ceux déjà présents dans la BDD. nous allons également avoir accès à un certain nombre d'information sur l'usage de ces sites par les utilisateurs (géolocalisation représentée sur une carte, fréquence d'utilisation...).
+
+Nous avons représenté le fonctionnement du panel sur le schéma suivant (Fig.~\ref{fig:PANEL}).
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=0.8\textwidth]{img/panel.png} 
+        \caption{Schématisation du fonctionnement du Panel d'Administration de la BDD}
+        \label{fig:PANEL}
+\end{figure}
+\subsection{Conclusion}
+Nous avons donc développé une BDD  robuste et utilisable ainsi qu'un panel d'administration graphique. Nous devons maintenant penser à la sécurisation des données sur cette BDD qui sont pour la plupart sensibles (couples identifiant/mot de passe, numéro de Carte Bleue, géolocalisation des utilisateurs...). Une amélioration possible à cette BDD serait l'ajout de statistiques plus poussées qui seraient intéressantes à partir d'une masse critique d'utilisateurs.
+\section{Réseau}
+%\input{../reseau/doc/reseau.tex}
+
+\section{Application Android}
+\subsection{Introduction}
+Pour le projet FaceKey nous avons besoin d'un grand jeu de données pour entraîner nos modèles de reconnaissance faciale. Pour augmenter ce jeu de données nous eu avons besoin d'un processus plus orienté utilisateur. Nous avons donc décidé de créer une application Android qui va prendre des photos d'un utilisateur et les sauvegarder sur notre Base de Données pour pourvoir entraîner nos modèles. Nous voulons donc donc une application qui propose à l'utilisateur de so connecter à son compte Face Key et lui propose de prendre des photos de lui. Après vérification des photos par l'utilisateur, l'application lui propose de télécharger les photos sur notre Base De Données
+\subsection{Description de l'application}
+Le modèle choisi pour l'application est donc simple. Sur un premier écran on peut se connecter, ce qui nous amène à un second écran ou on peut choisir entre trois options :
+\begin{itemize}
+	\item Prendre une photo
+	\item Trier les photos
+	\item Uploader vers la BDD mySQL
+\end{itemize}
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.8\textwidth]{img/android_shema.png} 
+\end{figure}
+\subsection{Activitées}
+L'application contient 3 activités différentes.
+\begin{itemize}
+\item Activité de connexion
+\item Activité de Choix
+\item Activité de tri des photos
+\end{itemize}
+\subsubsection{Login Activity}
+
+Il s'agit de la première activité que nous avons codé. Elle contient 2 text input, une pour le login et une autre pour le mot de passe. En cliquant sur le bouton et en ayant le couple login/mot de passe correct on peut accéder à la seconde activité.
+
+Dans Facekey, nous utilisons postgreSQL pour stocker les informations des utilisateurs. Comme la Base De Données est sur un ordinateur isolé par le réseau de l'Université, nous ne pouvons pas y accéder depuis un téléphone android. Nous allons donc juste stocker dans un simple tableau à deux dimensions des couples login/mdp pour tester l'application.
+
+Si nous pouvions accéder à la BDD depuis le smartphone nous aurions placé un fichier PHP sur un serveur web qui, connecté à la BDD, aurait retourné vérifié via une http request l'exactitude du couple login/mdp testé.
+
+Ici nous utiliserons simplement le tableau à 2 dimensions.
+\begin{lstlisting}[language=java]
+public static String[][] login = {{"admin",""},{"Login","p@ssw0rd"},{"louis.lharidon@etu.u-cergy.fr", "azerty"}};
+\end{lstlisting}
+Et, en cliqaunt sur le bouton soumettre on vérifie si le couple login/mdp correspond à un autre couple présent dans le tableau.  present on the array. 
+\begin{lstlisting}[language=java]
+	for(String[]s : login) {
+		if ((name.equals(s[0])) && (pass.equals(s[1]))) {
+            	// login ok : starting intent
+   	}
+   }
+\end{lstlisting}
+La méthode aurait été similaire avec postgreSQL mais, au lieu de crééer un tableau, on aurait vérifier la présence du couple dans la Base De Données via l'httprequest.
+
+\subsubsection{Choice Activity}
+
+Cette activité contient simplement 3 boutons. 
+\begin{itemize}
+\item Un qui lancera la caméra
+\item Un autre qui lancera la troisième activité, celle du tri de photos
+\item Une dernière qui lancera le service qui uploadera les photos sur la Base de Données MySQL
+\end{itemize}
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/mainscreen.png} 
+\end{figure}
+
+\subsubsection{Activité de tri de photos}
+
+Cette activité est la plus complexe.
+Elle est composée de deux éléments : une gridview et une checkbox. La gridview est remplie d'imageviews. Pour faire cela, nous avons du créer un ImageAdapter. Cet adapteur va simplement prendre une image au format bitmap. la redimensionner pour la faire rentrer dans l'imageview et la placer dans le griview tout en gardant sa position et son id en mémoire.\\
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{img/sort.png} 
+\end{figure}
+L'imageAdapter calcule les proportions pour que les imageview remplissent chacune de ses view,  les stocke dans un tableau et autorise certaines opérations.
+\begin{lstlisting}[language=java]
+Storing views into array
+ArrayList<String> itemList = new ArrayList<>();
+ \end{lstlisting}
+
+Il y a trois fonctions intéressantes dans l'imageAdapter : decodeSampledBitmapFromUri qui va retourner un bitmap depuis un chemin et un couple hauteur/largeur.
+\begin{lstlisting}[language=java]
+Bitmap decodeSampledBitmapFromUri(String path, int reqWidth, int reqHeight) {
+            Bitmap bm ;
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            // Decode bitmap with inSampleSize
+            options.inJustDecodeBounds = false;
+            bm = BitmapFactory.decodeFile(path, options);
+            return bm;
+        } 
+\end{lstlisting}
+Une autre qui va calculer le couple hauteur/largeur requis.
+\begin{lstlisting}[language=java]
+int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	//  height and width of image
+	final int height = options.outHeight;
+	final int width = options.outWidth;
+	int inSampleSize = 1;
+	if (height > reqHeight || width > reqWidth) {
+		if (width > height) {
+		inSampleSize = Math.round((float)height / (float)reqHeight);
+		} 
+		else {
+			inSampleSize = Math.round((float)width / (float)reqWidth);
+		}
+	}
+	return inSampleSize;
+}
+\end{lstlisting}
+Enfin nous avons une fonction add qui va ajouter une image à la gridview via son chemin.
+\begin{lstlisting}[language=java]
+void add(String path){
+	itemList.add(path);
+}
+\end{lstlisting}
+Nous avons besoin de onCreate pour déclarer les imageview en tant qu'adaptateurs du gridview.
+\begin{lstlisting}[language=java]
+final GridView gridview = findViewById(R.id.gridview);
+myImageAdapter = new ImageAdapter(this);
+gridview.setAdapter(myImageAdapter);
+\end{lstlisting}
+Pour ajouter toutes les images depuis un dossier nous avons besoin de lister tous les fichiers d'un dossier. La première étape  est l'accès au dossier avec les lignes suivantes : 
+\begin{lstlisting}[language=java]
+String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+File myDir = new File(root + "/saved_images");
+\end{lstlisting}
+Ensuite nous pouvons lsiter tous les fichier, y accéder et les ajouter au griview via notre imageAdapter. 
+\begin{lstlisting}[language=java]
+files = myDir.listFiles();
+for(File f : files){
+	// add to image adapter the file
+	myImageAdapter.add(f.getAbsolutePath());
+}
+\end{lstlisting}
+Pour gérer les fichiers avant l'envoi sur le serveur nous avons implémenté une suppression des fichiers. L'utilisateur peut être amené à décider si les photos prises sont bonnes à l'envoi. Nous avons placé une checkbox pour qu'il puisse indiquer si il veut supprimer une image et un onclicklistener pour qu'il appuie simplement sur l'image à supprimier. 
+\begin{lstlisting}[language=java]
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    // if checkcbox is enabled
+                    if (ch.isChecked()) {
+                        // getting file from position
+                        File item = files[position];
+                        // deleting and checking deleting
+                        boolean deleted = item.delete();
+                        Log.d("Files", "Removed " + deleted);
+                        // reload page to delete from the grid
+                        reload();
+                    }
+                }
+            });
+\end{lstlisting}
+La fonction reload raffraîchit l'UI en redémarrant l'activité.
+\begin{lstlisting}[language=java]
+    // reload function, simply reload activity
+    public void reload(){
+        finish();
+        startActivity(getIntent());
+    }
+\end{lstlisting}
+
+\subsection{Intents}
+
+Pour cette application nous utilisons une intent externe, celle de la caméra. 
+\subsubsection{Camera intent}
+
+Cette intent est ouverte depuis l'activité de choix. en utilisant les permissions nous pouvons accéder à la caméra. En ouvrant cette intent, l'application demander la permission à l'utilisateur d'utiliser la caméra et de gérer les fichiers du téléphone et, après acceptation, ouvrira la caméra. L'utilisateur va ensuite prendre une photo, l'intent lui demandera sa confirmation et, ensuite, transfèrera la photo vers l'activité ou elle sera convertie en png et sauvegardée dans un dossier spécifique.
+
+Pour démarrer l'intent de la caméra nous avons donc besoin de déclarer nos permissions (nous avons aussi besoin de permissions pour nos autres activités et intent mais nous expliquerons ici comment gérer les permissions pour utiliser la caméra).
+
+Pour déclarer une activité nous avons tout d'abord besoin d'ajouter la use-permission spécifique dans le manifeste android.
+\begin{lstlisting}[language=xml]
+    <uses-permission android:name="android.permission.CAMERA" />
+\end{lstlisting}
+Ensuite, dans l'activité ou la permission est requise, nous ajoutons les lignes suivante à la fonction oncreate pour vérifier si la permission est bien accordée et, si ce n'est pas le cas, demander la permission.
+\begin{lstlisting}[language=java]
+       // CAMERA
+        if( (ContextCompat.checkSelfPermission(SecondActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SecondActivity.this, Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(SecondActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(SecondActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+            }
+        }
+\end{lstlisting}
+Ensuite nous lançons l'intent caméra avec les lignes suivantes : 
+\begin{lstlisting}[language=java]
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+\end{lstlisting}
+Après que l'utilisateur est pris une photo nous avons besoin de gérer le résultat de l'activité caméra pour stocker l'image dans un dossier.
+Pour faire cela nous allons utiliser la fonction onActivityResult en vérifiant s i nous obtenons bien le résultat de la caméra et , ensuite, en stockant le bitmap résultant compressé au format png dans le dossier correct avec un nom de fichier unique.
+\begin{lstlisting}[language=java]
+        if (requestCode == CAMERA_REQUEST && resultCode == this.RESULT_OK) {
+            // getting photo bitmat
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            FileOutputStream out = null;
+            try {
+                // Getting custom picture folder
+                String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+                File myDir = new File(root + "/saved_images");
+                if(!myDir.exists()) myDir.mkdir();
+                Log.d("Photos", "directory " + myDir.toString());
+                // Writing filename
+                String fname = "img-" + System.currentTimeMillis() + ".png";
+                // Creating file
+                File file = new File(myDir, fname);
+                Log.d("Photos", "file " + file.toString());
+                try {
+                    out = new FileOutputStream(file);
+                    if (photo != null) {
+                        // putting bitmap photo to file after png compression
+                        photo.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }
+                    out.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+\end{lstlisting}
+\subsection{Background service}
+Dans notre seconde activité nous lançons un service en arrière plan qui va uploader toutes les photos d'un dossier spécifique vers une Base De Données mySQL.
+Pour faire cela nous avons besoin de lister toutes les images d'un dossier et, pour chacune d'entre elles, les convertir en bitmap et les uploader sur notre Base de Données.
+\begin{lstlisting}[language=java]
+                String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+                File myDir = new File(root + "/saved_images");
+                // Listing files
+                File[] filelist = myDir.listFiles(IMAGE_FILTER);
+                // browsing files
+                int i = 0;
+                for (File f : filelist) {
+                    // Sleeping 0.01s between each files
+                    try {
+                        Thread.sleep(10);
+                    } catch (Exception e) {
+                        Log.e("Error", "exception");
+                    }
+                    if (isRunning) {
+                        Log.d("Files", "FileName:" + f.getName());
+                        // getting file path
+                        String filePath = f.getPath();
+                        // converting to bitmap
+                        bitmap = BitmapFactory.decodeFile(filePath);
+                        // starting upload fonction
+                        uploadImage();
+\end{lstlisting}
+Pour l'upload, nous créons une fonction qui convertit les images en base64 et qui lance une httprequest contenant une requête POST vers une page PHP stockées sur un serveur web.
+Pour cela nous utilisons cette fonction de conversion bitmap vers base64 :
+\begin{lstlisting}[language=java]
+    // Converting bitmap to base64 function
+    public String getStringImage(Bitmap bmp){
+        // new array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        // return converted to base64 array
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+\end{lstlisting}
+Et cette fonction qui effectuera la requête POST : 
+\begin{lstlisting}[language=java]
+    public void POST(String... params){
+        String urlString = params[0]; // URL
+        String data = params[1]; //data  POST
+        try {
+            // Opening connexion
+            URL url = new URL(urlString);
+            // URL
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            // POST METHOD
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            // Building request  with url and data
+            Uri.Builder builder = new Uri.Builder().appendQueryParameter("image", data);
+            Log.d("Updload", "POST : " + builder.toString());
+            String query = builder.build().getEncodedQuery();
+            // outputstream on connexion
+            OutputStream os = conn.getOutputStream();
+            // Buffered writer to write on outputsteam
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+            Log.d("Updload", "url : " + conn.getURL().toString());
+            // Request
+            conn.connect();
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+\end{lstlisting}
+Qui sont toutes deux combinées dans une fonction uploadImage : 
+\begin{lstlisting}[language=java]
+    //upload image fonction
+    private void uploadImage() {
+        Log.d("Updload", "uploading ");
+        // converting to base64
+        String uploadImage = getStringImage(bitmap);
+        // Posting to PHP
+        POST(UPLOAD_URL, uploadImage);
+    }
+\end{lstlisting}
+Ce script PHP va prendre le fichier base64 et l'insérer dans une table mySQL sur une colonne de type blob : 
+\begin{lstlisting}[language=php]
+
+	$conn = new mysqli(HOST,USER,PASS,DB) ;
+	if ($conn->connect_error) {
+    	die("Connection failed: " . $conn->connect_error);
+	} 		
+	$image = $_POST['image'];			
+	$sql = "INSERT INTO photo (image) VALUES ('$image')";
+	if ($conn->query($sql) === TRUE) {
+	    echo "New image successfully inserted";
+	} else {
+	    echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+	$conn->close();
+\end{lstlisting}
+Pour notifier l'utilisateur de l'avancement de la mise ligne des photos nous utiliserons un Toast. Mais, comme nous sommes dans un service, nous ne pouvons pas simplement utiliser un Toast. Nous avons besoin de récupérer le contexte du Thread principal pour y placer le Toast. 
+\begin{lstlisting}[language=java]
+    private Context appContext;
+    // Function to toast on main thread
+    void showToast(final String toShow){
+        // checking app context
+        if(null !=appContext){
+            // geting main theard
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // threading
+                    Toast.makeText(appContext, toShow, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+\end{lstlisting}
+Ensuite, via cette fonction, nous allons simplement faire apparaître un Toast sur l'écran de l'utilisateur :
+\begin{lstlisting}[language=java]
+String toToast = "Uploading" + (i+1) + "/" + filelist.length + "...";
+showToast(toToast);
+\end{lstlisting}
+Après avoir téléchargé une image sur la BDD nous  la retirons du dossier en la supprimant : 
+After having uploaded an image we remove it from the folder by deletion : 
+\begin{lstlisting}[language=java]
+boolean del = f.delete();
+\end{lstlisting}
+Après avoir téléchargé toutes les images sur la BDD, le service s'arrête.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{img/send.png}
+    \caption{Flower one.}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{img/blob.png}
+    \caption{Flower two.}
+  \end{minipage}
+\end{figure}
+
+
+
+\subsection{Conclusion}
+En conclusion, nous avons développé une application robuste qui effectue différentes actions :  une activité de connexion, un service qui effectue une httprequest vers un script php, une activité qui affiche les images d'un dossier et permet de les supprimer et nous avons utilisé la caméra via une intent. 
+Pour améliorer cette application nous aurions pu développer notre propre activité pour prendre des photos, ce qui nous aurait permis de prendre en rafale les photos de l'utilisateur. Nous aurions pu améliorer l'UI de l'activité de tri de photos.
+Le principal défaut de cette application est qu'elle n'est pas connectée aux autres parties de notre projet comme nous n'avons pas la possibilité de télécharger directement les images vers notre base de données. En effet le réseau de l'Université bloque les accès extérieurs aux machines et empêche les machines sur le même réseau de s'accéder. Cette mesure de sécurité nous empêche d'intégrer pleinement notre application android dans notre écosystème et nos  données FaceKey
+
+\section{IHM}
+\subsection{Introduction}
+Pour l'IHM nous avons fait le choix de développer un plug-in permettant de se connecter aux sites depuis le navigateur de l'utilisateur. Nous avons donc établi le cahier des charges suivant pour la réalisation de ce plug-in : 
+\begin{itemize}
+	\item Il doit être accessible depuis un navigateur grand public
+	\item Il pouvoir communiquer avec le client présent sur l'ordinateur
+	\item Il doit pouvoir interagir avec le contenu d'une page web affiché dans un navigateur. 
+\end{itemize}
+\subsection{Analyse du Marché}
+Pour répondre au premier besoin : " Il doit être accessible depuis un navigateur grand public " nous avons analysé les parts de marchés des navigateurs web (Table.~\ref{Table:PDMN}). De cette analyse nous tirons la conclusion qu'il faut nous concentrer sur les 2 principaux navigateurs ayant assez de part de marché : Google Chrome et Apple Safari.
+\begin{table}[H]
+	\centering
+	\caption{Les parts de marché des navigateurs Web dans le monde, toutes plates-formes confondues (février 2018 - W3Counter)}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|} 
+		\hline
+		Chrome                                      & Safari                                      & Firefox& IE + Edge& Opera& ~UC Browser& Android& Autres                                                                                                                                                                                                                 		\\ 
+		\hline
+		\textcolor[rgb]{0.133,0.133,0.133}{59,9~\%} & \textcolor[rgb]{0.133,0.133,0.133}{15,7~\%} & \textcolor[rgb]{0.133,0.133,0.133}{8,5~\%}& \textcolor[rgb]{0.133,0.133,0.133}{7,3~\%}& \textcolor[rgb]{0.133,0.133,0.133}{3,4~\%}& \textcolor[rgb]{0.133,0.133,0.133}{1,5~\%}& \textcolor[rgb]{0.133,0.133,0.133}{0,0~\%}& \textcolor[rgb]{0.133,0.133,0.133}{3,7~\%}  \\
+		\hline
+	\end{tabular}
+	 \label{Table:PDMN}
+\end{table}
+
+Nous devons ensuite nous concentrer sur les opportunités qu'offrent ces deux navigateurs pour le développement d'un plug-in. Nous savons que les deux offrent cette possibilité mais nous devons étudier si les API des deux permettent de répondre aux deux besoin techniques suivants "pouvoir communiquer avec le client présent sur l'ordinateur" et "pouvoir interagir avec le contenu d'une page web affiché dans un navigateur". Pour cela nous isolons 4 fonctionnalité indisensables à implémenter 
+\begin{itemize}
+	\item Interaction avec le contenu d'une page web.
+	\begin{itemize}
+		\item Récupération du contenu (pour les champs de connexion par exemple).
+		\item Manipulation du contenu (injection dans la page du couple identifiant/mot de passe par exemple).
+	\end{itemize}
+	\item Interaction avec le client : ici on choisira l'UDP pour sa facilité d'utilisation et la rapidité de la transmission des messages.
+\end{itemize}
+
+
+\begin{table}[H]
+	\centering
+	\caption{Comparaison des fonctionnalités utilisables selon le navigateur}
+	\begin{tabular}{|l|l|l|} 
+		\hline
+		Technologie                        & Chrome extension/application    & Safari extension                       \\ 
+		\hline
+		Récupération du contenu d'une page & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark }        \\ 
+		\hline
+		Injection de contenu dans la page  & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark }        \\ 
+		\hline
+		Message inter-extension            & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.133,0.133,0.133}{X}  \\ 
+		\hline
+		UDP                                & \textcolor[rgb]{0.2,0.2,0.2}{\checkmark } & \textcolor[rgb]{0.133,0.133,0.133}{X}  \\
+		\hline
+	\end{tabular}	 
+	\label{Table:CTEW}
+\end{table}
+
+Nous choisissons donc logiquement de développer notre plug-in sous chrome.
+
+\subsection{Les technologies Chrome}
+Avant de passer au développement intrinsèque du plug-in nous devons étudier les possibilités de développement offertes par Google Chrome. Sous ce navigateur il existe deux types de web applications :
+\begin{itemize}
+	\item Les Applications
+	\item Les Extensions
+\end{itemize}
+\subsection{Développement}
+\subsubsection{Application}
+\subsubsection{Extension}
+
+\subsection{Intégration au reste du projet}
+\subsection{Conclusion}
+
+
+\section{Reconnaissance Faciale}
+
+\section{Securité}
+
+
+\section{Conclusion}
+\subsection{point d'avancement par rapport au cdc}
+\subsection{problème rencontrés + discussion}
+\subsection{amélioration possible + discussion}
+\subsection{ressentit par rapport au projet}
+
+Acknowledgement
+
+
+
+\bibliographystyle{IEEEtran}
+
+\end{document}

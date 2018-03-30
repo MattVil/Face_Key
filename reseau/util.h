@@ -11,10 +11,15 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/md5.h>
+#include "ipcTools.h"
 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
-#define DEBUG 1
+#define DEBUG 0
 #define FULL_DEBUG 0
 #define BUF_SIZE 1000
 #define ONLINE 1
@@ -69,6 +74,10 @@
 #define SHUTD_PW ((char *)"ketchup")
 #define GOD 1000
 
+//RSA
+#define PUBKEY 1
+#define PRIVKEY 0
+
 void timeout_config(int file_desc, fd_set* readfds, struct timeval* timeout);
 int config(char* filename, int* port, char* ip);
 void send_data(int socket, int code, char* info, char* buf, int bufsize);
@@ -87,3 +96,4 @@ int send_file(char *filename, char *send_filename, int s_dial);
 int receive_file(int s_dial, char* directory);
 int receive_file2(int s_dial, char *directory);
 int send_file2(char *filename, char *send_filename, int s_dial);
+RSA* loadKey(char *pubkeypath, int keytype);
