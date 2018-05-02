@@ -66,9 +66,9 @@
 
             <h2 class="gradient-8"><?php echo $pseudo?>'s profile</h2>
             <div class="row">
-                <div class="col-6 col-sm-12">
+                <div class="col-12 col-sm-12">
                     <h3>Informations.</h3>
-                	<ul class="left">
+                	<ul class="center">
                 		<li> <strong>name :</strong> <?php echo $name ?></li>
                 		<li>  <strong>first Name :</strong> <?php echo $first_name ?></li>
                 		<li>  <strong>pseudo :</strong> <?php echo $pseudo ?></li>
@@ -79,12 +79,6 @@
                 		<li>  <strong>language :</strong> <?php echo $language ?></li>
                   </ul>
                 </div>
-                <div class="col-6 col-sm-12">
-                    <h3>Graph.</h3>
-                        <!-- <p>Unavailable on this version of php</p> -->
-                        <?php  createGraph($id);?>
-                        <img src="<?php echo $imgpath ?>" alt="graphFreq"/>
-            	</div>
             </div>
             <div class="row">
                 <h3>Accounts.</h3>
