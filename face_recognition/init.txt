@@ -1,2 +1,0 @@
-Opencv installation on Ubuntu 16.04 :
-  sudo apt install libopencv-dev
