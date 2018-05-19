@@ -18,5 +18,5 @@ The application is made of a Chrome plug-in and a background application on the 
 found on the Face Key User database and put into the webpage and the account will be unlock.
 Just yby a glance the account is safely unlock.
 
-![Face Key in one picture](doc/poster.PNG)
+![Face Key in one picture](poster.PNG)
 Format: ![Alt Text](url)
